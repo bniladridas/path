@@ -1,8 +1,6 @@
 
----
-
 <div align="center">
-  <img src="static/images/logo.svg" alt="path Logo" width="120" height="120">
+  <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHTYmvGwtjzWg/company-logo_200_200/B4DZdJEY9.GYAI-/0/1749277577678/path_protect_logo?e=1754524800&v=beta&t=qO8Z1oJ1K49ZR5IL-srG6BXRG2gleE_5Z2XlNdgDQSA" alt="path Logo" width="120" height="120">
   <h1>path</h1>
   <p>come home before it's too late</p>
   <p>helping people find their way home through media exploration</p>
@@ -48,19 +46,24 @@ path is an ai-powered media exploration interface that helps you discover movies
    git clone https://github.com/bniladridas/path.git
    cd path
    ```
-2. install dependencies:
+2. create and activate a virtual environment (recommended):
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. add your api key to a `.env` file:
+4. add your api key to a `.env` file:
    ```
    GEMINI_API_KEY=your-gemini-api-key
    ```
-4. launch the app:
+5. launch the app:
    ```bash
    python app.py
    ```
-5. visit `http://127.0.0.1:8000` in your browser
+6. visit `http://127.0.0.1:8000` in your browser
 
 ## deployment
 
