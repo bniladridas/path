@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="https://media.licdn.com/dms/image/v2/D4D0BAQHTYmvGwtjzWg/company-logo_200_200/B4DZdJEY9.GYAI-/0/1749277577678/path_protect_logo?e=1754524800&v=beta&t=qO8Z1oJ1K49ZR5IL-srG6BXRG2gleE_5Z2XlNdgDQSA" alt="path Logo" width="120" height="120">
+  <img src="./static/images/grok/e6fb4338-88cc-4dd7-8a45-d4f2a6708084.jpg" alt="path project banner" width="120" height="120">
   <h1>path</h1>
   <p>come home before it's too late</p>
   <p>helping people find their way home through media exploration</p>
@@ -122,27 +122,124 @@ the verification system shows an image requiring description. for development, u
 
 ## project structure
 
-```
-path/
-├── app.py                 # flask application with all routes
-├── templates/
-│   ├── index.html         # main interface with tools and themes
-│   ├── terms.html         # comprehensive terms of use
-│   ├── privacy.html       # privacy policy with tables
-│   ├── updates.html       # changelog and version history
-│   └── verify.html        # human verification page
-├── static/
-│   ├── css/
-│   │   └── style.css      # complete styling with theme system
-│   └── images/
-│       ├── favicon.svg    # path logo favicon
-│       ├── logo.svg       # main logo
-│       └── verification.jpg # human verification image
-├── vercel.json            # vercel deployment configuration
-├── requirements.txt       # python dependencies (flask, requests, python-dotenv)
-├── .env.example           # environment variable template
-├── LICENSE                # mit license
-└── README.md              # this documentation
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '12px' }}}%%
+graph TD
+    %% Root Directory
+    root["path/"]
+    
+    %% .github Directory
+    github[".github/"]
+    github_workflows["workflows/"]
+    github_codeql_yml["codeql.yml"]
+    github_codeql_queries["codeql-queries/"]
+    github_js_queries["javascript/"]
+    github_js_dom_sec["dom-security.ql"]
+    github_py_queries["python/"]
+    github_py_flask_sec["flask-security.ql"]
+    github_security_md["SECURITY.md"]
+    github_codeql_config["codeql-config.yml"]
+    github_dependabot_yml["dependabot.yml"]
+    
+    %% Templates Directory
+    templates["templates/"]
+    templates_index["index.html"]
+    templates_terms["terms.html"]
+    templates_privacy["privacy.html"]
+    templates_updates["updates.html"]
+    templates_verify["verify.html"]
+    
+    %% Static Directory
+    static["static/"]
+    static_css["css/"]
+    static_css_style["style.css"]
+    static_images["images/"]
+    static_images_favicon["favicon.svg"]
+    static_images_logo["logo.svg"]
+    static_images_og["og.png"]
+    static_images_verification["verification.png"]
+    static_images_grok["grok/"]
+    static_images_grok_img1["e6fb4338-88cc-4dd7-8a45-d4f2a6708084.jpg"]
+    static_images_grok_img2["image.jpg"]
+    
+    %% Root Files
+    app_py["app.py"]
+    vercel_json["vercel.json"]
+    requirements_txt["requirements.txt"]
+    gitignore[".gitignore"]
+    code_of_conduct["CODE_OF_CONDUCT.md"]
+    license["LICENSE"]
+    readme["README.md"]
+    software_philosophy["SOFTWARE_PHILOSOPHY.txt"]
+    
+    %% .github Structure
+    root --> github
+    github --> github_workflows
+    github_workflows --> github_codeql_yml
+    github --> github_codeql_queries
+    github_codeql_queries --> github_js_queries
+    github_js_queries --> github_js_dom_sec
+    github_codeql_queries --> github_py_queries
+    github_py_queries --> github_py_flask_sec
+    github --> github_security_md
+    github --> github_codeql_config
+    github --> github_dependabot_yml
+    
+    %% Main Structure
+    root --> app_py
+    root --> templates
+    root --> static
+    root --> vercel_json
+    root --> requirements_txt
+    root --> gitignore
+    root --> code_of_conduct
+    root --> license
+    root --> readme
+    root --> software_philosophy
+    
+    %% Templates Structure
+    templates --> templates_index
+    templates --> templates_terms
+    templates --> templates_privacy
+    templates --> templates_updates
+    templates --> templates_verify
+    
+    %% Static Structure
+    static --> static_css
+    static_css --> static_css_style
+    static --> static_images
+    static_images --> static_images_favicon
+    static_images --> static_images_logo
+    static_images --> static_images_og
+    static_images --> static_images_verification
+    static_images --> static_images_grok
+    static_images_grok --> static_images_grok_img1
+    static_images_grok --> static_images_grok_img2
+    
+    %% Styling
+    %% Root Files
+    root --> app_py["app.py"]
+    root --> vercel_json["vercel.json"]
+    root --> requirements_txt["requirements.txt"]
+    root --> gitignore[".gitignore"]
+    root --> code_of_conduct["CODE_OF_CONDUCT.md"]
+    root --> license["LICENSE"]
+    root --> readme["README.md"]
+    root --> software_philosophy["SOFTWARE_PHILOSOPHY.txt"]
+    root --> env_example[".env.example"]
+    
+    %% Styling
+    classDef file fill:#f9f,stroke:#333,stroke-width:2px
+    classDef dir fill:#bbf,stroke:#333,stroke-width:2px
+    classDef config fill:#ff9,stroke:#333,stroke-width:2px
+    
+    %% Apply Classes
+    class app_py,vercel_json,requirements_txt,gitignore,code_of_conduct,license,readme,software_philosophy,env_example file
+    class github,templates,static,static_css,static_images,static_images_grok dir
+    class github_workflows,github_codeql_queries,github_js_queries,github_py_queries dir
+    class github_codeql_yml,github_security_md,github_codeql_config,github_dependabot_yml,github_js_dom_sec,github_py_flask_sec config
+    class templates_index,templates_terms,templates_privacy,templates_updates,templates_verify file
+    class static_css_style,static_images_favicon,static_images_logo,static_images_og,static_images_verification,static_images_grok_img1,static_images_grok_img2 file
 ```
 
 ## ux philosophy & prompt methodology
