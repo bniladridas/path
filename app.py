@@ -412,7 +412,7 @@ if __name__ == '__main__':
     # Start the Flask development server
     # debug=True enables debug mode, which shows detailed error messages and enables hot reloading
     # host='0.0.0.0' makes the server accessible from any IP address
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", host='0.0.0.0', port=8000)
 
 # For Vercel deployment
 # This exposes the Flask application as a module-level variable
