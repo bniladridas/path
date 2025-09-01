@@ -60,8 +60,7 @@ analysis:
   # Thread count
   threads: 4
 
-# Custom queries directory
-# queries: ./.github/codeql-queries
+# Custom queries directory is specified in the queries block above
 
 # Database settings
 database:
