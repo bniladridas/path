@@ -55,8 +55,6 @@ jobs:
         upload: always
         # Generate SARIF output for external tools
         output: sarif-results
-        # Enable experimental features
-        experimental: true
 
 
 
