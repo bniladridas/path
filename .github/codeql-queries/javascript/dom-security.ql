@@ -120,21 +120,13 @@ class PrototypePollution extends Assignment {
   }
 }
 
-// Select statements to report the findings
-from UnsafeInnerHTML u
-select u, u.getMessage()
-
-from UnsafeDocumentWrite u
-select u, u.getMessage()
-
-from UnsafeEval u
-select u, u.getMessage()
-
-from MissingCSP c
-select c, c.getMessage()
-
-from UnsafeStorage s
-select s, s.getMessage()
-
-from PrototypePollution p
-select p, p.getMessage()
+// Combined select statement to report all findings
+from Locatable l, string message
+where
+  exists(UnsafeInnerHTML u | l = u and message = u.getMessage()) or
+  exists(UnsafeDocumentWrite u | l = u and message = u.getMessage()) or
+  exists(UnsafeEval u | l = u and message = u.getMessage()) or
+  exists(MissingCSP c | l = c and message = c.getMessage()) or
+  exists(UnsafeStorage s | l = s and message = s.getMessage()) or
+  exists(PrototypePollution p | l = p and message = p.getMessage())
+select l, message

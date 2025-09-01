@@ -135,21 +135,13 @@ class FlaskSqlInjection extends SqlInjection::Configuration {
   }
 }
 
-// Select statements to report the findings
-from FlaskDebugMode f
-select f, f.getMessage()
-
-from MissingCsrfProtection m
-select m, m.getMessage()
-
-from InsecureSecretKey i
-select i, i.getMessage()
-
-from UnsafeFileUpload u
-select u, u.getMessage()
-
-from FlaskCommandInjection::Configuration c
-select c, c.getMessage()
-
-from FlaskSqlInjection::Configuration s
-select s, s.getMessage()
+// Combined select statement to report all findings
+from Locatable l, string message
+where
+  exists(FlaskDebugMode f | l = f and message = f.getMessage()) or
+  exists(MissingCsrfProtection m | l = m and message = m.getMessage()) or
+  exists(InsecureSecretKey i | l = i and message = i.getMessage()) or
+  exists(UnsafeFileUpload u | l = u and message = u.getMessage()) or
+  exists(FlaskCommandInjection c | l = c and message = c.getMessage()) or
+  exists(FlaskSqlInjection s | l = s and message = s.getMessage())
+select l, message
