@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="./static/images/grok/e6fb4338-88cc-4dd7-8a45-d4f2a6708084.jpg" alt="path Logo" width="120" height="120">
+  <img src="./static/images/grok/e6fb4338-88cc-4dd7-8a45-d4f2a6708084.jpg" alt="path project banner" width="120" height="120">
   <h1>path</h1>
   <p>come home before it's too late</p>
   <p>helping people find their way home through media exploration</p>
