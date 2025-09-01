@@ -361,12 +361,14 @@ def search():
         # This will be sent back to the frontend and displayed to the user
         return jsonify({"result": result})
     except Exception as e:
-        # If any error occurs during the process, return a curious, learning-oriented message
-        # This ensures that the user gets an enthusiastic response even if something goes wrong
-        # Include error type for frontend handling
+        # If any error occurs during the process, log the actual error server-side only
+        # This ensures internal info is not exposed to the user
+        # Frontend receives only generic error information
+        import logging
+        logging.error("Error in /search route: %s", str(e), exc_info=True)
         return jsonify({
             "result": "i'm practically bouncing with excitement to learn about what you're curious about! something's just taking a moment to sort itself out, but i can't wait to discover and explore media topics with you. let's try again in just a bit!",
-            "error": str(e),
+            "error": "internal_error",
             "error_type": "system_error"
         })
 
