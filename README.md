@@ -217,24 +217,29 @@ graph TD
     static_images_grok --> static_images_grok_img2
     
     %% Styling
+    %% Root Files
+    root --> app_py["app.py"]
+    root --> vercel_json["vercel.json"]
+    root --> requirements_txt["requirements.txt"]
+    root --> gitignore[".gitignore"]
+    root --> code_of_conduct["CODE_OF_CONDUCT.md"]
+    root --> license["LICENSE"]
+    root --> readme["README.md"]
+    root --> software_philosophy["SOFTWARE_PHILOSOPHY.txt"]
+    root --> env_example[".env.example"]
+    
+    %% Styling
     classDef file fill:#f9f,stroke:#333,stroke-width:2px
     classDef dir fill:#bbf,stroke:#333,stroke-width:2px
     classDef config fill:#ff9,stroke:#333,stroke-width:2px
     
     %% Apply Classes
-    class app_py,vercel_json,requirements_txt,gitignore,code_of_conduct,license,readme,software_philosophy file
+    class app_py,vercel_json,requirements_txt,gitignore,code_of_conduct,license,readme,software_philosophy,env_example file
     class github,templates,static,static_css,static_images,static_images_grok dir
     class github_workflows,github_codeql_queries,github_js_queries,github_py_queries dir
     class github_codeql_yml,github_security_md,github_codeql_config,github_dependabot_yml,github_js_dom_sec,github_py_flask_sec config
     class templates_index,templates_terms,templates_privacy,templates_updates,templates_verify file
     class static_css_style,static_images_favicon,static_images_logo,static_images_og,static_images_verification,static_images_grok_img1,static_images_grok_img2 file
-    
-    %% Styling
-    classDef file fill:#f9f,stroke:#333,stroke-width:2px
-    classDef dir fill:#bbf,stroke:#333,stroke-width:2px
-    
-    class app_py,codeql_yml,security_md,codeql_config,index_html,terms_html,privacy_html,updates_html,verify_html,style_css,favicon,logo,og_image,verification_png,grok_image1,grok_image2,vercel_json,requirements_txt,env_example,code_of_conduct,license,readme file
-    class github,workflows,codeql_queries,js_queries,py_queries,templates,static,css,images,grok dir
 ```
 
 ## ux philosophy & prompt methodology
