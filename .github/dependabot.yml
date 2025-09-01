@@ -70,11 +70,3 @@ updates:
       - "docker"
       - "dependencies"
 
-# Security updates configuration
-security-updates:
-  # Enable security updates for all package ecosystems
-  enabled: true
-  # Only create security updates for patch and minor versions
-  patch: true
-  minor: true
-  major: false
