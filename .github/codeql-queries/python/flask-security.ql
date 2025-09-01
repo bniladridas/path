@@ -43,12 +43,18 @@ class MissingCsrfProtection extends Flask::FlaskRoute {
     // Check if CSRF token is not validated
     not exists(Flask::FlaskRequest request |
       request.getMethodCall("form").getAKeywordArgument("csrf_token") or
-      request.getMethodCall("headers").getAKeywordArgument("X-CSRF-Token")
+      request.getMethodCall("headers").getAKeywordArgument("X-CSRF-Token") or
+      // Check for Flask-WTF CSRF protection
+      exists(Call call |
+        call.getFunc().(Attribute).getName() = "validate_on_submit" and
+        call.getFunc().getBase().(Name).getId().matches("form") or
+        call.getFunc().(Name).getId() = "csrf.exempt"
+      )
     )
   }
 
   override string getMessage() {
-    result = "Route handles state-changing requests but does not validate CSRF tokens."
+    result = "Route handles state-changing requests but does not validate CSRF tokens. Consider using Flask-WTF for automatic CSRF protection."
   }
 }
 
@@ -77,13 +83,26 @@ class UnsafeFileUpload extends Flask::FlaskRoute {
       request.getMethodCall("files") and
       not exists(Expr validation |
         validation.getLocation().getFile() = this.getLocation().getFile() and
-        validation.(Call).getFunc().(Name).getId().matches("%validat%")
+        (validation.(Call).getFunc().(Name).getId().matches("%validat%") or
+         validation.(Call).getFunc().(Name).getId().matches("%check%") or
+         validation.(Call).getFunc().(Name).getId().matches("%sanitize%") or
+         // Check for file extension validation
+         exists(Expr ext |
+           ext.(Call).getFunc().(Attribute).getName() = "endswith" and
+           ext.getAnArgument().(StrConstant).getText().matches("%.jpg") or
+           ext.getAnArgument().(StrConstant).getText().matches("%.png")
+         ) or
+         // Check for mimetype validation
+         exists(Expr mime |
+           mime.(Call).getFunc().(Attribute).getName() = "startswith" and
+           mime.getAnArgument().(StrConstant).getText().matches("image/")
+         ))
       )
     )
   }
 
   override string getMessage() {
-    result = "File upload detected without proper validation. Implement file type, size, and content validation."
+    result = "File upload detected without proper validation. Implement file type, size, and content validation to prevent malicious uploads."
   }
 }
 
@@ -101,7 +120,8 @@ class FlaskCommandInjection extends CommandInjection::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Call call |
-      call.getFunc().(Name).getId() in ["system", "popen", "call", "run"] and
+      call.getFunc().(Name).getId() in ["system", "popen", "call", "run", "subprocess.call", "subprocess.run", "os.system", "os.popen"] or
+      call.getFunc().(Attribute).getName() in ["call", "run", "system", "popen"] and
       sink.asExpr() = call.getAnArg()
     )
   }
@@ -125,7 +145,8 @@ class FlaskSqlInjection extends SqlInjection::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Call call |
-      call.getFunc().(Name).getId().matches("%sql%") and
+      call.getFunc().(Name).getId() in ["execute", "executemany", "executescript", "cursor.execute", "connection.execute"] or
+      call.getFunc().(Attribute).getName() in ["execute", "executemany", "executescript"] and
       sink.asExpr() = call.getAnArg()
     )
   }
