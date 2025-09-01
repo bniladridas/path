@@ -119,3 +119,22 @@ class PrototypePollution extends Assignment {
     result = "Potential prototype pollution vulnerability detected."
   }
 }
+
+// Select statements to report the findings
+from UnsafeInnerHTML u
+select u, u.getMessage()
+
+from UnsafeDocumentWrite u
+select u, u.getMessage()
+
+from UnsafeEval u
+select u, u.getMessage()
+
+from MissingCSP c
+select c, c.getMessage()
+
+from UnsafeStorage s
+select s, s.getMessage()
+
+from PrototypePollution p
+select p, p.getMessage()

@@ -134,3 +134,22 @@ class FlaskSqlInjection extends SqlInjection::Configuration {
     result = "Potential SQL injection vulnerability in Flask route."
   }
 }
+
+// Select statements to report the findings
+from FlaskDebugMode f
+select f, f.getMessage()
+
+from MissingCsrfProtection m
+select m, m.getMessage()
+
+from InsecureSecretKey i
+select i, i.getMessage()
+
+from UnsafeFileUpload u
+select u, u.getMessage()
+
+from FlaskCommandInjection::Configuration c
+select c, c.getMessage()
+
+from FlaskSqlInjection::Configuration s
+select s, s.getMessage()
