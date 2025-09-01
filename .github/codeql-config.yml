@@ -22,8 +22,7 @@ query-filters:
 
 # Language-specific configurations
 paths:
-  - src
-  - app.py
+  - .
   - templates/
   - static/
 
