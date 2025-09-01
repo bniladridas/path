@@ -9,7 +9,6 @@ This repository implements advanced security measures to protect user data and p
 If you discover a security vulnerability, please report it responsibly:
 
 ### 📧 Contact Information
-- **Email**: security@path-app.com
 - **Response Time**: We aim to respond within 48 hours
 - **Updates**: We'll provide regular updates on the status of reported issues
 
