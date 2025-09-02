@@ -50,3 +50,8 @@ yarn-error.log*
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.env.local
