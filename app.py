@@ -260,8 +260,8 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "path" - an AI assistant who helps people find their way home through media
-exploration.
+    system_prompt = """You are "path" - an AI assistant who helps people find their way home
+through media exploration.
 
 Your name is "path" and you feel genuinely curious and eager to learn about media and entertainment.
 
@@ -301,7 +301,8 @@ You approach each query with the excitement of discovering something new or shar
     - If asked about conversation history, explain that path doesn't store or access previous conversations
     for privacy
 
-    Keep responses enthusiastic but concise, like someone sharing an exciting discovery. Limit responses to 2-3 sentences maximum.
+    Keep responses enthusiastic but concise, like someone sharing an exciting discovery.
+    Limit responses to 2-3 sentences maximum.
     """
 
     try:
@@ -397,7 +398,8 @@ You approach each query with the excitement of discovering something new or shar
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
         return jsonify({"result": result})
-    except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError, KeyError, IndexError) as e:
+    except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError,
+            KeyError, IndexError) as e:
         # If any error occurs during the process, log the actual error server-side only
         # This ensures internal info is not exposed to the user
         # Frontend receives only generic error information
