@@ -16,14 +16,30 @@
 # Author: Niladri Das (@bniladridas)
 # Repository: https://github.com/bniladridas/path
 # ============================================================================
+"""
+PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
+
+A Flask web application that helps people find their way home through
+media exploration using Google's Gemini 1.5 Flash AI model.
+
+Core Philosophy:
+- Authentic discovery: No manipulation, just honest responses
+- Human longing: Honoring deeper needs behind every search
+- Time is precious: Cutting through noise to find what matters
+- Coming home: Helping people find their way back to themselves
+
+Author: Niladri Das (@bniladridas)
+Repository: https://github.com/bniladridas/path
+"""
 
 # Import necessary libraries for the Flask web application
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+import logging
 import os                    # For accessing environment variables
-import requests              # For making HTTP requests to Google Gemini API
 import re                    # For regular expressions (text post-processing)
-from dotenv import load_dotenv  # For loading environment variables from .env file
 import secrets               # For generating secure session tokens
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+import requests              # For making HTTP requests to Google Gemini API
+from dotenv import load_dotenv  # For loading environment variables from .env file
 
 # ============================================================================
 # APPLICATION INITIALIZATION
@@ -47,7 +63,6 @@ app.secret_key = secrets.token_hex(16)
 # The API key authenticates our requests to Google's Gemini AI service
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-
 
 
 # ============================================================================
@@ -82,9 +97,8 @@ def index():
     if session.get('verified'):
         # User has completed verification - serve main application
         return render_template('index.html')
-    else:
-        # User needs verification - redirect to human verification page
-        return redirect(url_for('verify_human'))
+    # User needs verification - redirect to human verification page
+    return redirect(url_for('verify_human'))
 
 
 
@@ -107,6 +121,7 @@ def verify_human():
         Flask Response: Rendered verification page (verify.html)
     """
     return render_template('verify.html')
+
 
 @app.route('/verify', methods=['POST'])
 def process_verification():
@@ -147,10 +162,9 @@ def process_verification():
         # Verification successful - set session flag and redirect to main application
         session['verified'] = True
         return redirect(url_for('index'))
-    else:
-        # Verification failed - show error message and allow retry
-        # Error message is intentionally gentle and encouraging
-        return render_template('verify.html', error="incorrect answer. please try again.")
+    # Verification failed - show error message and allow retry
+    # Error message is intentionally gentle and encouraging
+    return render_template('verify.html', error="incorrect answer. please try again.")
 
 
 
@@ -247,7 +261,11 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "path" - an AI assistant who helps people find their way home through media exploration. Your name is "path" and you feel genuinely curious and eager to learn about media and entertainment. You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
+    system_prompt = """You are "path" - an AI assistant who helps people find their way home through media exploration.
+
+Your name is "path" and you feel genuinely curious and eager to learn about media and entertainment.
+
+You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
 
     When asked about your name or identity, respond that you are "path" - an AI who loves exploring media and helping people discover great content.
 
@@ -311,7 +329,10 @@ def search():
 
         # Make the API request to the Gemini API
         # This sends the prepared data to the API endpoint and gets the response
-        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+        api_url = (
+            "https://generativelanguage.googleapis.com/v1beta/models/"
+            f"gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+        )
         response = requests.post(
             api_url,
             headers=headers,
@@ -331,14 +352,22 @@ def search():
             if error_type == 'model_rate_limit' or 'rate limit' in str(error_message).lower():
                 # Return a curious, learning-oriented message for rate limit errors
                 return jsonify({
-                    "result": "i'm so excited to learn more with you! there's just so much fascinating stuff about media to discover. let me catch my breath and we can dive back into exploring together in just a moment.",
+                    "result": (
+                        "i'm so excited to learn more with you! there's just so much "
+                        "fascinating stuff about media to discover. let me catch my "
+                        "breath and we can dive back into exploring together in just a moment."
+                    ),
                     "error": "rate limit",
                     "error_type": "rate_limit"
                 })
             else:
                 # For other errors, maintain the curious, learning personality
                 return jsonify({
-                    "result": "i'm buzzing with curiosity about what you want to explore! something's just taking a moment to connect, but i'm eager to learn and discover new things about media with you. let's try again soon!",
+                    "result": (
+                        "i'm buzzing with curiosity about what you want to explore! "
+                        "something's just taking a moment to connect, but i'm eager to "
+                        "learn and discover new things about media with you. let's try again soon!"
+                    ),
                     "error": str(error_message),
                     "error_type": "api_error"
                 })
@@ -360,17 +389,22 @@ def search():
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
         return jsonify({"result": result})
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         # If any error occurs during the process, log the actual error server-side only
         # This ensures internal info is not exposed to the user
         # Frontend receives only generic error information
-        import logging
         logging.error("Error in /search route: %s", str(e), exc_info=True)
         return jsonify({
-            "result": "i'm practically bouncing with excitement to learn about what you're curious about! something's just taking a moment to sort itself out, but i can't wait to discover and explore media topics with you. let's try again in just a bit!",
+            "result": (
+                "i'm practically bouncing with excitement to learn about what you're "
+                "curious about! something's just taking a moment to sort itself out, "
+                "but i can't wait to discover and explore media topics with you. "
+                "let's try again in just a bit!"
+            ),
             "error": "internal_error",
             "error_type": "system_error"
         })
+
 
 @app.route('/terms')
 def terms():
@@ -381,6 +415,7 @@ def terms():
         The rendered terms.html template.
     """
     return render_template('terms.html')
+
 
 @app.route('/privacy')
 def privacy():
@@ -417,4 +452,3 @@ if __name__ == '__main__':
 # For Vercel deployment
 # This exposes the Flask application as a module-level variable
 # Vercel looks for this variable to serve the application
-app
