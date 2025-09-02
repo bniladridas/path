@@ -13,6 +13,9 @@
   </p>
 </div>
 
+<details>
+<summary>Project Structure</summary>
+
 ## project structure
 
 ```mermaid
@@ -137,6 +140,8 @@ graph TD
     class static_css_style,static_images_favicon,static_images_logo,static_images_og,static_images_verification,static_images_grok_img1,static_images_grok_img2 file
     class tests_test_app file
 ```
+
+</details>
 
 ## a different kind of ai
 
