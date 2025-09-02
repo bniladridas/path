@@ -389,7 +389,7 @@ You approach each query with the excitement of discovering something new or shar
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
         return jsonify({"result": result})
-    except Exception as e:  # pylint: disable=broad-exception-caught
+    except (requests.exceptions.RequestException, requests.exceptions.JSONDecodeError, KeyError, IndexError) as e:
         # If any error occurs during the process, log the actual error server-side only
         # This ensures internal info is not exposed to the user
         # Frontend receives only generic error information
