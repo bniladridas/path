@@ -5,11 +5,11 @@
   <p>come home before it's too late</p>
   <p>helping people find their way home through media exploration</p>
   <p>
-     <a href="https://github.com/bniladridas/path/actions/workflows/python-app.yml"><img src="https://github.com/bniladridas/path/actions/workflows/python-app.yml/badge.svg" alt="CI Badge"/></a>
-     <a href="https://github.com/bniladridas/path/stargazers"><img src="https://img.shields.io/github/stars/bniladridas/path" alt="Stars Badge"/></a>
-     <a href="https://github.com/bniladridas/path/network/members"><img src="https://img.shields.io/github/forks/bniladridas/path" alt="Forks Badge"/></a>
-     <a href="https://github.com/bniladridas/path/issues"><img src="https://img.shields.io/github/issues/bniladridas/path" alt="Issues Badge"/></a>
-     <a href="https://github.com/bniladridas/path/blob/main/LICENSE"><img src="https://img.shields.io/github/license/bniladridas/path" alt="License Badge"/></a>
+     <a href="https://github.com/bniladridas/path/actions/workflows/python-app.yml"><img src="https://github.com/bniladridas/path/actions/workflows/python-app.yml/badge.svg" alt="GitHub Actions CI Status"/></a>
+     <a href="https://github.com/bniladridas/path/stargazers"><img src="https://img.shields.io/github/stars/bniladridas/path" alt="GitHub stars"/></a>
+     <a href="https://github.com/bniladridas/path/network/members"><img src="https://img.shields.io/github/forks/bniladridas/path" alt="GitHub forks"/></a>
+     <a href="https://github.com/bniladridas/path/issues"><img src="https://img.shields.io/github/issues/bniladridas/path" alt="GitHub issues"/></a>
+     <a href="https://github.com/bniladridas/path/blob/main/LICENSE"><img src="https://img.shields.io/github/license/bniladridas/path" alt="GitHub license"/></a>
   </p>
 </div>
 
