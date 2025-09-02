@@ -1,0 +1,36 @@
+import pytest
+from app import app
+
+
+def test_app_creation():
+    """Test that the Flask app can be created."""
+    assert app is not None
+    assert app.name == 'app'
+
+
+def test_index_route():
+    """Test the index route."""
+    with app.test_client() as client:
+        response = client.get('/')
+        assert response.status_code in [200, 302]  # 302 for redirect to verify
+
+
+def test_terms_route():
+    """Test the terms route."""
+    with app.test_client() as client:
+        response = client.get('/terms')
+        assert response.status_code == 200
+
+
+def test_privacy_route():
+    """Test the privacy route."""
+    with app.test_client() as client:
+        response = client.get('/privacy')
+        assert response.status_code == 200
+
+
+def test_updates_route():
+    """Test the updates route."""
+    with app.test_client() as client:
+        response = client.get('/updates')
+        assert response.status_code == 200
