@@ -1,4 +1,6 @@
-import pytest
+"""
+Basic tests for the Flask app.
+"""
 from app import app
 
 
