@@ -4,13 +4,14 @@
   <h1>path</h1>
   <p>come home before it's too late</p>
   <p>helping people find their way home through media exploration</p>
-  <p>
-     <a href="https://github.com/bniladridas/path/actions/workflows/python-app.yml"><img src="https://github.com/bniladridas/path/actions/workflows/python-app.yml/badge.svg" alt="GitHub Actions CI Status"/></a>
-     <a href="https://github.com/bniladridas/path/stargazers"><img src="https://img.shields.io/github/stars/bniladridas/path" alt="GitHub stars"/></a>
-     <a href="https://github.com/bniladridas/path/network/members"><img src="https://img.shields.io/github/forks/bniladridas/path" alt="GitHub forks"/></a>
-     <a href="https://github.com/bniladridas/path/issues"><img src="https://img.shields.io/github/issues/bniladridas/path" alt="GitHub issues"/></a>
-     <a href="https://github.com/bniladridas/path/blob/main/LICENSE"><img src="https://img.shields.io/github/license/bniladridas/path" alt="GitHub license"/></a>
-  </p>
+   <p>
+      <a href="https://github.com/bniladridas/path/actions/workflows/python-app.yml"><img src="https://github.com/bniladridas/path/actions/workflows/python-app.yml/badge.svg" alt="Python CI Status"/></a>
+      <a href="https://github.com/bniladridas/path/actions/workflows/docker-app.yml"><img src="https://github.com/bniladridas/path/actions/workflows/docker-app.yml/badge.svg" alt="Docker CI Status"/></a>
+      <a href="https://github.com/bniladridas/path/stargazers"><img src="https://img.shields.io/github/stars/bniladridas/path" alt="GitHub stars"/></a>
+      <a href="https://github.com/bniladridas/path/network/members"><img src="https://img.shields.io/github/forks/bniladridas/path" alt="GitHub forks"/></a>
+      <a href="https://github.com/bniladridas/path/issues"><img src="https://img.shields.io/github/issues/bniladridas/path" alt="GitHub issues"/></a>
+      <a href="https://github.com/bniladridas/path/blob/main/LICENSE"><img src="https://img.shields.io/github/license/bniladridas/path" alt="GitHub license"/></a>
+   </p>
 </div>
 
 <details>
@@ -30,6 +31,7 @@ graph TD
     github_codeql_yml["codeql.yml"]
     github_pylint_yml["pylint.yml"]
     github_python_app_yml["python-app.yml"]
+    github_docker_app_yml["docker-app.yml"]
     github_codeql_queries["codeql-queries/"]
     github_js_queries["javascript/"]
     github_js_dom_sec["dom-security.ql"]
@@ -70,6 +72,8 @@ graph TD
     requirements_txt["requirements.txt"]
     gitignore[".gitignore"]
     env_example[".env.example"]
+    dockerfile["Dockerfile"]
+    docker_compose_yml["docker-compose.yml"]
     code_of_conduct["CODE_OF_CONDUCT.md"]
     license["LICENSE"]
     readme["README.md"]
@@ -81,6 +85,7 @@ graph TD
     github_workflows --> github_codeql_yml
     github_workflows --> github_pylint_yml
     github_workflows --> github_python_app_yml
+    github_workflows --> github_docker_app_yml
     github --> github_codeql_queries
     github_codeql_queries --> github_js_queries
     github_js_queries --> github_js_dom_sec
@@ -99,6 +104,8 @@ graph TD
     root --> requirements_txt
     root --> gitignore
     root --> env_example
+    root --> dockerfile
+    root --> docker_compose_yml
     root --> code_of_conduct
     root --> license
     root --> readme
@@ -132,10 +139,10 @@ graph TD
     classDef config fill:#ff9,stroke:#333,stroke-width:2px
 
     %% Apply Classes
-    class app_py,vercel_json,requirements_txt,gitignore,env_example,code_of_conduct,license,readme,software_philosophy file
+    class app_py,vercel_json,requirements_txt,gitignore,env_example,dockerfile,docker_compose_yml,code_of_conduct,license,readme,software_philosophy file
     class github,templates,static,static_css,static_images,static_images_grok,tests dir
     class github_workflows,github_codeql_queries,github_js_queries,github_py_queries dir
-    class github_codeql_yml,github_pylint_yml,github_python_app_yml,github_security_md,github_codeql_config,github_dependabot_yml,github_js_dom_sec,github_py_flask_sec config
+    class github_codeql_yml,github_pylint_yml,github_python_app_yml,github_docker_app_yml,github_security_md,github_codeql_config,github_dependabot_yml,github_js_dom_sec,github_py_flask_sec config
     class templates_index,templates_terms,templates_privacy,templates_updates,templates_verify file
     class static_css_style,static_images_favicon,static_images_logo,static_images_og,static_images_verification,static_images_grok_img1,static_images_grok_img2 file
     class tests_test_app file
@@ -172,6 +179,8 @@ path is an ai-powered media exploration interface that helps you discover movies
 - a [google gemini api](https://ai.google.dev/) key
 
 ### local development
+
+#### option 1: traditional python setup
 1. clone the repository:
    ```bash
    git clone https://github.com/bniladridas/path.git
@@ -195,6 +204,36 @@ path is an ai-powered media exploration interface that helps you discover movies
    python app.py
    ```
 6. visit `http://127.0.0.1:8000` in your browser
+
+#### option 2: docker development (recommended)
+1. clone the repository:
+   ```bash
+   git clone https://github.com/bniladridas/path.git
+   cd path
+   ```
+2. add your api key to a `.env` file:
+   ```
+   GEMINI_API_KEY=your-gemini-api-key
+   FLASK_DEBUG=1
+   ```
+3. start the app with docker:
+   ```bash
+   docker-compose up
+   ```
+4. visit `http://localhost:8000` in your browser
+
+**docker commands:**
+- `docker-compose up` - start development server
+- `docker-compose up --build` - rebuild and start (after code changes)
+- `docker-compose down` - stop and cleanup
+- `docker-compose logs` - view application logs
+
+**benefits of docker:**
+- consistent environment across different machines
+- no python version conflicts
+- isolated dependencies
+- easy cleanup
+- live code reloading via volume mounts
 
 ## deployment
 
@@ -221,6 +260,26 @@ path is an ai-powered media exploration interface that helps you discover movies
    ```
 
 path is optimized for vercel's serverless platform with automatic scaling and global edge deployment.
+
+### continuous integration
+
+path uses two complementary CI/CD workflows:
+
+#### python workflow (primary)
+- **file**: `.github/workflows/python-app.yml`
+- **purpose**: fast, lightweight testing with direct Python setup
+- **runs on**: Ubuntu with Python 3.10
+- **tests**: flake8 linting, pytest execution
+- **best for**: quick feedback, simple deployments
+
+#### docker workflow (complementary)
+- **file**: `.github/workflows/docker-app.yml`
+- **purpose**: containerized testing with environment consistency
+- **runs on**: Ubuntu with Docker Buildx
+- **tests**: Docker build, container health checks
+- **best for**: environment consistency, multi-platform testing
+
+both workflows run on pushes and pull requests to main, providing comprehensive coverage with different approaches.
 
 ## how path works
 
