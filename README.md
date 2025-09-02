@@ -226,7 +226,7 @@ path is an ai-powered media exploration interface that helps you discover movies
 
 **docker commands:**
 - `docker-compose up` - start development server
-- `docker-compose up --build` - rebuild and start (after code changes)
+- `docker-compose up --build` - rebuild and start (e.g., after changing `Dockerfile` or `requirements.txt`)
 - `docker-compose down` - stop and cleanup
 - `docker-compose logs` - view application logs
 
