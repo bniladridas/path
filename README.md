@@ -74,6 +74,7 @@ graph TD
     env_example[".env.example"]
     dockerfile["Dockerfile"]
     docker_compose_yml["docker-compose.yml"]
+    dockerignore[".dockerignore"]
     code_of_conduct["CODE_OF_CONDUCT.md"]
     license["LICENSE"]
     readme["README.md"]
@@ -106,6 +107,7 @@ graph TD
     root --> env_example
     root --> dockerfile
     root --> docker_compose_yml
+    root --> dockerignore
     root --> code_of_conduct
     root --> license
     root --> readme
@@ -139,7 +141,7 @@ graph TD
     classDef config fill:#ff9,stroke:#333,stroke-width:2px
 
     %% Apply Classes
-    class app_py,vercel_json,requirements_txt,gitignore,env_example,dockerfile,docker_compose_yml,code_of_conduct,license,readme,software_philosophy file
+    class app_py,vercel_json,requirements_txt,gitignore,env_example,dockerfile,docker_compose_yml,dockerignore,code_of_conduct,license,readme,software_philosophy file
     class github,templates,static,static_css,static_images,static_images_grok,tests dir
     class github_workflows,github_codeql_queries,github_js_queries,github_py_queries dir
     class github_codeql_yml,github_pylint_yml,github_python_app_yml,github_docker_app_yml,github_security_md,github_codeql_config,github_dependabot_yml,github_js_dom_sec,github_py_flask_sec config

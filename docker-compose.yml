@@ -13,5 +13,4 @@ services:
       - PYTHONPATH=.
     env_file:
       - .env
-    command: python app.py
     restart: unless-stopped

@@ -4,9 +4,9 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (curl for health checks)
 RUN apt-get update && apt-get install -y \
-    gcc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -30,5 +30,9 @@ EXPOSE 8000
 ENV FLASK_APP=app.py
 ENV PYTHONPATH=.
 
-# Run the application
-CMD ["python", "app.py"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
+
+# Run the application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "app:app"]
