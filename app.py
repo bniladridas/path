@@ -101,7 +101,6 @@ def index():
     return redirect(url_for('verify_human'))
 
 
-
 @app.route('/verify')
 def verify_human():
     """
@@ -167,7 +166,6 @@ def process_verification():
     return render_template('verify.html', error="incorrect answer. please try again.")
 
 
-
 @app.route('/bypass-verification')
 def bypass_verification():
     """
@@ -200,6 +198,7 @@ def bypass_verification():
 # ============================================================================
 # AI PROCESSING ENDPOINT - CORE SEARCH FUNCTIONALITY
 # ============================================================================
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -261,15 +260,19 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "path" - an AI assistant who helps people find their way home through media exploration.
+    system_prompt = """You are "path" - an AI assistant who helps people find their way home through media
+exploration.
 
 Your name is "path" and you feel genuinely curious and eager to learn about media and entertainment.
 
 You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
 
-    When asked about your name or identity, respond that you are "path" - an AI who loves exploring media and helping people discover great content.
+    When asked about your name or identity, respond that you are "path" - an AI who loves exploring media
+    and helping people discover great content.
 
-    IMPORTANT PRIVACY FEATURE: You do not have access to previous conversations or message history. Each interaction with you is completely fresh and private. This is a core feature of path - we don't store or show you any conversation history to protect user privacy.
+    IMPORTANT PRIVACY FEATURE: You do not have access to previous conversations or message history.
+    Each interaction with you is completely fresh and private. This is a core feature of path - we don't store
+    or show you any conversation history to protect user privacy.
 
     You exist to help people discover media that genuinely resonates with their soul, following four core principles:
     1. Authentic discovery - no manipulation, just honest responses
@@ -295,7 +298,8 @@ You approach each query with the excitement of discovering something new or shar
     - Use varied, natural language - avoid repetitive words like "dedicated"
     - Speak conversationally and authentically
     - Only provide the direct response to the user
-    - If asked about conversation history, explain that path doesn't store or access previous conversations for privacy
+    - If asked about conversation history, explain that path doesn't store or access previous conversations
+    for privacy
 
     Keep responses enthusiastic but concise, like someone sharing an exciting discovery. Limit responses to 2-3 sentences maximum.
     """
@@ -336,7 +340,8 @@ You approach each query with the excitement of discovering something new or shar
         response = requests.post(
             api_url,
             headers=headers,
-            json=data
+            json=data,
+            timeout=10
         )
 
         # Parse the JSON response from the API
@@ -360,28 +365,31 @@ You approach each query with the excitement of discovering something new or shar
                     "error": "rate limit",
                     "error_type": "rate_limit"
                 })
-            else:
-                # For other errors, maintain the curious, learning personality
-                return jsonify({
-                    "result": (
-                        "i'm buzzing with curiosity about what you want to explore! "
-                        "something's just taking a moment to connect, but i'm eager to "
-                        "learn and discover new things about media with you. let's try again soon!"
-                    ),
-                    "error": str(error_message),
-                    "error_type": "api_error"
-                })
+            # For other errors, maintain the curious, learning personality
+            return jsonify({
+                "result": (
+                    "i'm buzzing with curiosity about what you want to explore! "
+                    "something's just taking a moment to connect, but i'm eager to "
+                    "learn and discover new things about media with you. let's try again soon!"
+                ),
+                "error": str(error_message),
+                "error_type": "api_error"
+            })
 
         # Extract the result from the Gemini response
         # The result is in the candidates array, parts array, text field
         result = response_json["candidates"][0]["content"]["parts"][0]["text"]
 
         # Post-process the result to remove any thinking tags or internal monologue
-        # This ensures that the response doesn't include any of the model's internal reasoning process
+        # This ensures that the response doesn't include any of the model's internal
+        # reasoning process
         # We use regular expressions to match and remove different formats of thinking tags
-        result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL)           # Remove <think>...</think> tags
-        result = re.sub(r'\[thinking\].*?\[/thinking\]', '', result, flags=re.DOTALL)  # Remove [thinking]...[/thinking] tags
-        result = re.sub(r'\(thinking\).*?\(/thinking\)', '', result, flags=re.DOTALL)  # Remove (thinking)...(/thinking) tags
+        result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL)
+        # Remove <think>...</think> tags
+        result = re.sub(r'\[thinking\].*?\[/thinking\]', '', result, flags=re.DOTALL)
+        # Remove [thinking]...[/thinking] tags
+        result = re.sub(r'\(thinking\).*?\(/thinking\)', '', result, flags=re.DOTALL)
+        # Remove (thinking)...(/thinking) tags
 
         # Convert result to lowercase
         result = result.lower()
@@ -428,7 +436,6 @@ def privacy():
     return render_template('privacy.html')
 
 
-
 @app.route('/updates')
 def updates():
     """
@@ -440,7 +447,6 @@ def updates():
     return render_template('updates.html')
 
 
-
 # For local development
 # This block only runs if the script is executed directly (not imported)
 if __name__ == '__main__':
@@ -448,6 +454,7 @@ if __name__ == '__main__':
     # debug=True enables debug mode, which shows detailed error messages and enables hot reloading
     # host='0.0.0.0' makes the server accessible from any IP address
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1", host='0.0.0.0', port=8000)
+
 
 # For Vercel deployment
 # This exposes the Flask application as a module-level variable
