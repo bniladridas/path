@@ -5,7 +5,7 @@
          PATH - UPDATES AND CHANGELOG PAGE
          ================================================================
 
-         Modern HTML5 updates page documenting path's development journey
+         Modern HTML5 updates page documenting harper's development journey
          with semantic structure and accessibility features.
 
          Author: Niladri Das (@bniladridas)
@@ -15,16 +15,12 @@
     <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Updates and changelog for path - tracking our journey in AI-powered media exploration">
+    <meta name="description" content="Updates and changelog for harper - tracking our journey in AI-powered media exploration">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#000000">
 
     <!-- Page Title -->
-    <title>updates & changelog - path</title>
-
-     <!-- Favicon -->
-     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
-     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <title>updates & changelog</title>
 
      <!-- Google Fonts -->
      <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +46,7 @@
                      DOCUMENT HEADER
                      ==================================================== -->
                 <header>
-                    <h1 class="hero-title" role="banner">path updates</h1>
+                    <h1 class="hero-title" role="banner">harper updates</h1>
                     <p class="last-updated" role="contentinfo">tracking our journey home</p>
                 </header>
 
@@ -60,9 +56,9 @@
                 <section class="content-section" role="document">
 
                     <div class="terms-content">
-                        <h2>version 1.0.0 - may 27, 2025</h2>
-                        <h3>initial release - "come home before it's too late"</h3>
-                        <p>the first version of path launches with our core vision: helping people find their way home through media exploration.</p>
+                        <h2>harper v1.0</h2>
+                        <h3>initial release</h3>
+                        <p>the first version of harper launches with our core vision: helping people find their way home through media exploration.</p>
 
                         <h3>feature overview:</h3>
 
@@ -108,7 +104,7 @@
                                                         role="table"
                                                         aria-label="Technical foundation components">
                             <caption class="sr-only">
-                                Table of technical components and technologies used in path
+                                Table of technical components and technologies used in harper
                             </caption>
                             <thead>
                                 <tr style="background: rgba(255,255,255,0.1);">
@@ -141,7 +137,7 @@
                         </table>
 
                         <h2>our development philosophy</h2>
-                                                <p>every update to path is guided by our four pillars:</p>
+                                                <p>every update to harper is guided by our four pillars:</p>
                                                 <table style="width: 100%; margin: 20px 0; border-collapse: collapse; font-size: 14px;">
                                                     <tr style="background: rgba(255,255,255,0.1);">
                                                         <th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);" scope="col">pillar</th>
@@ -191,19 +187,19 @@
                                                 </table>
 
                         <h2>feedback and suggestions</h2>
-                        <p>path grows through honest feedback from real users. if you have suggestions, concerns, or ideas for improvement, please share them through the application interface.</p>
+                        <p>harper grows through honest feedback from real users. if you have suggestions, concerns, or ideas for improvement, please share them through the application interface.</p>
 
                         <h2>staying updated</h2>
-                        <p>we'll update this page with each new version of path. significant changes will also be reflected in our terms of use and privacy policy as needed.</p>
+                        <p>we'll update this page with each new version of harper. significant changes will also be reflected in our terms of use and privacy policy as needed.</p>
 
                         <h2>gratitude</h2>
-                        <p>thank you for being part of path's journey. every person who uses this application helps us understand how technology can better serve human flourishing and authentic discovery.</p>
+                        <p>thank you for being part of harper's journey. every person who uses this application helps us understand how technology can better serve human flourishing and authentic discovery.</p>
 
                         <!-- ============================================
                              NAVIGATION BACK TO MAIN APP
                              ============================================ -->
                         <nav class="back-link" role="navigation" aria-label="Return to main application">
-                            <a href="/" aria-label="Return to path main interface">← back to path</a>
+                            <a href="/" aria-label="Return to harper main interface">← back to path</a>
                         </nav>
                     </div>
                 </section>
@@ -271,7 +267,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Sync theme with main application
-            const storedTheme = localStorage.getItem('pathTheme');
+            const storedTheme = localStorage.getItem('harperTheme');
             if (storedTheme) {
                 applyStoredTheme(storedTheme);
             }
