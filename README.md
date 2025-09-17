@@ -1,5 +1,9 @@
 # harper
 
+## Demo
+
+<video src="preview.mov" controls width="600"></video>
+
 The codebase is a minimal Flask web application for AI-powered media exploration, structured as follows:
 
 **Core Structure:**
