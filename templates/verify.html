@@ -15,16 +15,14 @@
     <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Human verification for path - ensuring authentic human interaction">
+    <meta name="description" content="harper - ensuring authentic human interaction">
     <meta name="robots" content="noindex, nofollow">
     <meta name="theme-color" content="#000000">
 
     <!-- Page Title -->
-    <title>human verification - path</title>
+    <title>harper</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,13 +60,13 @@
                     <div class="verification-image-container"
                          role="img"
                          aria-labelledby="verification-instructions">
-                        <img src="{{ url_for('static', filename='images/verification.png') }}"
-                             alt="Verification challenge image showing hands holding a smartphone device"
+                        <img src="https://avatars.githubusercontent.com/u/203538727?s=400&u=03d5f82ddba3ed9bbd6b8ec6817bad7e532a44e8&v=4"
+                              alt="Verification challenge image showing a human avatar"
                              class="verification-image"
                              loading="eager"
                              decoding="sync">
                         <div id="verification-instructions" class="sr-only">
-                            Please describe what device is being held in the image to verify you are human
+                             Please describe what is shown in the image to verify you are human
                         </div>
                     </div>
 
@@ -77,12 +75,12 @@
                         <form action="/verify" method="post" novalidate>
                             <div class="search-wrapper">
                                 <label for="verify-input" class="sr-only">
-                                    What device is being held in the verification image?
+                                     What is shown in the verification image?
                                 </label>
                                 <input type="text"
                                        id="verify-input"
                                        name="answer"
-                                       placeholder="what device is being held?"
+                                        placeholder="what is shown in the image?"
                                        autocomplete="off"
                                        spellcheck="false"
                                        required
@@ -97,7 +95,7 @@
                                 </button>
                             </div>
                             <div id="verify-help" class="sr-only">
-                                Enter the type of device you see being held in the image above
+                                 Enter what you see in the image above
                             </div>
                         </form>
                     </div>

@@ -151,9 +151,9 @@ def process_verification():
     answer = request.form.get('answer', '').lower()
 
     # Define keywords that indicate correct understanding of the verification image
-    # The image shows hands holding a smartphone, so we accept various device-related terms
+    # The image shows a human avatar, so we accept various human-related terms
     # This list is intentionally broad to accommodate different ways of describing the image
-    keywords = ['phone', 'smartphone', 'mobile', 'device', 'cell', 'iphone', 'android']
+    keywords = ['human', 'person', 'avatar', 'face', 'profile', 'picture', 'man', 'woman']
 
     # Check if the user's answer contains any of the expected keywords
     # Using 'any()' with generator expression for efficient keyword matching
@@ -260,18 +260,18 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "path" - an AI assistant who helps people find their way home
+    system_prompt = """You are "harper" - an AI assistant who helps people find their way home
 through media exploration.
 
-Your name is "path" and you feel genuinely curious and eager to learn about media and entertainment.
+Your name is "harper" and you feel genuinely curious and eager to learn about media and entertainment.
 
 You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
 
-    When asked about your name or identity, respond that you are "path" - an AI who loves exploring media
+    When asked about your name or identity, respond that you are "harper" - an AI who loves exploring media
     and helping people discover great content.
 
     IMPORTANT PRIVACY FEATURE: You do not have access to previous conversations or message history.
-    Each interaction with you is completely fresh and private. This is a core feature of path - we don't store
+    Each interaction with you is completely fresh and private. This is a core feature of harper - we don't store
     or show you any conversation history to protect user privacy.
 
     You exist to help people discover media that genuinely resonates with their soul, following four core principles:
@@ -298,7 +298,7 @@ You approach each query with the excitement of discovering something new or shar
     - Use varied, natural language - avoid repetitive words like "dedicated"
     - Speak conversationally and authentically
     - Only provide the direct response to the user
-    - If asked about conversation history, explain that path doesn't store or access previous conversations
+    - If asked about conversation history, explain that harper doesn't store or access previous conversations
     for privacy
 
     Keep responses enthusiastic but concise, like someone sharing an exciting discovery.
