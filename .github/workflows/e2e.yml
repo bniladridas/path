@@ -29,10 +29,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3.6.0
       
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v4.7.1
       with:
         python-version: '3.10'
         
@@ -46,7 +46,7 @@ jobs:
         
     # Then handle Node.js and Playwright
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v3.8.1
       with:
         node-version: '20'
         cache: 'npm'
@@ -80,7 +80,7 @@ jobs:
         
     - name: Upload test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: playwright-report
         path: |
@@ -90,7 +90,7 @@ jobs:
         
     - name: Upload server logs
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.3
       with:
         name: server-logs
         path: server.log
