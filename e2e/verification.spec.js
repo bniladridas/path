@@ -51,8 +51,8 @@ test.describe('Verification Flow', () => {
       await page.click('button[type="submit"]');
       
       console.log('Waiting for error message...');
-      // Wait for any potential error message to appear
-      await page.waitForTimeout(2000);
+      // Wait for the error message to appear
+      await expect(page.locator('body')).toContainText('please try again', { timeout: 5000 });
       
       await page.screenshot({ path: 'after-submit.png' });
       
