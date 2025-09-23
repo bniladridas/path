@@ -99,104 +99,81 @@ jobs:
           exit 1
         fi
         
-    - name: Run Flask server
-      id: flask-server
-      run: |
-        # Set environment variables
-        export FLASK_APP=app.py
-        export FLASK_ENV=development
-        export PYTHONUNBUFFERED=1
-        
-        # Create a unique log file for this run
-        export SERVER_LOG="server-$(date +%s).log"
-        echo "Using log file: $SERVER_LOG"
-        
-        # Install required Python packages
-        pip install -r requirements.txt
-        
-        # Function to start the server
-        start_server() {
-          echo "Starting Flask server on port 8000..."
-          nohup python3 -m flask run --port=8000 --host=0.0.0.0 --no-debugger --no-reload > "$SERVER_LOG" 2>&1 &
-          export FLASK_PID=$!
-          echo "Flask server started with PID: $FLASK_PID"
-          
-          # Wait for server to be ready
-          echo "Waiting for server to start..."
-          for i in {1..30}; do
-            if curl -s --retry 3 --retry-delay 1 --max-time 5 http://localhost:8000 >/dev/null; then
-              echo "Server is up and running!"
-              # Set output for other steps
-              echo "FLASK_PID=$FLASK_PID" >> $GITHUB_ENV
-              echo "SERVER_LOG=$SERVER_LOG" >> $GITHUB_ENV
-              # Keep the server running in the background
-              while true; do sleep 1; done &
-              export SERVER_LOOP_PID=$!
-              echo "SERVER_LOOP_PID=$SERVER_LOOP_PID" >> $GITHUB_ENV
-              echo "Server loop PID: $SERVER_LOOP_PID"
-              return 0
-            fi
-            sleep 2
-            echo "Waiting for server to start... (attempt $i/30)"
-          done
-          
-          echo "Server failed to start. Logs:"
-          cat "$SERVER_LOG"
-          return 1
-        }
-        
-        # Function to stop the server
-        stop_server() {
-          echo "Stopping Flask server..."
-          # Kill the server process
-          if [ -n "$FLASK_PID" ]; then
-            echo "Killing Flask server process $FLASK_PID"
-            kill -9 $FLASK_PID 2>/dev/null || true
-          fi
-          
-          # Kill the server loop process
-          if [ -n "$SERVER_LOOP_PID" ]; then
-            echo "Killing server loop process $SERVER_LOOP_PID"
-            kill -9 $SERVER_LOOP_PID 2>/dev/null || true
-          fi
-          
-          # Make sure port 8000 is free
-          echo "Ensuring port 8000 is free..."
-          sudo pkill -f ":8000" || true
-          sudo pkill -f "flask run" || true
-          sudo kill -9 $(lsof -t -i:8000) 2>/dev/null || true
-        }
-        
-        # Set up trap to ensure server is stopped on exit
-        trap stop_server EXIT
-        
-        # Start the server
-        if ! start_server; then
-          echo "::error::Failed to start Flask server"
-          exit 1
-        fi
-        
-        # Keep the script running
-        wait $FLASK_PID
-        
-    - name: Run E2E tests
-      run: |
-        # Install Playwright browsers if not already installed
-        npx playwright install --with-deps chromium
-        
-        # Run tests with retries and detailed reporting
-        npx playwright test \
-          --config=playwright.config.js \
-          --workers=1 \
-          --retries=2 \
-          --reporter=list,html,github \
-          --project=chromium
-      env:
-        BASE_URL: http://localhost:8000
-        CI: true
-        PLAYWRIGHT_TEST_TIMEOUT: 30000
-        PLAYWRIGHT_TEST_RETRIES: 2
-      timeout-minutes: 15
+     - name: Run Flask server and E2E tests
+       run: |
+         # Set environment variables
+         export FLASK_APP=app.py
+         export FLASK_ENV=development
+         export PYTHONUNBUFFERED=1
+
+         # Create a unique log file for this run
+         export SERVER_LOG="server-$(date +%s).log"
+         echo "Using log file: $SERVER_LOG"
+
+         # Function to start the server
+         start_server() {
+           echo "Starting Flask server on port 8000..."
+           nohup python3 -m flask run --port=8000 --host=0.0.0.0 --no-debugger --no-reload > "$SERVER_LOG" 2>&1 &
+           export FLASK_PID=$!
+           echo "Flask server started with PID: $FLASK_PID"
+
+           # Wait for server to be ready
+           echo "Waiting for server to start..."
+           for i in {1..30}; do
+             if curl -s --retry 3 --retry-delay 1 --max-time 5 http://localhost:8000 >/dev/null; then
+               echo "Server is up and running!"
+               return 0
+             fi
+             sleep 2
+             echo "Waiting for server to start... (attempt $i/30)"
+           done
+
+           echo "Server failed to start. Logs:"
+           cat "$SERVER_LOG"
+           return 1
+         }
+
+         # Function to stop the server
+         stop_server() {
+           echo "Stopping Flask server..."
+           # Kill the server process
+           if [ -n "$FLASK_PID" ]; then
+             echo "Killing Flask server process $FLASK_PID"
+             kill -9 $FLASK_PID 2>/dev/null || true
+           fi
+
+           # Make sure port 8000 is free
+           echo "Ensuring port 8000 is free..."
+           sudo pkill -f ":8000" || true
+           sudo pkill -f "flask run" || true
+           sudo kill -9 $(lsof -t -i:8000) 2>/dev/null || true
+         }
+
+         # Set up trap to ensure server is stopped on exit
+         trap stop_server EXIT
+
+         # Start the server
+         if ! start_server; then
+           echo "::error::Failed to start Flask server"
+           exit 1
+         fi
+
+         # Install Playwright browsers if not already installed
+         npx playwright install --with-deps chromium
+
+         # Run tests with retries and detailed reporting
+         npx playwright test \
+           --config=playwright.config.js \
+           --workers=1 \
+           --retries=2 \
+           --reporter=list,html,github \
+           --project=chromium
+       env:
+         BASE_URL: http://localhost:8000
+         CI: true
+         PLAYWRIGHT_TEST_TIMEOUT: 30000
+         PLAYWRIGHT_TEST_RETRIES: 2
+       timeout-minutes: 15
         
     - name: Upload test results
       if: always()
