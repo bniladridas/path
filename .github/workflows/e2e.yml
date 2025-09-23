@@ -97,10 +97,10 @@ jobs:
           echo "Error: Port 8000 is still in use after cleanup"
           lsof -i :8000
           exit 1
-        fi
-        
-     - name: Run Flask server and E2E tests
-       run: |
+         fi
+
+    - name: Run Flask server and E2E tests
+      run: |
          # Set environment variables
          export FLASK_APP=app.py
          export FLASK_ENV=development
@@ -168,12 +168,12 @@ jobs:
            --retries=2 \
            --reporter=list,html,github \
            --project=chromium
-       env:
-         BASE_URL: http://localhost:8000
-         CI: true
-         PLAYWRIGHT_TEST_TIMEOUT: 30000
-         PLAYWRIGHT_TEST_RETRIES: 2
-       timeout-minutes: 15
+      env:
+        BASE_URL: http://localhost:8000
+        CI: true
+        PLAYWRIGHT_TEST_TIMEOUT: 30000
+        PLAYWRIGHT_TEST_RETRIES: 2
+      timeout-minutes: 15
         
     - name: Upload test results
       if: always()
