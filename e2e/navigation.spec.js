@@ -145,9 +145,8 @@ test.describe('Navigation', () => {
           console.log('Navigated to:', currentUrl.toString());
           
           // Basic validation
-          const isSuccess = currentUrl.toString() !== baseURL && 
-                          currentUrl.toString() !== `${baseURL}/` &&
-                          !currentUrl.pathname.endsWith('404');
+          const expectedUrl = new URL(navItem.href);
+          const isSuccess = currentUrl.pathname === expectedUrl.pathname;
           
           if (isSuccess) {
             result.status = 'passed';
