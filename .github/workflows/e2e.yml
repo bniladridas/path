@@ -78,7 +78,7 @@ jobs:
       run: |
         # Install necessary tools
         sudo apt-get update
-        sudo apt-get install -y lsof pkill
+        sudo apt-get install -y lsof procps
         
         # Kill any process using port 8000
         echo "Killing processes on port 8000..."
