@@ -1,4 +1,4 @@
-# harper
+# PATH - AI-Powered Media Exploration
 
 ## Demo
 
@@ -30,12 +30,70 @@ The codebase is a minimal Flask web application for AI-powered media exploration
 - Privacy-focused (no conversation storage).
 - Ready for deployment (Vercel/Docker support).
 
-## setup
+## Setup
+
+### Prerequisites
+- Python 3.8+
+- Node.js 16+
+- npm or yarn
 
 ```bash
+# Clone the repository
 git clone https://github.com/bniladridas/path.git
+cd path
+
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Install Node.js dependencies for testing
+npm install
+
+# Install Playwright browsers
+npx playwright install
+```
+
+## Running the Application
+
+Start the development server:
+
+```bash
 GEMINI_API_KEY=your-key python app.py
 ```
 
-The code is production-ready, maintainable, and follows best practices for a small web app. No major issues or technical debt.
+## Testing
+
+### Unit Tests
+Run the Python unit tests:
+
+```bash
+pytest
+```
+
+### End-to-End Tests
+
+Run the Playwright e2e tests:
+
+```bash
+# Run tests in headless mode
+npm test
+
+# Run tests in UI mode (interactive)
+npm run test:ui
+
+# Run tests in headed mode (visible browser)
+npm run test:headed
+
+# Run tests in debug mode
+npm run test:debug
+```
+
+### Test Structure
+- `e2e/`: End-to-end test files
+  - `fixtures/`: Shared test fixtures and utilities
+  - `navigation.spec.js`: Tests for navigation and static pages
+  - `search.spec.js`: Tests for search functionality
+  - `verification.spec.js`: Tests for user verification flow
+- `tests/`: Unit tests
+  - `test_app.py`: Basic route tests
+
+The code is production-ready, maintainable, and follows best practices for a small web app. Comprehensive test coverage ensures reliability and prevents regressions.
