@@ -49,7 +49,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
+        # Only enable caching if package-lock.json exists
+        cache: ${{ contains(runner.os, 'Linux') && 'npm' || '' }}
         
     - name: Install Playwright
       run: |
@@ -57,9 +58,18 @@ jobs:
         if [ ! -f package.json ]; then
           echo '{"name": "e2e-tests"}' > package.json
         fi
+        
+        # Create a temporary package-lock.json if it doesn't exist
+        if [ ! -f package-lock.json ]; then
+          echo '{"name":"e2e-tests","version":"1.0.0","lockfileVersion":3,"requires":true}' > package-lock.json
+        fi
+        
         # Install only the necessary Playwright packages
-        npm install @playwright/test@latest
+        echo "Installing Playwright..."
+        npm install @playwright/test@latest --no-package-lock
+        
         # Install only Chromium to save time/space
+        echo "Installing Chromium..."
         npx playwright install --with-deps chromium
         
     - name: Run Flask server
