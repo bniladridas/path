@@ -4,7 +4,7 @@ const { test: base } = require('@playwright/test');
 const test = base.extend({
   authenticatedPage: async ({ page }, use) => {
     await page.goto('/verify');
-    await page.fill('input[name="answer"]', 'test verification');
+    await page.fill('input[name="answer"]', 'human');
     await page.click('button[type="submit"]');
     await page.waitForURL('**/');
     await use(page);
