@@ -44,19 +44,6 @@ module.exports = defineConfig({
     //   use: { ...devices['Desktop Safari'] },
     // },
   ],
-  webServer: {
-    command: 'python3 app.py',
-    url: 'http://localhost:8000',
-    reuseExistingServer: false, // Always start a fresh server
-    timeout: 180 * 1000, // 3 minutes timeout for server to start
-    stderr: 'pipe',
-    stdout: 'pipe',
-    env: {
-      ...process.env,
-      FLASK_DEBUG: '1',
-      PYTHONUNBUFFERED: '1',
-      FLASK_APP: 'app.py',
-      FLASK_ENV: 'development',
-    },
-  },
+  // Server is started by the GitHub Actions workflow
+  // to better handle port conflicts
 });
