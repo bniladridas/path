@@ -72,6 +72,19 @@ jobs:
         echo "Installing Chromium..."
         npx playwright install --with-deps chromium
         
+    - name: Kill existing process on port 8000
+      run: |
+        # Install lsof if not available
+        sudo apt-get update
+        sudo apt-get install -y lsof
+        # Kill any process using port 8000
+        sudo lsof -ti:8000 | xargs -r kill -9 || true
+        # Verify port is free
+        if lsof -i :8000; then
+          echo "Warning: Port 8000 is still in use"
+          exit 1
+        fi
+        
     - name: Run Flask server
       run: |
         export FLASK_APP=app.py
