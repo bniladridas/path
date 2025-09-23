@@ -127,70 +127,6 @@ test.describe('Navigation', () => {
             continue;
           }
           
-<<<<<<< HEAD
-           // Get element details for debugging
-           const elementInfo = await element.evaluate(el => ({
-             tagName: el.tagName,
-             text: el.textContent?.trim(),
-             href: el.href,
-             id: el.id,
-             className: el.className,
-             role: el.getAttribute('role'),
-             target: el.getAttribute('target')
-           }));
-
-           console.log('Element info:', JSON.stringify(elementInfo, null, 2));
-
-           // Check if this is an external link (different domain or target="_blank")
-           const linkUrl = new URL(elementInfo.href);
-           const baseUrl = new URL(baseURL);
-           const isExternal = linkUrl.hostname !== baseUrl.hostname || elementInfo.target === '_blank';
-
-           if (isExternal) {
-             // For external links, just verify the href is correct
-             const expectedUrl = navItem.href;
-             if (elementInfo.href === expectedUrl) {
-               result.status = 'passed';
-               result.destination = elementInfo.href;
-               testResults.passed++;
-               console.log(`✅ External link has correct href: ${elementInfo.href}`);
-             } else {
-               result.status = 'failed';
-               result.reason = `Expected href "${expectedUrl}" but got "${elementInfo.href}"`;
-               testResults.failed++;
-               console.log(`❌ External link href mismatch: expected ${expectedUrl}, got ${elementInfo.href}`);
-             }
-           } else {
-             // For internal links, test actual navigation
-             console.log(`Clicking: ${navItem.selector}`);
-             await element.click({ timeout: 5000 });
-
-             // Wait for navigation to complete
-             await page.waitForLoadState('networkidle');
-
-             // Verify navigation was successful
-             const currentUrl = new URL(page.url());
-             console.log('Navigated to:', currentUrl.toString());
-
-             // Basic validation
-             const isSuccess = currentUrl.toString() !== baseURL &&
-                             currentUrl.toString() !== `${baseURL}/` &&
-                             !currentUrl.pathname.endsWith('404');
-
-             if (isSuccess) {
-               result.status = 'passed';
-               result.destination = currentUrl.toString();
-               testResults.passed++;
-               console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
-             } else {
-               result.status = 'failed';
-               result.reason = 'Navigation did not change URL as expected';
-               result.destination = currentUrl.toString();
-               testResults.failed++;
-               console.log(`❌ Navigation failed or stayed on the same page`);
-             }
-           }
-=======
           // Get element details for debugging
           const elementInfo = await element.evaluate(el => ({
             tagName: el.tagName,
@@ -198,40 +134,62 @@ test.describe('Navigation', () => {
             href: el.href,
             id: el.id,
             className: el.className,
-            role: el.getAttribute('role')
+            role: el.getAttribute('role'),
+            target: el.getAttribute('target')
           }));
-          
-          console.log('Element info:', JSON.stringify(elementInfo, null, 2));
-          
-          // Click the element
-          console.log(`Clicking: ${navItem.selector}`);
-          await element.click({ timeout: 5000 });
-          
-          // Wait for navigation to complete
-          await page.waitForLoadState('networkidle');
-          
-          // Verify navigation was successful
-          const currentUrl = new URL(page.url());
-          console.log('Navigated to:', currentUrl.toString());
-          
-           // Basic validation
-           const isSuccess = currentUrl.toString() !== baseURL &&
-                           currentUrl.toString() !== `${baseURL}/` &&
-                           !currentUrl.pathname.endsWith('404');
 
-           if (isSuccess) {
-             result.status = 'passed';
-             result.destination = currentUrl.toString();
-             testResults.passed++;
-             console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
-           } else {
-             result.status = 'failed';
-             result.reason = 'Navigation did not change URL as expected';
-             result.destination = currentUrl.toString();
-             testResults.failed++;
-             console.log(`❌ Navigation failed or stayed on the same page`);
-           }
-          
+          console.log('Element info:', JSON.stringify(elementInfo, null, 2));
+
+          // Check if this is an external link (different domain or target="_blank")
+          const linkUrl = new URL(elementInfo.href);
+          const baseUrl = new URL(baseURL);
+          const isExternal = linkUrl.hostname !== baseUrl.hostname || elementInfo.target === '_blank';
+
+          if (isExternal) {
+            // For external links, just verify the href is correct
+            const expectedUrl = navItem.href;
+            if (elementInfo.href === expectedUrl) {
+              result.status = 'passed';
+              result.destination = elementInfo.href;
+              testResults.passed++;
+              console.log(`✅ External link has correct href: ${elementInfo.href}`);
+            } else {
+              result.status = 'failed';
+              result.reason = `Expected href "${expectedUrl}" but got "${elementInfo.href}"`;
+              testResults.failed++;
+              console.log(`❌ External link href mismatch: expected ${expectedUrl}, got ${elementInfo.href}`);
+            }
+          } else {
+            // For internal links, test actual navigation
+            console.log(`Clicking: ${navItem.selector}`);
+            await element.click({ timeout: 5000 });
+
+            // Wait for navigation to complete
+            await page.waitForLoadState('networkidle');
+
+            // Verify navigation was successful
+            const currentUrl = new URL(page.url());
+            console.log('Navigated to:', currentUrl.toString());
+
+            // Basic validation
+            const isSuccess = currentUrl.toString() !== baseURL &&
+                            currentUrl.toString() !== `${baseURL}/` &&
+                            !currentUrl.pathname.endsWith('404');
+
+            if (isSuccess) {
+              result.status = 'passed';
+              result.destination = currentUrl.toString();
+              testResults.passed++;
+              console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
+            } else {
+              result.status = 'failed';
+              result.reason = 'Navigation did not change URL as expected';
+              result.destination = currentUrl.toString();
+              testResults.failed++;
+              console.log(`❌ Navigation failed or stayed on the same page`);
+            }
+          }
+
         } catch (error) {
           result.status = 'error';
           result.reason = error.message;
