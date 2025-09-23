@@ -64,3 +64,8 @@ Thumbs.db
 .dockerignore
 docker-compose.override.yml
 .env.local
+
+# Test artifacts
+no-navigation-links.png
+playwright-report/
+test-results/

@@ -2,20 +2,16 @@
   "name": "path-e2e",
   "version": "1.0.0",
   "description": "End-to-end tests for PATH application",
+  "private": true,
   "scripts": {
     "test": "playwright test",
-    "test:coverage": "npm run test:coverage:py && npm run test:coverage:ui",
-    "test:coverage:py": "pytest --cov=app --cov-report=term-missing --cov-report=html:coverage/python",
-    "test:coverage:ui": "npx playwright test --reporter=html && npx playwright show-report",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
-    "test:headed": "playwright test --headed"
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
-    "@types/node": "^24.5.2",
-    "pytest": "^7.1.2",
-    "pytest-cov": "^4.0.0"
+    "@playwright/test": "^1.42.1"
   },
   "jest": {
     "collectCoverage": true,
