@@ -1,4 +1,4 @@
-# PATH - AI-Powered Media Exploration
+# harper
 
 ## Demo
 
