@@ -36,133 +36,182 @@ test.describe('Navigation', () => {
   test('should have working navigation links', async ({ page, baseURL }) => {
     console.log('Testing navigation links...');
     
+    // Track test results
+    const testResults = {
+      total: 0,
+      passed: 0,
+      failed: 0,
+      skipped: 0,
+      details: []
+    };
+    
     try {
       // Bypass verification and ensure we're on the home page
       await bypassVerification(page, baseURL);
       
-      // First, let's log all the links on the page to see what's available
-      console.log('Checking available navigation links...');
-      const allLinks = await page.$$eval('a, button, [role="button"], [role="link"]', 
-        elements => elements.map(el => ({
-          text: el.textContent?.trim() || '',
-          tag: el.tagName.toLowerCase(),
-          role: el.getAttribute('role') || 'none',
-          href: el.getAttribute('href') || '',
-          id: el.id || 'no-id',
-          class: el.className || 'no-class'
-        }))
+      // Get all navigation links on the page
+      const navLinks = await page.$$eval('nav a, header a, [role="navigation"] a, .nav a, .navbar a, .menu a, .header a, .navigation a', 
+        elements => elements
+          .filter(el => el.href && !el.href.startsWith('javascript:') && !el.href.startsWith('mailto:'))
+          .map(el => ({
+            text: el.textContent?.trim() || '',
+            href: el.href,
+            selector: el.getAttribute('data-testid') || 
+                     el.getAttribute('id') ? `#${el.getAttribute('id')}` :
+                     el.getAttribute('class') ? `.${el.getAttribute('class').split(' ')[0]}` :
+                     `a[href="${el.getAttribute('href')}"]`,
+            isVisible: el.offsetParent !== null
+          }))
       );
-      
-      console.log('Available navigation elements:', JSON.stringify(allLinks, null, 2));
-      
-      // Define the navigation links we expect to find
-      // These will be more flexible to match the actual UI
-      const expectedNavItems = [
-        { selector: 'text=about', url: '/about', content: 'about' },
-        { selector: 'text=product', url: '/product', content: 'product' },
-        { selector: 'text=blog', url: '/blog', content: 'blog' },
-        { selector: 'text=help', url: '/help', content: 'help' },
-        // Add more selectors based on the actual UI
-        { selector: 'a[href^="/about"]', url: '/about', content: 'about' },
-        { selector: 'a[href^="/product"]', url: '/product', content: 'product' },
-        { selector: 'a[href^="/blog"]', url: '/blog', content: 'blog' },
-        { selector: 'a[href^="/help"]', url: '/help', content: 'help' },
-        // Add any other navigation elements that might be present
-        { selector: 'header a', url: '', content: '' },
-        { selector: 'nav a', url: '', content: '' },
-        { selector: '.nav a', url: '', content: '' },
-        { selector: '.menu a', url: '', content: '' },
-        { selector: '.navbar a', url: '', content: '' },
-        { selector: '.header a', url: '', content: '' },
-        { selector: '.navigation a', url: '', content: '' },
-        { selector: 'button', url: '', content: '' }
+
+      // Add main navigation items if not already included
+      const mainNavItems = [
+        { selector: 'text=about', url: '/about' },
+        { selector: 'text=product', url: '/product' },
+        { selector: 'text=blog', url: '/blog' },
+        { selector: 'text=help', url: '/help' },
+        { selector: 'a[href^="/about"]', url: '/about' },
+        { selector: 'a[href^="/product"]', url: '/product' },
+        { selector: 'a[href^="/blog"]', url: '/blog' },
+        { selector: 'a[href^="/help"]', url: '/help' }
       ];
-      
-      let navigationFound = false;
-      
-      // Try each selector until we find one that works
-      for (const navItem of expectedNavItems) {
+
+      // Merge and deduplicate navigation items
+      const allNavItems = [...navLinks];
+      mainNavItems.forEach(item => {
+        if (!allNavItems.some(link => link.selector === item.selector)) {
+          allNavItems.push({
+            text: item.selector.replace(/^[^=]+=/, '').replace(/^\w+\[href\^="([^"]+)"\]$/, '$1'),
+            href: `${baseURL}${item.url}`,
+            selector: item.selector,
+            isVisible: true
+          });
+        }
+      });
+
+      testResults.total = allNavItems.length;
+      console.log(`Found ${testResults.total} navigation links to test`);
+
+      // Test each navigation link
+      for (const [index, navItem] of allNavItems.entries()) {
+        const result = {
+          index: index + 1,
+          selector: navItem.selector,
+          text: navItem.text || 'N/A',
+          href: navItem.href,
+          status: 'pending'
+        };
+
+        console.log(`\nTesting navigation [${index + 1}/${testResults.total}]:`, navItem.selector);
+        
         try {
-          console.log(`Trying to find navigation element with selector: ${navItem.selector}`);
+          // Navigate back to home before each test
+          await page.goto(baseURL, { waitUntil: 'networkidle' });
           
-          // Check if the element exists and is visible
+          // Find the element
           const element = page.locator(navItem.selector).first();
           const isVisible = await element.isVisible().catch(() => false);
           
-          if (isVisible) {
-            console.log(`Found navigation element: ${navItem.selector}`);
-            
-            // Get the element's properties for debugging
-            const elementInfo = await element.evaluate(el => ({
-              tagName: el.tagName,
-              text: el.textContent?.trim(),
-              href: el.href,
-              id: el.id,
-              className: el.className,
-              role: el.getAttribute('role')
-            }));
-            
-            console.log('Navigation element info:', JSON.stringify(elementInfo, null, 2));
-            
-            // Click the element
-            console.log(`Clicking navigation element: ${navItem.selector}`);
-            await element.click({ timeout: 5000 });
-            
-            // Wait for navigation to complete
-            await page.waitForLoadState('networkidle');
-            
-            // Verify we navigated somewhere
-            const currentUrl = new URL(page.url());
-            console.log(`Navigated to: ${currentUrl.toString()}`);
-            
-            // If we have a specific URL to check, verify it
-            if (navItem.url) {
-              if (!currentUrl.pathname.endsWith(navItem.url)) {
-                console.log(`Expected URL to end with ${navItem.url}, but got ${currentUrl.pathname}`);
-                continue; // Try next selector
-              }
-            }
-            
-            // If we have content to check, verify it
-            if (navItem.content) {
-              const pageContent = (await page.content()).toLowerCase();
-              if (!pageContent.includes(navItem.content.toLowerCase())) {
-                console.log(`Expected content '${navItem.content}' not found on page`);
-                continue; // Try next selector
-              }
-            }
-            
-            // If we got here, navigation was successful
-            console.log(`Successfully navigated using selector: ${navItem.selector}`);
-            navigationFound = true;
-            
-            // Go back to home for the next test
-            await page.goto(baseURL, { waitUntil: 'networkidle' });
-            break; // Stop after first successful navigation
+          if (!isVisible) {
+            result.status = 'skipped';
+            result.reason = 'Element not visible';
+            testResults.skipped++;
+            testResults.details.push(result);
+            console.log(`Skipping hidden element: ${navItem.selector}`);
+            continue;
           }
+          
+          // Get element details for debugging
+          const elementInfo = await element.evaluate(el => ({
+            tagName: el.tagName,
+            text: el.textContent?.trim(),
+            href: el.href,
+            id: el.id,
+            className: el.className,
+            role: el.getAttribute('role')
+          }));
+          
+          console.log('Element info:', JSON.stringify(elementInfo, null, 2));
+          
+          // Click the element
+          console.log(`Clicking: ${navItem.selector}`);
+          await element.click({ timeout: 5000 });
+          
+          // Wait for navigation to complete
+          await page.waitForLoadState('networkidle');
+          
+          // Verify navigation was successful
+          const currentUrl = new URL(page.url());
+          console.log('Navigated to:', currentUrl.toString());
+          
+          // Basic validation
+          const isSuccess = currentUrl.toString() !== baseURL && 
+                          currentUrl.toString() !== `${baseURL}/` &&
+                          !currentUrl.pathname.endsWith('404');
+          
+          if (isSuccess) {
+            result.status = 'passed';
+            result.destination = currentUrl.toString();
+            testResults.passed++;
+            console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
+          } else {
+            result.status = 'failed';
+            result.reason = 'Navigation did not change URL as expected';
+            result.destination = currentUrl.toString();
+            testResults.failed++;
+            console.log(`❌ Navigation failed or stayed on the same page`);
+          }
+          
         } catch (error) {
-          console.log(`Error with selector ${navItem.selector}:`, error.message);
-          // Continue to next selector
+          result.status = 'error';
+          result.reason = error.message;
+          testResults.failed++;
+          console.error(`❌ Error testing navigation [${navItem.selector}]:`, error.message);
+          
+          // Take screenshot on error
+          const screenshotPath = `navigation-error-${index + 1}.png`;
+          await page.screenshot({ path: screenshotPath });
+          console.log(`Screenshot saved: ${screenshotPath}`);
         }
-      }
-      
-      if (!navigationFound) {
-        // If no navigation was successful, take a screenshot and log the page content
-        console.log('No working navigation elements found. Page content:');
-        console.log(await page.content());
-        await page.screenshot({ path: 'navigation-failed.png' });
         
-        // Instead of failing the test, log a warning and continue
-        console.warn('No working navigation elements found. This might be expected if the UI has changed.');
-        return;
+        testResults.details.push(result);
       }
       
-      console.log('Navigation test completed');
+      // Generate test summary
+      console.log('\n=== Navigation Test Summary ===');
+      console.log(`Total: ${testResults.total}`);
+      console.log(`✅ Passed: ${testResults.passed}`);
+      console.log(`❌ Failed: ${testResults.failed}`);
+      console.log(`⏩ Skipped: ${testResults.skipped}`);
+      
+      // Log detailed results
+      if (testResults.details.length > 0) {
+        console.log('\n=== Detailed Results ===');
+        testResults.details.forEach(detail => {
+          const statusIcon = detail.status === 'passed' ? '✅' : 
+                           detail.status === 'failed' ? '❌' : 
+                           detail.status === 'skipped' ? '⏩' : '❓';
+          console.log(`${statusIcon} [${detail.index}] ${detail.selector}`);
+          if (detail.reason) console.log(`   Reason: ${detail.reason}`);
+          if (detail.destination) console.log(`   Destination: ${detail.destination}`);
+        });
+      }
+      
+      // Fail the test if any navigation tests failed
+      if (testResults.failed > 0) {
+        throw new Error(`${testResults.failed} navigation test(s) failed`);
+      }
+      
+      if (testResults.passed === 0) {
+        console.warn('No navigation links were tested successfully. Taking a screenshot...');
+        await page.screenshot({ path: 'no-navigation-links.png' });
+        console.log('Screenshot saved: no-navigation-links.png');
+      }
+      
     } catch (error) {
       console.error('Error in navigation test:', error);
       await page.screenshot({ path: 'navigation-test-error.png' });
-      // Don't fail the test if navigation testing isn't critical
-      console.log('Navigation test encountered an issue, but continuing...');
+      throw error; // Re-throw to fail the test
     }
   });
   
