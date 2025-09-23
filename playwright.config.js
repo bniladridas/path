@@ -23,8 +23,8 @@ module.exports = defineConfig({
     actionTimeout: 10000, // Increase action timeout to 10 seconds
     navigationTimeout: 30000, // Increase navigation timeout to 30 seconds
     trace: 'on-first-retry',
-    screenshot: 'on', // Take screenshots on every test
-    video: 'on', // Record video for every test
+    screenshot: 'only-on-failure', // Take screenshots only on failure
+    video: 'retain-on-failure', // Record video only on failure
   },
   projects: [
     {
