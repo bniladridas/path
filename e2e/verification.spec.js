@@ -56,17 +56,12 @@ test.describe('Verification Flow', () => {
       
       await page.screenshot({ path: 'after-submit.png' });
       
-      // Check page content for error message
-      const pageContent = (await page.content()).toLowerCase();
-      console.log('Page content length:', pageContent.length);
-      
-      if (!pageContent.includes('verification failed')) {
-        console.log('Page content does not contain expected error message');
-        console.log('First 1000 chars of page:', pageContent.substring(0, 1000));
-      }
-      
-      // The actual error message is 'please try again' instead of 'verification failed'
-      expect(pageContent).toContain('please try again');
+       // Check page content for error message
+       const pageContent = (await page.content()).toLowerCase();
+       console.log('Page content length:', pageContent.length);
+
+       // The actual error message is 'please try again'
+       expect(pageContent).toContain('please try again');
     } catch (error) {
       console.error('Test error:', error);
       await page.screenshot({ path: 'test-error.png' });

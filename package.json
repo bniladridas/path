@@ -1,6 +1,6 @@
 {
   "name": "path-e2e",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "End-to-end tests for PATH application",
   "private": true,
   "scripts": {
@@ -12,10 +12,5 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "coverage/frontend",
-    "coverageReporters": ["html", "text"]
   }
 }

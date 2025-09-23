@@ -1,18 +1,31 @@
 const { test, expect } = require('@playwright/test');
+const { bypassVerification } = require('./utils');
 
-// Helper function to bypass verification
-async function bypassVerification(page, baseURL) {
-  console.log('Bypassing verification...');
-  const bypassUrl = new URL('/bypass-verification', baseURL).toString();
-  await page.goto(bypassUrl, { waitUntil: 'networkidle' });
-  
-  // Verify we're on the home page
-  const searchInput = await page.$('input[type="text"]');
-  if (!searchInput) {
-    throw new Error('Failed to bypass verification - search input not found');
-  }
-  console.log('Successfully bypassed verification');
-}
+// Constants for selectors and test data
+const SELECTORS = {
+  SEARCH_INPUT: 'input[type="text"]',
+  SUBMIT_BUTTON: 'button[type="submit"]',
+  THEME_TOGGLE: 'button',
+  BODY: 'body',
+  VERIFICATION_INPUT: 'input[name="answer"]',
+  NAV_LINKS: '[data-testid^="nav-"]'
+};
+
+const URLS = {
+  ABOUT: '/about',
+  PRODUCT: '/product',
+  BLOG: '/blog',
+  HELP: '/help',
+  TERMS: '/terms',
+  PRIVACY: '/privacy',
+  THEME_REPO: 'https://github.com/bniladridas/path',
+  COMMUNITY_REPO: 'https://github.com/harpertoken'
+};
+
+const TEST_DATA = {
+  THEME_TOGGLE_TEXT: /theme|mode|light|dark/i,
+  VERIFICATION_ANSWER: 'human'
+};
 
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page, baseURL }) => {
@@ -46,11 +59,8 @@ test.describe('Navigation', () => {
     };
     
     try {
-      // Bypass verification and ensure we're on the home page
-      await bypassVerification(page, baseURL);
-      
       // Get all navigation links on the page
-      const navLinks = await page.$$eval('nav a, header a, [role="navigation"] a, .nav a, .navbar a, .menu a, .header a, .navigation a', 
+      const navLinks = await page.$$eval(SELECTORS.NAV_LINKS, 
         elements => elements
           .filter(el => el.href && !el.href.startsWith('javascript:') && !el.href.startsWith('mailto:'))
           .map(el => ({
@@ -66,28 +76,24 @@ test.describe('Navigation', () => {
 
       // Add main navigation items if not already included
       const mainNavItems = [
-        { selector: 'text=about', url: '/about' },
-        { selector: 'text=product', url: '/product' },
-        { selector: 'text=blog', url: '/blog' },
-        { selector: 'text=help', url: '/help' },
-        { selector: 'a[href^="/about"]', url: '/about' },
-        { selector: 'a[href^="/product"]', url: '/product' },
-        { selector: 'a[href^="/blog"]', url: '/blog' },
-        { selector: 'a[href^="/help"]', url: '/help' }
+        { selector: '[data-testid="nav-terms"]', url: URLS.TERMS, isExternal: false },
+        { selector: '[data-testid="nav-privacy"]', url: URLS.PRIVACY, isExternal: false },
+        { selector: '[data-testid="nav-theme"]', url: URLS.THEME_REPO, isExternal: true },
+        { selector: '[data-testid="nav-community"]', url: URLS.COMMUNITY_REPO, isExternal: true }
       ];
 
       // Merge and deduplicate navigation items
       const allNavItems = [...navLinks];
-      mainNavItems.forEach(item => {
-        if (!allNavItems.some(link => link.selector === item.selector)) {
-          allNavItems.push({
-            text: item.selector.replace(/^[^=]+=/, '').replace(/^\w+\[href\^="([^"]+)"\]$/, '$1'),
-            href: `${baseURL}${item.url}`,
-            selector: item.selector,
-            isVisible: true
-          });
-        }
-      });
+       mainNavItems.forEach(item => {
+         if (!allNavItems.some(link => link.selector === item.selector)) {
+           allNavItems.push({
+             text: item.selector.replace(/^[^=]+=/, '').replace(/^\w+\[href\^="([^"]+)"\]$/, '$1'),
+             href: item.isExternal ? item.url : `${baseURL}${item.url}`,
+             selector: item.selector,
+             isVisible: true
+           });
+         }
+       });
 
       testResults.total = allNavItems.length;
       console.log(`Found ${testResults.total} navigation links to test`);
@@ -121,46 +127,68 @@ test.describe('Navigation', () => {
             continue;
           }
           
-          // Get element details for debugging
-          const elementInfo = await element.evaluate(el => ({
-            tagName: el.tagName,
-            text: el.textContent?.trim(),
-            href: el.href,
-            id: el.id,
-            className: el.className,
-            role: el.getAttribute('role')
-          }));
-          
-          console.log('Element info:', JSON.stringify(elementInfo, null, 2));
-          
-          // Click the element
-          console.log(`Clicking: ${navItem.selector}`);
-          await element.click({ timeout: 5000 });
-          
-          // Wait for navigation to complete
-          await page.waitForLoadState('networkidle');
-          
-          // Verify navigation was successful
-          const currentUrl = new URL(page.url());
-          console.log('Navigated to:', currentUrl.toString());
-          
-          // Basic validation
-          const isSuccess = currentUrl.toString() !== baseURL && 
-                          currentUrl.toString() !== `${baseURL}/` &&
-                          !currentUrl.pathname.endsWith('404');
-          
-          if (isSuccess) {
-            result.status = 'passed';
-            result.destination = currentUrl.toString();
-            testResults.passed++;
-            console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
-          } else {
-            result.status = 'failed';
-            result.reason = 'Navigation did not change URL as expected';
-            result.destination = currentUrl.toString();
-            testResults.failed++;
-            console.log(`❌ Navigation failed or stayed on the same page`);
-          }
+           // Get element details for debugging
+           const elementInfo = await element.evaluate(el => ({
+             tagName: el.tagName,
+             text: el.textContent?.trim(),
+             href: el.href,
+             id: el.id,
+             className: el.className,
+             role: el.getAttribute('role'),
+             target: el.getAttribute('target')
+           }));
+
+           console.log('Element info:', JSON.stringify(elementInfo, null, 2));
+
+           // Check if this is an external link (different domain or target="_blank")
+           const linkUrl = new URL(elementInfo.href);
+           const baseUrl = new URL(baseURL);
+           const isExternal = linkUrl.hostname !== baseUrl.hostname || elementInfo.target === '_blank';
+
+           if (isExternal) {
+             // For external links, just verify the href is correct
+             const expectedUrl = navItem.href;
+             if (elementInfo.href === expectedUrl) {
+               result.status = 'passed';
+               result.destination = elementInfo.href;
+               testResults.passed++;
+               console.log(`✅ External link has correct href: ${elementInfo.href}`);
+             } else {
+               result.status = 'failed';
+               result.reason = `Expected href "${expectedUrl}" but got "${elementInfo.href}"`;
+               testResults.failed++;
+               console.log(`❌ External link href mismatch: expected ${expectedUrl}, got ${elementInfo.href}`);
+             }
+           } else {
+             // For internal links, test actual navigation
+             console.log(`Clicking: ${navItem.selector}`);
+             await element.click({ timeout: 5000 });
+
+             // Wait for navigation to complete
+             await page.waitForLoadState('networkidle');
+
+             // Verify navigation was successful
+             const currentUrl = new URL(page.url());
+             console.log('Navigated to:', currentUrl.toString());
+
+             // Basic validation
+             const isSuccess = currentUrl.toString() !== baseURL &&
+                             currentUrl.toString() !== `${baseURL}/` &&
+                             !currentUrl.pathname.endsWith('404');
+
+             if (isSuccess) {
+               result.status = 'passed';
+               result.destination = currentUrl.toString();
+               testResults.passed++;
+               console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
+             } else {
+               result.status = 'failed';
+               result.reason = 'Navigation did not change URL as expected';
+               result.destination = currentUrl.toString();
+               testResults.failed++;
+               console.log(`❌ Navigation failed or stayed on the same page`);
+             }
+           }
           
         } catch (error) {
           result.status = 'error';
@@ -219,20 +247,17 @@ test.describe('Navigation', () => {
     console.log('Testing theme preference...');
     
     try {
-      // Bypass verification and ensure we're on the home page
-      await bypassVerification(page, baseURL);
-      
       // Wait for the page to be fully loaded
       await page.waitForLoadState('networkidle');
       
       // Try to find theme toggle button (if it exists)
-      const themeToggle = page.locator('button').filter({ hasText: /theme|mode|light|dark/i }).first();
+      const themeToggle = page.locator(SELECTORS.THEME_TOGGLE).filter({ hasText: TEST_DATA.THEME_TOGGLE_TEXT }).first();
       
       if (await themeToggle.isVisible()) {
         console.log('Theme toggle button found, testing theme switching...');
         
         // Get current theme class
-        const body = page.locator('body');
+        const body = page.locator(SELECTORS.BODY);
         const initialTheme = await body.getAttribute('class') || '';
         
         // Toggle theme
@@ -243,18 +268,18 @@ test.describe('Navigation', () => {
         
         // Get new theme class
         const newTheme = await body.getAttribute('class') || '';
-        
+
         // Check if theme actually changed
         if (initialTheme === newTheme) {
           console.log('Theme did not change after toggle');
         } else {
           console.log('Theme changed successfully');
         }
-        
+
         // Refresh and check if theme is maintained
         await page.reload();
         await page.waitForLoadState('networkidle');
-        
+
         const refreshedTheme = await body.getAttribute('class') || '';
         if (refreshedTheme !== newTheme) {
           console.log('Theme preference was not maintained after refresh');

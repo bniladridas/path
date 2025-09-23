@@ -1,18 +1,5 @@
 const { test, expect } = require('@playwright/test');
-
-// Helper function to bypass verification
-async function bypassVerification(page, baseURL) {
-  console.log('Bypassing verification for search tests...');
-  const bypassUrl = new URL('/bypass-verification', baseURL).toString();
-  await page.goto(bypassUrl, { waitUntil: 'networkidle' });
-  
-  // Verify we're on the home page
-  const searchInput = await page.$('input[type="text"]');
-  if (!searchInput) {
-    throw new Error('Failed to bypass verification - search input not found');
-  }
-  console.log('Successfully bypassed verification for search tests');
-}
+const { bypassVerification } = require('./utils');
 
 test.describe('Search Functionality', () => {
   test.beforeEach(async ({ page, baseURL }) => {
@@ -35,11 +22,8 @@ test.describe('Search Functionality', () => {
 
   test('should display search input on home page', async ({ page, baseURL }) => {
     console.log('Testing search input visibility...');
-    
+
     try {
-      // Bypass verification and ensure we're on the home page
-      await bypassVerification(page, baseURL);
-      
       // Check if search input is visible
       const searchInput = await page.locator('input[type="text"]').first();
       await expect(searchInput).toBeVisible({ timeout: 5000 });
@@ -58,11 +42,8 @@ test.describe('Search Functionality', () => {
 
   test('should perform a search', async ({ page, baseURL }) => {
     console.log('Testing search functionality...');
-    
+
     try {
-      // Bypass verification and ensure we're on the home page
-      await bypassVerification(page, baseURL);
-      
       // Wait for the search input to be visible
       const searchInput = page.locator('input[type="text"]').first();
       await expect(searchInput).toBeVisible({ timeout: 10000 });
@@ -145,11 +126,8 @@ test.describe('Search Functionality', () => {
   
   test('should handle search errors gracefully', async ({ page, baseURL }) => {
     console.log('Testing search error handling...');
-    
+
     try {
-      // Bypass verification and ensure we're on the home page
-      await bypassVerification(page, baseURL);
-      
       // Wait for the search input to be visible
       const searchInput = page.locator('input[type="text"]').first();
       await expect(searchInput).toBeVisible({ timeout: 10000 });
