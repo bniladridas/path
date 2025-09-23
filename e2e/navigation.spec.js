@@ -127,6 +127,7 @@ test.describe('Navigation', () => {
             continue;
           }
           
+<<<<<<< HEAD
            // Get element details for debugging
            const elementInfo = await element.evaluate(el => ({
              tagName: el.tagName,
@@ -188,6 +189,47 @@ test.describe('Navigation', () => {
                testResults.failed++;
                console.log(`❌ Navigation failed or stayed on the same page`);
              }
+           }
+=======
+          // Get element details for debugging
+          const elementInfo = await element.evaluate(el => ({
+            tagName: el.tagName,
+            text: el.textContent?.trim(),
+            href: el.href,
+            id: el.id,
+            className: el.className,
+            role: el.getAttribute('role')
+          }));
+          
+          console.log('Element info:', JSON.stringify(elementInfo, null, 2));
+          
+          // Click the element
+          console.log(`Clicking: ${navItem.selector}`);
+          await element.click({ timeout: 5000 });
+          
+          // Wait for navigation to complete
+          await page.waitForLoadState('networkidle');
+          
+          // Verify navigation was successful
+          const currentUrl = new URL(page.url());
+          console.log('Navigated to:', currentUrl.toString());
+          
+           // Basic validation
+           const isSuccess = currentUrl.toString() !== baseURL &&
+                           currentUrl.toString() !== `${baseURL}/` &&
+                           !currentUrl.pathname.endsWith('404');
+
+           if (isSuccess) {
+             result.status = 'passed';
+             result.destination = currentUrl.toString();
+             testResults.passed++;
+             console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
+           } else {
+             result.status = 'failed';
+             result.reason = 'Navigation did not change URL as expected';
+             result.destination = currentUrl.toString();
+             testResults.failed++;
+             console.log(`❌ Navigation failed or stayed on the same page`);
            }
           
         } catch (error) {

@@ -6,7 +6,7 @@ const test = base.extend({
     await page.goto('/verify');
     await page.fill('input[name="answer"]', 'human');
     await page.click('button[type="submit"]');
-    await page.waitForURL('**/');
+    await page.waitForURL(new RegExp(`${page.url().replace(/\/verify$/, '')}/$`));
     await use(page);
   },
 });

@@ -54,39 +54,8 @@ module.exports = defineConfig({
     
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
-    
-    // Capture screenshot after each test failure
-    screenshot: 'only-on-failure',
-    
-    // Record video for each test
-    video: 'on-first-retry',
-    
-    // Viewport settings
-    viewport: { width: 1280, height: 720 },
-    
-    // Ignore HTTPS errors
-    ignoreHTTPSErrors: true,
-    
-    // Bypass CSP for testing
-    bypassCSP: true,
-    
-    // Headless mode in CI, headed locally
-    headless: !!process.env.CI,
-    
-    // Browser language
-    locale: 'en-US',
-    
-    // Timezone
-    timezoneId: 'UTC',
-    
-    // Geolocation
-    geolocation: { longitude: 12.492507, latitude: 41.889938 },
-    
-    // Permissions
-    permissions: ['geolocation'],
-    
-    // Emulate network conditions
-    offline: false,
+    screenshot: 'only-on-failure', // Take screenshots only on failure
+    video: 'retain-on-failure', // Record video only on failure
   },
   projects: [
     {
