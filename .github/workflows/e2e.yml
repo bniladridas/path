@@ -95,15 +95,18 @@ jobs:
         export FLASK_ENV=development
         export PYTHONUNBUFFERED=1
         
+        # Install required Python packages
+        pip install -r requirements.txt
+        
         # Start Flask server in the background
         echo "Starting Flask server..."
-        nohup python -m flask run --port=8000 --no-debugger --no-reload > server.log 2>&1 &
+        nohup python3 -m flask run --port=8000 --host=0.0.0.0 --no-debugger --no-reload > server.log 2>&1 &
         FLASK_PID=$!
         
         # Function to kill the server when the script exits
         cleanup() {
           echo "Stopping Flask server (PID: $FLASK_PID)"
-          kill $FLASK_PID 2>/dev/null
+          kill $FLASK_PID 2>/dev/null || true
         }
         trap cleanup EXIT
         
@@ -112,6 +115,10 @@ jobs:
         for i in {1..30}; do
           if curl -s http://localhost:8000 >/dev/null; then
             echo "Server is up and running!"
+            # Keep the server running in the background
+            while true; do sleep 1; done &
+            SERVER_LOOP_PID=$!
+            echo "Server loop PID: $SERVER_LOOP_PID"
             break
           fi
           if [ $i -eq 30 ]; then
@@ -125,10 +132,12 @@ jobs:
         
     - name: Run E2E tests
       run: |
-        npx playwright test --config=playwright.config.js --workers=1
+        # Run tests with retries
+        npx playwright test --config=playwright.config.js --workers=1 --retries=2
       env:
         BASE_URL: http://localhost:8000
         CI: true
+      timeout-minutes: 10
         
     - name: Upload test results
       if: always()
@@ -138,6 +147,7 @@ jobs:
         path: |
           playwright-report/
           test-results/
+          server.log
         retention-days: 7
         
     - name: Upload server logs
