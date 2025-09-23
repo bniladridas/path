@@ -3,13 +3,11 @@ Basic tests for the Flask app.
 """
 import os
 import sys
+from app import app as flask_app
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
-
-# Now import the app
-from app import app as flask_app
 
 
 def test_app_creation():
