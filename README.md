@@ -35,7 +35,7 @@ The codebase is a minimal Flask web application for AI-powered media exploration
 ### Prerequisites
 - Python 3.8+
 - Node.js 16+
-- npm or yarn
+- npm
 
 ```bash
 # Clone the repository
