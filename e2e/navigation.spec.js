@@ -190,7 +190,7 @@ test.describe('Navigation', () => {
         await themeToggle.click();
         
         // Wait for theme change (if any)
-        await page.waitForTimeout(1000);
+        await expect(body).not.toHaveAttribute('class', initialTheme, { timeout: 5000 });
         
         // Get new theme class
         const newTheme = await body.getAttribute('class') || '';
