@@ -48,7 +48,7 @@ jobs:
         
     # Then handle Node.js and Playwright
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v5
       with:
         node-version: '18'
         # Enable caching for npm
