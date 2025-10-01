@@ -9,7 +9,7 @@ https://github.com/user-attachments/assets/460a42b9-d2ea-42d3-8d1f-13bd8fb54565
 The codebase is a minimal Flask web application for AI-powered media exploration, structured as follows:
 
 **Core Structure:**
-- `app.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini API for AI responses. Implements human verification, session management, and error handling.
+- `app.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
 - `templates/`: 5 HTML templates (index, verify, terms, privacy, updates) with semantic markup, accessibility features, and minimal inline JS.
 - `static/css/style.css`: Theme system using CSS custom properties, responsive design.
 - `requirements.txt`: Minimal dependencies (Flask, requests, python-dotenv).
@@ -68,6 +68,15 @@ Run the Python unit tests:
 ```bash
 pytest
 ```
+
+### API Key Testing
+To verify your Gemini API key and check available models:
+
+```bash
+curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY"
+```
+
+Replace `YOUR_API_KEY` with your actual key. This lists all available models.
 
 ### End-to-End Tests
 

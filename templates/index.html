@@ -254,7 +254,7 @@
             <span class="legal-text">
                 <a href="/terms" target="_blank" data-testid="nav-terms">terms</a> •
                 <a href="/privacy" target="_blank" data-testid="nav-privacy">privacy</a> •
-                <a href="https://github.com/bniladridas/path" target="_blank" data-testid="nav-theme">theme</a> •
+                <a href="https://github.com/bniladridas/path" target="_blank" data-testid="nav-source">source</a> •
                 <a href="https://github.com/harpertoken" target="_blank" data-testid="nav-community">community</a>
             </span>
         </div>
@@ -728,7 +728,7 @@
 
             // Show About content
             responseContainer.innerHTML = `
-                <div class="hero-title-style">harper is a simple interface for exploring media topics using artificial intelligence. powered by google's gemini 1.5 flash model, this application provides thoughtful responses about movies, music, books, and other media topics with a clean, minimal design.</div>
+                <div class="hero-title-style">harper is a simple interface for exploring media topics using artificial intelligence. powered by google's gemini 2.0 flash model, this application provides thoughtful responses about movies, music, books, and other media topics with a clean, minimal design.</div>
             `;
         }
 
@@ -821,37 +821,24 @@ harper doesn't just recommend content. it helps you find your way home to yourse
             responseContainer.innerHTML = `
                 <div class="hero-title-style">honest truth about what powers harper:
 
-we use google's gemini 1.5 flash - their fastest model with 1 million token context.
+we use google's gemini 2.0 flash - their fast model with 1 million token input context and 8K output.
 
 <table style="width: 100%; margin: 20px 0; border-collapse: collapse; font-size: 14px;">
 <tr style="background: rgba(255,255,255,0.1);">
 <th style="padding: 8px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">pricing</th>
-<th style="padding: 8px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">free tier</th>
-<th style="padding: 8px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">paid tier (per 1m tokens)</th>
+<th style="padding: 8px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">rate (per 1m tokens)</th>
 </tr>
 <tr>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">input (≤128k tokens)</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">free</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.075</td>
+<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">input tokens</td>
+<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.10</td>
 </tr>
 <tr>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">input (>128k tokens)</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">free</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.15</td>
+<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">output tokens</td>
+<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.40</td>
 </tr>
-<tr>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">output (≤128k tokens)</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">free</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.30</td>
-</tr>
-<tr>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">output (>128k tokens)</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">free</td>
-<td style="padding: 8px; border: 1px solid rgba(255,255,255,0.2);">$0.60</td>
-</tr>
-</table>
+                </table>
 
-reality check: your typical question uses 100-500 tokens (costs about $0.000075). even deep conversations stay under a cent.
+reality check: your typical question uses 100-500 input tokens ($0.00001-0.00005) and 200-1000 output tokens ($0.00008-0.0004). total under $0.0005 per query.
 
 why we chose this: thoughtful responses without bloated premium model costs. we prioritize your access over profit margins.
 
@@ -1012,11 +999,11 @@ to enable: simply access harper from an email link or enter your gmail address w
 </tr>
 <tr>
 <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">model architecture</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">google gemini 1.5 flash - transformer-based multimodal neural network</td>
+<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">google gemini 2.0 flash - transformer-based multimodal neural network</td>
 </tr>
 <tr>
 <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">context window</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">1 million tokens - massive context understanding</td>
+<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">1 million input tokens, 8K output - massive context understanding</td>
 </tr>
 <tr>
 <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">training approach</td>
