@@ -64,6 +64,10 @@ app.secret_key = secrets.token_hex(16)
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
+# Define the Gemini model to use
+# This constant makes it easy to update the model in the future
+GEMINI_MODEL = "2.0-flash"
+
 
 # ============================================================================
 # ROUTE HANDLERS - WEB INTERFACE ENDPOINTS
@@ -336,7 +340,7 @@ You approach each query with the excitement of discovering something new or shar
         # This sends the prepared data to the API endpoint and gets the response
         api_url = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
-            f"gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
+            f"gemini-{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
         )
         response = requests.post(
             api_url,
