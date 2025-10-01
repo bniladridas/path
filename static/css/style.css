@@ -874,3 +874,21 @@ footer {
         font-size: 11px;
     }
 }
+
+/* Info Table Styles */
+.info-table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.info-table th, .info-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.info-table tr:first-child th {
+    background: rgba(255,255,255,0.1);
+}
