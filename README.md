@@ -137,3 +137,34 @@ git push --force-with-lease
 ```
 
 This will lowercase and truncate all commit messages to conform to the standards.
+
+## Conventional Commits
+
+This project uses conventional commit standards to maintain a clean and consistent git history.
+
+### Setup
+
+To enable the commit message hook:
+
+```bash
+cp scripts/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+### Usage
+
+Commit messages must follow this format:
+- Start with a type: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
+- First line lowercase and ≤60 characters
+- Example: `feat: add user authentication`
+
+### History Cleanup
+
+To rewrite existing commit messages in the history:
+
+```bash
+./scripts/rewrite_msg.sh
+git push --force-with-lease
+```
+
+This will lowercase and truncate all commit messages to conform to the standards.
