@@ -1,0 +1,24 @@
+#!/bin/bash
+
+commit_msg_file=$1
+
+commit_msg=$(cat "$commit_msg_file")
+
+# Check if starts with type
+if ! echo "$commit_msg" | grep -qE '^(feat|fix|docs|style|refactor|test|chore):'; then
+    echo "Commit message must start with a type: feat, fix, docs, style, refactor, test, chore"
+    exit 1
+fi
+
+# Check lowercase
+first_line=$(echo "$commit_msg" | head -n1)
+if [ "$first_line" != "$(echo "$first_line" | tr '[:upper:]' '[:lower:]')" ]; then
+    echo "First line must be lowercase"
+    exit 1
+fi
+
+# Check length <=60
+if [ ${#first_line} -gt 60 ]; then
+    echo "First line must be <=60 characters"
+    exit 1
+fi
