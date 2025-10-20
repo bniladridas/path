@@ -5,16 +5,10 @@
       "runtime": "@vercel/python"
     }
   },
-  "builds": [
+  "rewrites": [
     {
-      "src": "path/static/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/path/index"
+      "source": "/(.*)",
+      "destination": "/path/index"
     }
   ]
 }
