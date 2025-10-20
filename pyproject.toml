@@ -65,6 +65,8 @@ known-first-party = ["path"]
 [tool.ruff.lint.per-file-ignores]
 # Example: Ignore certain rules in test files
 "tests/*.py" = ["S101", "ARG"]
+# Ignore N802 for AST visitor methods in utility scripts
+"scripts/check-unused.py" = ["N802"]
 
 # Global ignore rules
 "*" = [
