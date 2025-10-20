@@ -8,31 +8,31 @@ module.exports = defineConfig({
   testDir: './e2e',
   // Global timeout for all tests (30 minutes)
   timeout: 30 * 60 * 1000,
-  
+
   expect: {
     // Maximum time expect() should wait for the condition to be met (10 seconds)
     timeout: 10000,
-    
+
     // Add custom matchers for better test assertions
     toMatchSnapshot: { maxDiffPixelRatio: 0.01 },
   },
-  
+
   // Run tests in files in parallel
   fullyParallel: false,
-  
+
   // Fail the build on CI if you accidentally left test.only in the source code.
   forbidOnly: !!process.env.CI,
-  
+
   // Retry failed tests on CI with 2 retries
   retries: process.env.CI ? 2 : 1,
-  
+
   // Limit the number of workers for stability
   workers: 1,
-  
+
   // Reporter to use
   reporter: [
     ['list'],
-    ['html', { 
+    ['html', {
       open: 'never',
       outputFolder: 'playwright-report',
       outputName: 'index.html'
@@ -40,18 +40,18 @@ module.exports = defineConfig({
     ['github'],
     ['json', { outputFile: 'test-results/results.json' }]
   ],
-  
+
   // Shared settings for all the projects
   use: {
     // Base URL to use in actions like `await page.goto('/')`
     baseURL: process.env.BASE_URL || 'http://localhost:8000',
-    
+
     // Maximum time each action such as `click()` can take (30 seconds)
     actionTimeout: 30000,
-    
+
     // Maximum time navigation operations can take (30 seconds)
     navigationTimeout: 30000,
-    
+
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
     screenshot: 'only-on-failure', // Take screenshots only on failure
@@ -60,7 +60,7 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { 
+      use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 800 },
         launchOptions: {
@@ -98,14 +98,14 @@ module.exports = defineConfig({
     /*
     {
       name: 'firefox',
-      use: { 
+      use: {
         ...devices['Desktop Firefox'],
         viewport: { width: 1280, height: 800 },
       },
     },
     {
       name: 'webkit',
-      use: { 
+      use: {
         ...devices['Desktop Safari'],
         viewport: { width: 1280, height: 800 },
       },

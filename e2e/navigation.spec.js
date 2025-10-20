@@ -30,25 +30,25 @@ const TEST_DATA = {
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page, baseURL }) => {
     console.log('Starting navigation test...');
-    
+
     // Clear any existing session data
     await page.context().clearCookies();
-    
+
     // Bypass verification
     await bypassVerification(page, baseURL);
-    
+
     // Ensure we're on the home page
     const currentUrl = new URL(page.url());
     if (!currentUrl.pathname.endsWith('/')) {
       await page.goto(baseURL, { waitUntil: 'networkidle' });
     }
-    
+
     console.log('Test setup complete, current URL:', page.url());
   });
 
   test('should have working navigation links', async ({ page, baseURL }) => {
     console.log('Testing navigation links...');
-    
+
     // Track test results
     const testResults = {
       total: 0,
@@ -57,16 +57,16 @@ test.describe('Navigation', () => {
       skipped: 0,
       details: []
     };
-    
+
     try {
       // Get all navigation links on the page
-      const navLinks = await page.$$eval(SELECTORS.NAV_LINKS, 
+      const navLinks = await page.$$eval(SELECTORS.NAV_LINKS,
         elements => elements
           .filter(el => el.href && !el.href.startsWith('javascript:') && !el.href.startsWith('mailto:'))
           .map(el => ({
             text: el.textContent?.trim() || '',
             href: el.href,
-            selector: el.getAttribute('data-testid') || 
+            selector: el.getAttribute('data-testid') ||
                      el.getAttribute('id') ? `#${el.getAttribute('id')}` :
                      el.getAttribute('class') ? `.${el.getAttribute('class').split(' ')[0]}` :
                      `a[href="${el.getAttribute('href')}"]`,
@@ -109,15 +109,15 @@ test.describe('Navigation', () => {
         };
 
         console.log(`\nTesting navigation [${index + 1}/${testResults.total}]:`, navItem.selector);
-        
+
         try {
           // Navigate back to home before each test
           await page.goto(baseURL, { waitUntil: 'networkidle' });
-          
+
           // Find the element
           const element = page.locator(navItem.selector).first();
           const isVisible = await element.isVisible().catch(() => false);
-          
+
           if (!isVisible) {
             result.status = 'skipped';
             result.reason = 'Element not visible';
@@ -126,7 +126,7 @@ test.describe('Navigation', () => {
             console.log(`Skipping hidden element: ${navItem.selector}`);
             continue;
           }
-          
+
           // Get element details for debugging
           const elementInfo = await element.evaluate(el => ({
             tagName: el.tagName,
@@ -195,77 +195,77 @@ test.describe('Navigation', () => {
           result.reason = error.message;
           testResults.failed++;
           console.error(`❌ Error testing navigation [${navItem.selector}]:`, error.message);
-          
+
           // Take screenshot on error
           const screenshotPath = `navigation-error-${index + 1}.png`;
           await page.screenshot({ path: screenshotPath });
           console.log(`Screenshot saved: ${screenshotPath}`);
         }
-        
+
         testResults.details.push(result);
       }
-      
+
       // Generate test summary
       console.log('\n=== Navigation Test Summary ===');
       console.log(`Total: ${testResults.total}`);
       console.log(`✅ Passed: ${testResults.passed}`);
       console.log(`❌ Failed: ${testResults.failed}`);
       console.log(`⏩ Skipped: ${testResults.skipped}`);
-      
+
       // Log detailed results
       if (testResults.details.length > 0) {
         console.log('\n=== Detailed Results ===');
         testResults.details.forEach(detail => {
-          const statusIcon = detail.status === 'passed' ? '✅' : 
-                           detail.status === 'failed' ? '❌' : 
+          const statusIcon = detail.status === 'passed' ? '✅' :
+                           detail.status === 'failed' ? '❌' :
                            detail.status === 'skipped' ? '⏩' : '❓';
           console.log(`${statusIcon} [${detail.index}] ${detail.selector}`);
           if (detail.reason) console.log(`   Reason: ${detail.reason}`);
           if (detail.destination) console.log(`   Destination: ${detail.destination}`);
         });
       }
-      
+
       // Fail the test if any navigation tests failed
       if (testResults.failed > 0) {
         throw new Error(`${testResults.failed} navigation test(s) failed`);
       }
-      
+
       if (testResults.passed === 0) {
         console.warn('No navigation links were tested successfully. Taking a screenshot...');
         await page.screenshot({ path: 'no-navigation-links.png' });
         console.log('Screenshot saved: no-navigation-links.png');
       }
-      
+
     } catch (error) {
       console.error('Error in navigation test:', error);
       await page.screenshot({ path: 'navigation-test-error.png' });
       throw error; // Re-throw to fail the test
     }
   });
-  
+
   test('should maintain theme preference', async ({ page, baseURL }) => {
     console.log('Testing theme preference...');
-    
+
     try {
       // Wait for the page to be fully loaded
       await page.waitForLoadState('networkidle');
-      
+
       // Try to find theme toggle button (if it exists)
       const themeToggle = page.locator(SELECTORS.THEME_TOGGLE).filter({ hasText: TEST_DATA.THEME_TOGGLE_TEXT }).first();
-      
+
       if (await themeToggle.isVisible()) {
         console.log('Theme toggle button found, testing theme switching...');
-        
+
         // Get current theme class
         const body = page.locator(SELECTORS.BODY);
         const initialTheme = await body.getAttribute('class') || '';
-        
+
         // Toggle theme
         await themeToggle.click();
-        
+
         // Wait for theme change (if any)
         await expect(body).not.toHaveAttribute('class', initialTheme, { timeout: 5000 });
-        
+
         // Get new theme class
         const newTheme = await body.getAttribute('class') || '';
 
@@ -289,7 +289,7 @@ test.describe('Navigation', () => {
       } else {
         console.log('No theme toggle found, skipping theme test');
       }
-      
+
       console.log('Theme preference test completed');
     } catch (error) {
       console.error('Error in theme preference test:', error);
