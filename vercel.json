@@ -3,12 +3,7 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb",
-        "runtime": "python3.11",
-        "installCommand": "chmod +x build.sh && ./build.sh"
-      }
+      "use": "@vercel/python@6.0.0"
     },
     {
       "src": "static/**",
@@ -21,36 +16,8 @@
       "dest": "/static/$1"
     },
     {
-      "src": "/terms",
-      "dest": "/app.py"
-    },
-    {
-      "src": "/privacy",
-      "dest": "/app.py"
-    },
-    {
-      "src": "/updates",
-      "dest": "/app.py"
-    },
-    {
-      "src": "/verify",
-      "dest": "/app.py"
-    },
-    {
-      "src": "/bypass-verification",
-      "dest": "/app.py"
-    },
-    {
       "src": "/(.*)",
       "dest": "/app.py"
     }
-  ],
-  "build": {
-    "env": {
-      "PYTHONPATH": "/var/task"
-    }
-  },
-  "env": {
-    "PYTHONPATH": "."
-  }
+  ]
 }
