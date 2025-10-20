@@ -17,17 +17,39 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v5
 
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx (with retry)
       uses: docker/setup-buildx-action@v3
+      with:
+        install: true
+      timeout-minutes: 5
+      continue-on-error: true
+
+    - name: Verify Docker setup
+      run: |
+        echo "Docker version:"
+        docker version
+        echo "Available builders:"
+        docker buildx ls || echo "Buildx not available, using standard Docker"
 
     - name: Build Docker image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        load: true
-        tags: path-app:test
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+      run: |
+        echo "Building Docker image..."
+        if docker buildx version >/dev/null 2>&1; then
+          echo "Using Docker Buildx"
+          docker buildx build \
+            --load \
+            --tag path-app:test \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            . || {
+              echo "Buildx failed, falling back to standard build"
+              docker build -t path-app:test .
+            }
+        else
+          echo "Using standard Docker build"
+          docker build -t path-app:test .
+        fi
+        docker images path-app:test
 
     - name: Create test environment
       run: |
