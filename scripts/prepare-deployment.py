@@ -26,6 +26,7 @@ class DeploymentPrep:
     def __init__(self):
         self.root = Path.cwd()
         self.path_dir = self.root / "path"
+        self.api_dir = self.root / "api"  # For Vercel deployment
         self.templates_dir = self.root / "templates"
         self.static_dir = self.root / "static"
 
@@ -93,11 +94,20 @@ class DeploymentPrep:
         checks = [
             (self.templates_dir.exists(), "Root templates directory exists"),
             (self.static_dir.exists(), "Root static directory exists"),
-            ((self.path_dir / "templates").exists(), "PATH templates directory exists"),
-            ((self.path_dir / "static").exists(), "PATH static directory exists"),
             ((self.path_dir / "app.py").exists(), "PATH app.py exists"),
             ((self.path_dir / "index.py").exists(), "PATH index.py exists"),
         ]
+
+        # Add Vercel-specific checks if api directory exists
+        if self.api_dir.exists():
+            checks.extend(
+                [
+                    ((self.api_dir / "templates").exists(), "API templates directory exists (Vercel)"),
+                    ((self.api_dir / "static").exists(), "API static directory exists (Vercel)"),
+                    ((self.api_dir / "app.py").exists(), "API app.py exists (Vercel)"),
+                    ((self.api_dir / "index.py").exists(), "API index.py exists (Vercel)"),
+                ]
+            )
 
         all_passed = True
         for check, description in checks:
@@ -113,14 +123,37 @@ class DeploymentPrep:
         """Prepare for Vercel deployment."""
         self.print_status("Preparing for Vercel deployment...")
 
-        if not self.ensure_path_structure():
-            return False
+        # Create api directory for Vercel
+        self.api_dir.mkdir(exist_ok=True)
 
-        if not self.copy_templates():
-            return False
+        # Copy path files to api directory for Vercel
+        for file in ["app.py", "index.py"]:
+            src = self.path_dir / file
+            dst = self.api_dir / file
+            if src.exists():
+                shutil.copy2(src, dst)
+                self.print_status(f"Copied {file} to api/ directory")
+            else:
+                self.print_error(f"Missing required file: path/{file}")
+                return False
 
-        if not self.copy_static_files():
-            return False
+        # Copy templates to api directory
+        if self.templates_dir.exists():
+            api_templates = self.api_dir / "templates"
+            if api_templates.exists():
+                shutil.rmtree(api_templates)
+            shutil.copytree(self.templates_dir, api_templates)
+            template_count = len(list(api_templates.glob("*.html")))
+            self.print_status(f"Copied {template_count} template files to api/templates/")
+
+        # Copy static files to api directory
+        if self.static_dir.exists():
+            api_static = self.api_dir / "static"
+            if api_static.exists():
+                shutil.rmtree(api_static)
+            shutil.copytree(self.static_dir, api_static)
+            css_count = len(list(api_static.rglob("*.css")))
+            self.print_status(f"Copied {css_count} CSS files to api/static/")
 
         self.print_status("Vercel deployment preparation complete!")
         return True
