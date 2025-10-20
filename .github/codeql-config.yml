@@ -1,7 +1,7 @@
 # CodeQL Advanced Configuration
 # This file contains advanced settings for CodeQL analysis
 
-name: "Advanced CodeQL Configuration"
+name: "codeql conf"
 
 # Disable default queries to use only custom ones
 disable-default-queries: false
