@@ -10,47 +10,47 @@ jobs:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint yamllint
-        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
-          pip install -r requirements-py38.txt
-        else
-          pip install -r requirements.txt
-        fi
-    - name: Lint YAML files
-      run: |
-        # Run yamllint on all YAML files except those in .venv and .git directories
-        find . -type f \( -name "*.yaml" -o -name "*.yml" \) \
-          -not -path "./venv/*" \
-          -not -path "./*/venv/*" \
-          -not -path "./.git/*" \
-          -not -path "./node_modules/*" \
-          | xargs yamllint -c .yamllint
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint yamllint
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+            pip install -r requirements-py38.txt
+          else
+            pip install -r requirements.txt
+          fi
+      - name: Lint YAML files
+        run: |
+          # Run yamllint on all YAML files except those in .venv and .git directories
+          find . -type f \( -name "*.yaml" -o -name "*.yml" \) \
+            -not -path "./venv/*" \
+            -not -path "./*/venv/*" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            | xargs yamllint -c .yamllint
 
-    - name: Run pylint
-      run: |
-        # Install pylint-junit for JUnit XML output
-        pip install pylint-junit
+      - name: Run pylint
+        run: |
+          # Install pylint-junit for JUnit XML output
+          pip install pylint-junit
 
-        # Create a pylint config file
-        echo "[MASTER]
-        ignore=venv
-        ignore-patterns=("*_test.py", "*_tests.py")
-        extension-pkg-whitelist=flask
-        load-plugins=pylint_flask
+          # Create a pylint config file
+          echo "[MASTER]
+          ignore=venv
+          ignore-patterns=("*_test.py", "*_tests.py")
+          extension-pkg-whitelist=flask
+          load-plugins=pylint_flask
 
-        [FORMAT]
-        max-line-length=100
-        " > .pylintrc
+          [FORMAT]
+          max-line-length=100
+          " > .pylintrc
 
-        # Run pylint on all Python files
-        find . -name "*.py" -not -path "./venv/*" \
-          | xargs pylint --output-format=pylint_junit.JUnitReporter \
-          > pylint-results.xml || true
+          # Run pylint on all Python files
+          find . -name "*.py" -not -path "./venv/*" \
+            | xargs pylint --output-format=pylint_junit.JUnitReporter \
+            > pylint-results.xml || true
