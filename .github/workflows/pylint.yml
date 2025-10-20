@@ -32,8 +32,8 @@ jobs:
 
     - name: Run pylint with parallel processing
       run: |
-        # Install parallel-lint for running pylint in parallel
-        pip install pylint-junit-xml pylint-parallel
+        # Install pylint-junit for JUnit XML output and pylint-parallel for parallel processing
+        pip install pylint-junit pylint-parallel
 
         # Create a pylint config file
         echo "[MASTER]
