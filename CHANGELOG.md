@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/bniladridas/path/compare/v1.1.1...v1.1.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* add Python runtime config to vercel.json ([ec6777e](https://github.com/bniladridas/path/commit/ec6777e4c569cc03449ed36c4c07c5d8141292b5))
+
 ## [1.1.1](https://github.com/bniladridas/path/compare/v1.1.0...v1.1.1) (2025-10-20)
 
 
