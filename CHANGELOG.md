@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/bniladridas/path/compare/v1.0.4...v1.0.5) (2025-10-20)
+
+
+### Bug Fixes
+
+* **vercel:** specify Python runtime version ([7594572](https://github.com/bniladridas/path/commit/7594572be4c4a52e768950d1635ebaa602029f8e))
+
 ## [1.0.4](https://github.com/bniladridas/path/compare/v1.0.3...v1.0.4) (2025-10-20)
 
 
