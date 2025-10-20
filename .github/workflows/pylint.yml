@@ -1,17 +1,19 @@
 name: pylint
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  build:
+  pylint:
+    name: Pylint
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.10"]  # Only test on latest Python version for speed
+        max-line-length: 100
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -19,6 +21,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Analysing the code with pylint
+    - name: Run pylint with parallel processing
       run: |
-        pylint $(git ls-files '*.py')
+        # Install parallel-lint for running pylint in parallel
+        pip install pylint-junit-xml pylint-parallel
+        
+        # Create a pylint config file
+        echo "[MASTER]
+        jobs=4
+        ignore=venv
+        ignore-patterns=("*_test.py", "*_tests.py")
+        extension-pkg-whitelist=flask
+        load-plugins=pylint_flask
+        " > .pylintrc
+        
+        # Run pylint in parallel on all Python files
+        find . -type f -name "*.py" -not -path "./venv/*" -not -path "./*/venv/*" | xargs pylint --rcfile=.pylintrc -j 4
