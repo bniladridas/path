@@ -23,13 +23,5 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ],
-  "build": {
-    "env": {
-      "PYTHONPATH": "/var/task"
-    }
-  },
-  "env": {
-    "PYTHONPATH": "/var/task"
-  }
+  ]
 }
