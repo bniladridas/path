@@ -53,42 +53,22 @@ updates:
       - "github-actions"
       - "dependencies"
 
-   # Docker (if applicable)
-   - package-ecosystem: "docker"
-     directory: "/"
-     schedule:
-       interval: "monthly"
-     open-pull-requests-limit: 3
-     reviewers:
-       - "bniladridas"
-     assignees:
-       - "bniladridas"
-     commit-message:
-       prefix: "docker"
-       include: "scope"
-     labels:
-       - "docker"
-       - "dependencies"
-
-   # Ruby gems (Bundler)
-   - package-ecosystem: "bundler"
-     directory: "/"
-     schedule:
-       interval: "weekly"
-       day: "monday"
-       time: "06:00"
-     open-pull-requests-limit: 5
-     reviewers:
-       - "bniladridas"
-     assignees:
-       - "bniladridas"
-     commit-message:
-       prefix: "deps"
-       prefix-development: "deps-dev"
-       include: "scope"
-     labels:
-       - "dependencies"
-       - "ruby"
+  # Docker (if applicable)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "bniladridas"
+    assignees:
+      - "bniladridas"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    labels:
+      - "docker"
+      - "dependencies"
 
   # Ruby gems (Bundler)
   - package-ecosystem: "bundler"
@@ -97,7 +77,6 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "06:00"
-      timezone: "Etc/UTC"
     open-pull-requests-limit: 5
     reviewers:
       - "bniladridas"
@@ -110,4 +89,3 @@ updates:
     labels:
       - "dependencies"
       - "ruby"
-

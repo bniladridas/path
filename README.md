@@ -1,4 +1,6 @@
-# harper
+```bash
+> eval 'pre-commit run --all-files'
+```
 
 ## Documentation
 
@@ -98,6 +100,58 @@ npm run test:debug
   * `test_app.py`: Basic route tests
 
 The code is production-ready, maintainable, and follows best practices for a small web app. Comprehensive test coverage ensures reliability and prevents regressions.
+
+## Pre-commit Hooks
+
+This project uses pre-commit hooks to ensure code quality and consistency. The configuration is defined in `.pre-commit-config.yaml`.
+
+### Setup
+
+1. Install pre-commit:
+   ```bash
+   pip install pre-commit
+   ```
+
+2. Install the git hooks:
+   ```bash
+   pre-commit install
+   ```
+
+### Available Hooks
+
+- **Python Linting**: Uses `ruff` for code quality and formatting
+- **YAML Linting**: Validates YAML syntax and style using `yamllint`
+- **End of File Fixer**: Ensures files end with a newline
+- **Trailing Whitespace**: Removes trailing whitespace
+- **YAML Syntax Check**: Validates YAML files for syntax errors
+
+### Running Hooks Manually
+
+To run all hooks on all files:
+```bash
+pre-commit run --all-files
+```
+
+To run a specific hook (e.g., yamllint):
+```bash
+pre-commit run yamllint --all-files
+```
+
+### YAML Linting
+
+YAML files are linted using `yamllint` with the configuration in `.yamllint`. Common issues and fixes are documented in [docs/development/troubleshooting/yaml-linting.md](docs/development/troubleshooting/yaml-linting.md).
+
+To check YAML files without committing:
+```bash
+yamllint .
+```
+
+### Updating Hooks
+
+To update to the latest versions of the hooks:
+```bash
+pre-commit autoupdate
+```
 
 ## Conventional Commits
 

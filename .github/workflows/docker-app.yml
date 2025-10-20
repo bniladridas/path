@@ -2,9 +2,9 @@ name: Docker Build & Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -44,7 +44,12 @@ jobs:
 
     - name: Run health check
       run: |
-        curl -s http://localhost:8000/verify | grep -q "verification" && echo "✅ App is responding" || echo "❌ App not responding"
+        if curl -s http://localhost:8000/verify | grep -q "verification"; then
+          echo "✅ App is responding"
+        else
+          echo "❌ App not responding"
+          exit 1
+        fi
 
     - name: Clean up
       run: |
