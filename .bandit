@@ -1,11 +1,11 @@
-[bandit]
 # Bandit configuration for path application
-exclude_dirs = venv,node_modules,.git
+exclude_dirs:
+  - venv
+  - node_modules
+  - .git
 
-[bandit.skip]
 # Skip these tests as they are false positives for web applications
-skips = B104,B310,B101
-
-# B104: hardcoded_bind_all_interfaces - Normal for web apps to bind to 0.0.0.0
-# B310: urllib_urlopen - Legitimate use for HTTP requests in our vendor code
-# B101: assert_used - Normal usage in test files
+skips:
+  - B104  # hardcoded_bind_all_interfaces - Normal for web apps to bind to 0.0.0.0
+  - B310  # urllib_urlopen - Legitimate use for HTTP requests in our vendor code
+  - B101  # assert_used - Normal usage in test files
