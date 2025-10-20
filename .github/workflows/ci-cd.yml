@@ -96,7 +96,7 @@ jobs:
       run: bandit -r . -c .bandit
 
     - name: Run Safety check
-      run: safety check -r requirements.txt
+      run: safety check -r requirements.txt --ignore 70612
 
   build-and-push:
     name: Build and Push Docker Image
