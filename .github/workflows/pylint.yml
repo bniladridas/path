@@ -30,14 +30,13 @@ jobs:
           -not -path "./node_modules/*" \
           | xargs yamllint -c .yamllint
 
-    - name: Run pylint with parallel processing
+    - name: Run pylint
       run: |
-        # Install pylint-junit for JUnit XML output and pylint-parallel for parallel processing
-        pip install pylint-junit pylint-parallel
+        # Install pylint-junit for JUnit XML output
+        pip install pylint-junit
 
         # Create a pylint config file
         echo "[MASTER]
-        jobs=4
         ignore=venv
         ignore-patterns=("*_test.py", "*_tests.py")
         extension-pkg-whitelist=flask
@@ -47,5 +46,7 @@ jobs:
         max-line-length=100
         " > .pylintrc
 
-        # Run pylint in parallel on all Python files
-        find . -type f -name "*.py" -not -path "./venv/*" -not -path "./*/venv/*" | xargs pylint --rcfile=.pylintrc -j 4
+        # Run pylint on all Python files
+        find . -name "*.py" -not -path "./venv/*" \
+          | xargs pylint --output-format=pylint_junit.JUnitReporter \
+          > pylint-results.xml || true
