@@ -2,12 +2,12 @@
 flask==3.0.3
 python-dotenv==1.0.1
 requests==2.31.0
-gunicorn==23.0.0
+gunicorn==22.0.0
 # google-generativeai is not compatible with Python 3.8
 # Use a mock or skip AI features for Python 3.8 testing
-vercel==0.3.2
-Werkzeug>=3.0.0,<4.0.0
-Jinja2>=3.1.6
-itsdangerous==2.2.0
-click==8.1.7
-MarkupSafe==2.1.3
+vercel==0.2.1
+Werkzeug>=2.3.0,<3.0.0
+Jinja2>=3.1.0,<3.2.0
+itsdangerous>=2.1.0,<2.3.0
+click>=8.0.0,<9.0.0
+MarkupSafe>=2.1.0,<2.2.0
