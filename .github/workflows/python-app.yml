@@ -40,6 +40,9 @@ jobs:
       run: |
         ruff check .
         ruff format --check .
+    - name: Prepare deployment files for testing
+      run: |
+        python scripts/prepare-deployment.py vercel
     - name: Test with pytest
       run: |
         PYTHONPATH=. pytest
