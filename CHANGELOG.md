@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/bniladridas/path/compare/v1.1.0...v1.1.1) (2025-10-20)
+
+
+### Bug Fixes
+
+* simplify api/index.py import structure ([efbd22a](https://github.com/bniladridas/path/commit/efbd22a0dba1f99d92e6e420249fdb4254569815))
+
 # [1.1.0](https://github.com/bniladridas/path/compare/v1.0.8...v1.1.0) (2025-10-20)
 
 
