@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/bniladridas/path/compare/v1.0.7...v1.0.8) (2025-10-20)
+
+
+### Bug Fixes
+
+* add api/index.py to import from path directory ([2264c89](https://github.com/bniladridas/path/commit/2264c89204366344f1d64cd56c487f005023501c))
+
 ## [1.0.7](https://github.com/bniladridas/path/compare/v1.0.6...v1.0.7) (2025-10-20)
 
 
