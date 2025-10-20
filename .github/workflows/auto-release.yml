@@ -17,200 +17,143 @@ env:
   DOCKER_IMAGE: path-app
 
 jobs:
-  check-release:
-    name: Check if Release Needed
+  release:
+    name: Create Release and Build Images
     runs-on: ubuntu-latest
-    outputs:
-      should-release: ${{ steps.semantic.outputs.new-release-published }}
-      version: ${{ steps.semantic.outputs.new-release-version }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-      - name: Install semantic-release
-        run: |
-          npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
+    - name: Install semantic-release
+      run: |
+        npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
 
-      - name: Create semantic-release config
-        run: |
-          cat > .releaserc.json << 'EOF'
-          {
-            "branches": ["main"],
-            "plugins": [
-              "@semantic-release/commit-analyzer",
-              "@semantic-release/release-notes-generator",
-              [
-                "@semantic-release/changelog",
-                {
-                  "changelogFile": "CHANGELOG.md"
-                }
-              ],
-              "@semantic-release/github",
-              [
-                "@semantic-release/git",
-                {
-                  "assets": ["CHANGELOG.md"],
-                  "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-                }
-              ]
+    - name: Create semantic-release config
+      run: |
+        cat > .releaserc.json << 'EOF'
+        {
+          "branches": ["main"],
+          "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+              "@semantic-release/changelog",
+              {
+                "changelogFile": "CHANGELOG.md"
+              }
+            ],
+            "@semantic-release/github",
+            [
+              "@semantic-release/git",
+              {
+                "assets": ["CHANGELOG.md"],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+              }
             ]
-          }
-          EOF
+          ]
+        }
+        EOF
 
-      - name: Run semantic-release (dry-run)
-        id: semantic
-        run: |
-          npx semantic-release --dry-run
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run semantic-release
+      id: semantic
+      run: |
+        npx semantic-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  automated-release:
-    name: Create Automated Release
-    runs-on: ubuntu-latest
-    needs: check-release
-    if: needs.check-release.outputs.should-release == 'true'
+    - name: Get release info
+      id: release
+      run: |
+        # Get the latest tag (which should be the one just created)
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        if [ -n "$LATEST_TAG" ]; then
+          echo "version=${LATEST_TAG#v}" >> $GITHUB_OUTPUT
+          echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "released=true" >> $GITHUB_OUTPUT
+        else
+          echo "released=false" >> $GITHUB_OUTPUT
+        fi
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set up Docker Buildx
+      if: steps.release.outputs.released == 'true'
+      uses: docker/setup-buildx-action@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+    - name: Log in to GitHub Container Registry
+      if: steps.release.outputs.released == 'true'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.GHCR_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install semantic-release
-        run: |
-          npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
+    - name: Log in to Docker Hub
+      if: steps.release.outputs.released == 'true'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Create semantic-release config
-        run: |
-          cat > .releaserc.json << 'EOF'
-          {
-            "branches": ["main"],
-            "plugins": [
-              "@semantic-release/commit-analyzer",
-              "@semantic-release/release-notes-generator",
-              [
-                "@semantic-release/changelog",
-                {
-                  "changelogFile": "CHANGELOG.md"
-                }
-              ],
-              "@semantic-release/github",
-              [
-                "@semantic-release/git",
-                {
-                  "assets": ["CHANGELOG.md"],
-                  "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-                }
-              ]
-            ]
-          }
-          EOF
+    - name: Extract metadata
+      if: steps.release.outputs.released == 'true'
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          ${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}
+          ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}
+        tags: |
+          type=semver,pattern={{version}},value=${{ steps.release.outputs.tag }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ steps.release.outputs.tag }}
+          type=semver,pattern={{major}},value=${{ steps.release.outputs.tag }}
+          type=raw,value=latest
 
-      - name: Run semantic-release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build and push release images
+      if: steps.release.outputs.released == 'true'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
-  build-and-push-release:
-    name: Build and Push Release Images
-    runs-on: ubuntu-latest
-    needs: [check-release, automated-release]
-    if: needs.check-release.outputs.should-release == 'true'
+    - name: Create success comment
+      if: steps.release.outputs.released == 'true'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const version = '${{ steps.release.outputs.version }}';
+          const body = `Automated Release v${version} Created Successfully
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
+          What was released:
+          - GitHub Release created
+          - Docker images built and pushed to both registries
+          - Changelog updated
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+          Docker Images:
+          - ghcr.io/${{ env.IMAGE_NAME }}:${version}
+          - ghcr.io/${{ env.IMAGE_NAME }}:latest
+          - harpertoken/${{ env.DOCKER_IMAGE }}:${version}
+          - harpertoken/${{ env.DOCKER_IMAGE }}:latest
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.GHCR_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          Usage:
+          docker run -p 8000:8000 ghcr.io/${{ env.IMAGE_NAME }}:${version}`;
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.DOCKER_REGISTRY }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.GHCR_REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}
-          tags: |
-            type=semver,pattern={{version}},value=v${{ needs.check-release.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=v${{ needs.check-release.outputs.version }}
-            type=semver,pattern={{major}},value=v${{ needs.check-release.outputs.version }}
-            type=raw,value=latest
-
-      - name: Build and push release images
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  notify-release:
-    name: Notify Release Success
-    runs-on: ubuntu-latest
-    needs: [check-release, automated-release, build-and-push-release]
-    if: needs.check-release.outputs.should-release == 'true'
-
-    steps:
-      - name: Create success comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const version = '${{ needs.check-release.outputs.version }}';
-            const body = `Automated Release v${version} Created Successfully
-
-            What was released:
-            - GitHub Release created
-            - Docker images built and pushed to both registries
-            - Changelog updated
-
-            Docker Images:
-            - ghcr.io/${{ env.IMAGE_NAME }}:${version}
-            - ghcr.io/${{ env.IMAGE_NAME }}:latest
-            - harpertoken/${{ env.DOCKER_IMAGE }}:${version}
-            - harpertoken/${{ env.DOCKER_IMAGE }}:latest
-
-            Usage:
-            docker run -p 8000:8000 ghcr.io/${{ env.IMAGE_NAME }}:${version}`;
-
-            github.rest.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
-              body: body
-            });
+          github.rest.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: body
+          });
