@@ -76,11 +76,7 @@ the following behaviors are not permitted in our community:
 
 ## enforcement
 
-### reporting
-if you experience or witness unacceptable behavior, please report it by:
-- opening an issue on the repository (for public matters)
-- contacting the maintainer directly at the email listed in the repository
-- using github's reporting features for serious violations
+reports of abusive, harassing, or otherwise unacceptable behavior may be reported to the project maintainer at bniladridas@gmail.com. all complaints will be reviewed and investigated promptly and fairly.
 
 ### response process
 when a violation is reported, we will:
