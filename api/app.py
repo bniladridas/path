@@ -14,13 +14,6 @@ Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
 
-"""
-PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
-
-A Flask web application that helps people find their way home through
-media exploration using Google's Gemini 2.0 Flash AI model.
-"""
-
 # Standard library imports
 import logging
 import os
@@ -29,11 +22,6 @@ import secrets
 import sys
 from pathlib import Path
 
-# Add the project root to Python path to ensure shared modules can be imported
-PROJECT_ROOT = str(Path(__file__).parent.parent)
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
-
 # Third-party imports
 import requests
 from dotenv import load_dotenv
@@ -41,6 +29,11 @@ from flask import Flask, jsonify, redirect, render_template, request, session, u
 
 # Local application imports
 from shared.requests_fallback import setup_requests_fallback
+
+# Add the project root to Python path to ensure shared modules can be imported
+PROJECT_ROOT = str(Path(__file__).parent.parent)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 # Set up requests fallback
 setup_requests_fallback()
