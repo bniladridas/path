@@ -27,9 +27,10 @@
   "build": {
     "env": {
       "PYTHONPATH": "/var/task"
-    }
+    },
+    "command": "chmod +x build.sh && ./build.sh"
   },
   "env": {
-    "PYTHONPATH": "."
+    "PYTHONPATH": "/var/task"
   }
 }
