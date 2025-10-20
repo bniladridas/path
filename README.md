@@ -1,7 +1,3 @@
-```bash
-> eval 'pre-commit run --all-files'
-```
-
 ## Documentation
 
 All minimal documentation files created:
