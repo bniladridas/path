@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/bniladridas/path/compare/v1.0.3...v1.0.4) (2025-10-20)
+
+
+### Bug Fixes
+
+* **vercel:** resolve conflicting functions and builds config ([5aeff30](https://github.com/bniladridas/path/commit/5aeff30c202985cfc3c452a1563e2c641964547b))
+
 ## [1.0.3](https://github.com/bniladridas/path/compare/v1.0.2...v1.0.3) (2025-10-20)
 
 
