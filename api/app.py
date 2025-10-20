@@ -14,11 +14,18 @@ Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
 
+"""
+PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
+
+A Flask web application that helps people find their way home through
+media exploration using Google's Gemini 2.0 Flash AI model.
+"""
+
 # Standard library imports
 import logging
 import os
 import re
-import secrets  # For generating secure session tokens
+import secrets
 import sys
 from pathlib import Path
 
