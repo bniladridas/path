@@ -3,11 +3,79 @@ line-length = 127
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "B", "A", "COM", "C4", "T10", "EM", "FA", "ISC", "ICN", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "ARG", "PTH", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "AIR", "PERF", "FURB", "LOG", "RUF"]
-ignore = ["S101", "S104", "COM812", "ISC001", "PLR2004", "LOG015", "G201", "INP001", "PTH100", "PTH118", "PTH120", "E501"]
+# Enable all available rules
+extend-select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "C4",  # flake8-comprehensions
+    "T10", # flake8-debugger
+    "EM",  # flake8-errmsg
+    "FA",  # flake8-future-annotations
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "PIE", # flake8-pie
+    "T20", # flake8-print
+    "PYI", # flake8-pyi
+    "PT",  # flake8-pytest-style
+    "Q",   # flake8-quotes
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    "SLOT", # flake8-slots
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "INT", # flake8-gettext
+    "ARG", # flake8-unused-arguments
+    "PTH", # flake8-use-pathlib
+    "PD",  # pandas-vet
+    "PGH", # pygrep-hooks
+    "PL",  # pylint
+    "TRY", # tryceratops
+    "FLY", # flynt
+    "NPY", # numpy
+    "AIR", # airflow
+    "PERF", # perflint
+    "FURB", # refurb
+    "RUF", # ruff-specific
+]
+
+# Ignore specific rules
+ignore = [
+    "S101",    # Use of assert detected
+    "S104",    # Possible binding to all interfaces
+    "COM812",  # Trailing comma missing
+    "ISC001",  # Line break before binary operator
+    "PLR2004", # Magic number used in comparison
+    "G201",    # Logging statement uses % formatting
+    "INP001",  # File is a namespace package
+    "PTH100",  # os.path.join should be replaced by pathlib.Path
+    "PTH118",  # os.path.abspath should be replaced by pathlib.Path
+    "PTH120",  # os.path.dirname should be replaced by pathlib.Path
+    "E501",    # Line too long (handled by black)
+]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
+
+[tool.ruff.lint.per-file-ignores]
+# Example: Ignore certain rules in test files
+"tests/*.py" = ["S101", "ARG"]
+
+[tool.ruff.isort]
+known-first-party = ["path"]
+
+[tool.ruff.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.flake8-annotations]
+allow-star-arg-any = true
