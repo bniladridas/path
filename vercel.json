@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python@5.7.1"
+      "use": "@vercel/python"
     },
     {
       "src": "static/**",
@@ -19,5 +19,13 @@
       "src": "/(.*)",
       "dest": "/app.py"
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "PYTHONPATH": "/var/task"
+    }
+  },
+  "env": {
+    "PYTHONPATH": "."
+  }
 }
