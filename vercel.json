@@ -23,8 +23,7 @@
   "build": {
     "env": {
       "PYTHONPATH": "/var/task"
-    },
-    "installCommand": "pip install -r requirements.txt"
+    }
   },
   "env": {
     "PYTHONPATH": "."
