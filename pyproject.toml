@@ -67,6 +67,8 @@ known-first-party = ["path"]
 "tests/*.py" = ["S101", "ARG"]
 # Ignore N802 for AST visitor methods in utility scripts
 "scripts/check-unused.py" = ["N802"]
+# Ignore print statements and other issues in deployment scripts
+"scripts/prepare-deployment.py" = ["T201", "PERF401"]
 
 # Global ignore rules
 "*" = [
