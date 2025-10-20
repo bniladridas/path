@@ -4,10 +4,49 @@ This module provides a fallback for the requests module when it's not available.
 """
 
 import sys
-from pathlib import Path
+# Path is used in type hints and potential path manipulations
+from pathlib import Path  # pylint: disable=unused-import
+
+# Try to import requests at module level
+try:
+    # Imported for its side effects, not directly used
+    import requests as _requests  # pylint: disable=unused-import
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    REQUESTS_AVAILABLE = False
+
+# Initialize module-level variables for vendored requests
+VENDORED_REQUESTS_AVAILABLE = False
+REQUEST_ERROR = None
+VENDORED_DELETE = None
+VENDORED_GET = None
+VENDORED_POST = None
+VENDORED_PUT = None
+VENDORED_REQUEST = None
+
+# Try to import vendored requests at module level
+if not REQUESTS_AVAILABLE:
+    try:
+        from requests_vendor import (  # type: ignore
+            RequestError as VendorRequestError,
+            delete as vendor_delete,
+            get as vendor_get,
+            post as vendor_post,
+            put as vendor_put,
+            request as vendor_request,
+        )
+        VENDORED_REQUESTS_AVAILABLE = True
+        REQUEST_ERROR = VendorRequestError
+        VENDORED_DELETE = vendor_delete
+        VENDORED_GET = vendor_get
+        VENDORED_POST = vendor_post
+        VENDORED_PUT = vendor_put
+        VENDORED_REQUEST = vendor_request
+    except ImportError:
+        pass
 
 
-def setup_requests_fallback():
+def setup_requests_fallback() -> bool:
     """
     Set up a requests module fallback using vendored implementation.
 
@@ -17,46 +56,27 @@ def setup_requests_fallback():
     Raises:
         ImportError: If neither requests nor vendored version is available
     """
-    try:
-        # Check if requests is already available
-        import requests  # pylint: disable=import-outside-toplevel,unused-import
+    if REQUESTS_AVAILABLE:
         return False
-    except ImportError:
-        try:
-            # Add the api directory to the Python path
-            api_dir = str(Path(__file__).parent.parent / "api")
-            if api_dir not in sys.path:
-                sys.path.insert(0, api_dir)
 
-            # Import the vendored requests module
-            from requests_vendor import (  # pylint: disable=import-outside-toplevel
-                RequestError,
-                delete,
-                get,
-                post,
-                put,
-                request,
-            )
+    if not VENDORED_REQUESTS_AVAILABLE:
+        raise ImportError(
+            "The 'requests' module is not available. "
+            "Please install it with 'pip install requests' or include a vendored version."
+        )
 
-            # Create a requests-compatible module
-            class RequestsFallback:  # pylint: disable=too-few-public-methods
-                """A requests-compatible module using our vendored implementation."""
+    # Create a requests-compatible module
+    class RequestsFallback:  # pylint: disable=too-few-public-methods
+        """A requests-compatible module using our vendored implementation."""
 
-                request = request
-                get = get
-                post = post
-                put = put
-                delete = delete
-                RequestError = RequestError
-                codes = type("Codes", (), {"ok": 200, "not_found": 404})
+        request = VENDORED_REQUEST
+        get = VENDORED_GET
+        post = VENDORED_POST
+        put = VENDORED_PUT
+        delete = VENDORED_DELETE
+        RequestError = REQUEST_ERROR
+        codes = type("Codes", (), {"ok": 200, "not_found": 404})
 
-            # Patch sys.modules
-            sys.modules["requests"] = RequestsFallback()
-            return True
-
-        except ImportError as import_error:
-            error_msg = (
-                "The 'requests' module is not available. "
-                "Please install it with 'pip install requests' or include a vendored version."
-            )
-            raise ImportError(error_msg) from import_error
+    # Patch sys.modules
+    sys.modules["requests"] = RequestsFallback()
+    return True
