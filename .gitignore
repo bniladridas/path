@@ -148,3 +148,7 @@ no-navigation-links.png
 playwright-report/
 test-results/
 eval
+
+# Generated deployment files (created by scripts/prepare-deployment.py)
+path/templates/
+path/static/

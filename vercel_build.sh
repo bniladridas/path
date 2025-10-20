@@ -14,4 +14,4 @@ echo "/var/task" > /var/task/site-packages.pth
 cp -r . /var/task/
 
 # Make sure the API handler is executable
-chmod +x /var/task/api/index.py
+chmod +x /var/task/path/index.py
