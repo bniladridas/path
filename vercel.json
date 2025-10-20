@@ -1,13 +1,8 @@
 {
-  "functions": {
-    "path/index.py": {
-      "runtime": "@vercel/python@3.9.16"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/path/index"
+      "destination": "/api/index"
     }
   ]
 }
