@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/bniladridas/path/compare/v1.0.1...v1.0.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* **ci:** prepare deployment files before running tests ([c9c280c](https://github.com/bniladridas/path/commit/c9c280ca877e3356f276004fa293eb3509918036))
+
 ## [1.0.1](https://github.com/bniladridas/path/compare/v1.0.0...v1.0.1) (2025-10-20)
 
 
