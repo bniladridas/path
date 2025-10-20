@@ -19,14 +19,7 @@ except ImportError:
 # Try to import vendored requests
 try:
     # type: ignore[import-not-found]
-    from requests_vendor import (
-        RequestError,
-        delete,
-        get,
-        post,
-        put,
-        request,
-    )
+    from requests_vendor import RequestError, delete, get, post, put, request
 
     VENDORED_AVAILABLE = True
 except ImportError:
