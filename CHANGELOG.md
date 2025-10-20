@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/bniladridas/path/compare/v1.0.6...v1.0.7) (2025-10-20)
+
+
+### Bug Fixes
+
+* remove api dir and use path for Vercel functions ([09e304e](https://github.com/bniladridas/path/commit/09e304ea82d207513c436bf4a4dfa6c0e91e7038))
+
 ## [1.0.6](https://github.com/bniladridas/path/compare/v1.0.5...v1.0.6) (2025-10-20)
 
 
