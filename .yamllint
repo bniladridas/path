@@ -1,0 +1,34 @@
+---
+# YAML Lint Configuration
+# See https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: default
+
+rules:
+  # Line length
+  line-length:
+    max: 120
+    allow-non-breakable-inline-mappings: true
+    allow-non-breakable-words: true
+  
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    check-multi-line-strings: false
+  
+  # Other rules
+  comments-indentation: disable  # Allow comments at any indentation
+  document-start: disable       # Don't require --- at start of file
+  empty-lines:
+    max: 3
+    max-start: 2
+    max-end: 2
+  
+  # Disable some rules that are too strict
+  trailing-spaces: disable
+  key-duplicates: disable
+  document-end: disable
+  
+  # GitHub Actions specific
+  truthy: disable  # Allow yes/no in GitHub Actions
