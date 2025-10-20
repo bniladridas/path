@@ -51,7 +51,32 @@ except ImportError:
         api_dir = str(Path(__file__).parent / "api")
         if api_dir not in sys.path:
             sys.path.insert(0, api_dir)
-        from requests_vendor import requests
+        # Import the vendored requests module
+        from requests_vendor import (
+            RequestError,
+            delete,
+            get,
+            post,
+            put,
+            request,
+        )
+
+        # Create a requests-compatible module
+        class RequestsModule:
+            """A requests-compatible module using our vendored implementation."""
+
+            request = request
+            get = get
+            post = post
+            put = put
+            delete = delete
+            RequestError = RequestError
+
+            # Add other necessary attributes
+            codes = type("Codes", (), {"ok": 200, "not_found": 404})
+
+        # Patch sys.modules
+        sys.modules["requests"] = RequestsModule()
     except ImportError as e:
         # If vendored version is not available, raise a helpful error
         error_msg = "The 'requests' module is not available. "
