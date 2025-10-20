@@ -4,9 +4,11 @@ This is a minimal implementation to support basic HTTP requests.
 """
 
 import json
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
+from urllib.error import URLError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import Request
+from urllib.request import urlopen
 
 
 class RequestError(Exception):

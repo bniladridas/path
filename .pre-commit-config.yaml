@@ -8,6 +8,18 @@ repos:
       - id: ruff-format
         args: [--line-length=127]
 
+  # Python Import Sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (python)
+        description: "Sorts Python imports"
+        entry: isort --profile black --line-length=127 --force-single-line
+        language: python
+        types: [python]
+        require_serial: true
+
   # YAML Linting
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.33.0
