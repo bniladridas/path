@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/bniladridas/path/compare/v1.0.5...v1.0.6) (2025-10-20)
+
+
+### Bug Fixes
+
+* update Vercel config for api directory ([46712fb](https://github.com/bniladridas/path/commit/46712fbb9cdb9a292b12ffd4c67ec8a0b1bdbfc1))
+
 ## [1.0.5](https://github.com/bniladridas/path/compare/v1.0.4...v1.0.5) (2025-10-20)
 
 
