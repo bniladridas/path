@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/bniladridas/path/compare/v1.1.3...v1.1.4) (2025-10-20)
+
+
+### Bug Fixes
+
+* use default Python runtime for Vercel ([530c2d2](https://github.com/bniladridas/path/commit/530c2d293081644d228ccace2102f1c19c18b9e1))
+
 ## [1.1.3](https://github.com/bniladridas/path/compare/v1.1.2...v1.1.3) (2025-10-20)
 
 
