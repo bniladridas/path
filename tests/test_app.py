@@ -5,7 +5,7 @@ Basic tests for the Flask app.
 import os
 import sys
 
-from app import app as flask_app
+from api.app import app as flask_app
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -15,7 +15,7 @@ sys.path.insert(0, project_root)
 def test_app_creation():
     """Test that the Flask app can be created."""
     assert flask_app is not None
-    assert flask_app.name == "app"
+    assert flask_app.name == "api.app"
 
 
 def test_index_route():
