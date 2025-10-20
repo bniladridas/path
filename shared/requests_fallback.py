@@ -3,47 +3,80 @@ Shared requests fallback implementation.
 This module provides a fallback for the requests module when it's not available.
 """
 
-import sys
-# Path is used in type hints and potential path manipulations
-from pathlib import Path  # pylint: disable=unused-import
+from __future__ import annotations
 
-# Try to import requests at module level
+import sys
+from typing import Any, ClassVar
+
+# Try to import requests and vendor at the module level
 try:
-    # Imported for its side effects, not directly used
-    import requests as _requests  # pylint: disable=unused-import
+    import requests  # noqa: F401
+
     REQUESTS_AVAILABLE = True
 except ImportError:
     REQUESTS_AVAILABLE = False
 
-# Initialize module-level variables for vendored requests
-VENDORED_REQUESTS_AVAILABLE = False
-REQUEST_ERROR = None
-VENDORED_DELETE = None
-VENDORED_GET = None
-VENDORED_POST = None
-VENDORED_PUT = None
-VENDORED_REQUEST = None
+# Try to import vendored requests
+try:
+    # type: ignore[import-not-found]
+    from requests_vendor import (
+        RequestError,
+        delete,
+        get,
+        post,
+        put,
+        request,
+    )
 
-# Try to import vendored requests at module level
-if not REQUESTS_AVAILABLE:
-    try:
-        from requests_vendor import (  # type: ignore
-            RequestError as VendorRequestError,
-            delete as vendor_delete,
-            get as vendor_get,
-            post as vendor_post,
-            put as vendor_put,
-            request as vendor_request,
-        )
-        VENDORED_REQUESTS_AVAILABLE = True
-        REQUEST_ERROR = VendorRequestError
-        VENDORED_DELETE = vendor_delete
-        VENDORED_GET = vendor_get
-        VENDORED_POST = vendor_post
-        VENDORED_PUT = vendor_put
-        VENDORED_REQUEST = vendor_request
-    except ImportError:
-        pass
+    VENDORED_AVAILABLE = True
+except ImportError:
+    VENDORED_AVAILABLE = False
+
+
+class RequestsFallback:
+    """A requests-compatible module using our vendored implementation."""
+
+    def __init__(self) -> None:
+        """Initialize the requests fallback with vendored implementations."""
+        self.request = self._get_vendored("request")
+        self.get = self._get_vendored("get")
+        self.post = self._get_vendored("post")
+        self.put = self._get_vendored("put")
+        self.delete = self._get_vendored("delete")
+        self.RequestError = self._get_vendored("RequestError")
+        self.codes = type("Codes", (), {"ok": 200, "not_found": 404})
+
+    # Class variable to store vendored implementations
+    _vendored: ClassVar[Any] = None
+
+    @classmethod
+    def set_vendored_implementation(cls):
+        """Set the vendored implementation."""
+
+        class Vendored:
+            request = request
+            get = get
+            post = post
+            put = put
+            delete = delete
+            RequestError = RequestError
+
+        cls._vendored = Vendored()
+
+    @classmethod
+    def _get_vendored(cls, name: str) -> Any:
+        """Get a vendored implementation by name.
+
+        Raises:
+            VendoredNotAvailableError: If vendored requests are not available
+        """
+        if cls._vendored is None:
+            error_msg = "Vendored requests not available"
+            raise cls.VendoredNotAvailableError(error_msg)
+        return getattr(cls._vendored, name, None)
+
+    class VendoredNotAvailableError(ImportError):
+        """Raised when vendored requests are not available."""
 
 
 def setup_requests_fallback() -> bool:
@@ -56,27 +89,23 @@ def setup_requests_fallback() -> bool:
     Raises:
         ImportError: If neither requests nor vendored version is available
     """
+    # Check if requests is already available
     if REQUESTS_AVAILABLE:
         return False
 
-    if not VENDORED_REQUESTS_AVAILABLE:
-        raise ImportError(
-            "The 'requests' module is not available. "
-            "Please install it with 'pip install requests' or include a vendored version."
+    if not VENDORED_AVAILABLE:
+        error_msg = (
+            "the 'requests' module is not available and could not use vendored version. "
+            "please install it with 'pip install requests' or include a complete vendored version."
         )
+        raise ImportError(error_msg)
 
-    # Create a requests-compatible module
-    class RequestsFallback:  # pylint: disable=too-few-public-methods
-        """A requests-compatible module using our vendored implementation."""
-
-        request = VENDORED_REQUEST
-        get = VENDORED_GET
-        post = VENDORED_POST
-        put = VENDORED_PUT
-        delete = VENDORED_DELETE
-        RequestError = REQUEST_ERROR
-        codes = type("Codes", (), {"ok": 200, "not_found": 404})
+    RequestsFallback.set_vendored_implementation()
 
     # Patch sys.modules
     sys.modules["requests"] = RequestsFallback()
     return True
+
+
+# Set up the fallback when the module is imported
+setup_requests_fallback()
