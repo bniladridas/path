@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # Local application imports
-from api.app import app
+from path.app import app
 
 # Add the current directory to Python path to ensure app.py can be found
 CURRENT_DIR = str(Path(__file__).parent.absolute())
