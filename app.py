@@ -38,7 +38,23 @@ import os  # For accessing environment variables
 import re  # For regular expressions (text post-processing)
 import secrets  # For generating secure session tokens
 
-import requests  # For making HTTP requests to Google Gemini API
+# Try to import requests, fall back to vendored version if not available
+try:
+    import requests
+except ImportError:
+    try:
+        # Try to use the vendored version in the same directory
+        import sys
+        from pathlib import Path
+
+        sys.path.append(str(Path(__file__).parent))
+        from requests_vendor import requests
+    except ImportError as e:
+        # If vendored version is not available, raise a helpful error
+        error_msg = "The 'requests' module is not available. "
+        error_msg += "Please install it with 'pip install requests' or include a vendored version."
+        raise ImportError(error_msg) from e
+
 from dotenv import load_dotenv  # For loading environment variables from .env file
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
