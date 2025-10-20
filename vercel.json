@@ -29,8 +29,6 @@
       "PYTHONPATH": "/var/task"
     }
   },
-  "buildCommand": "chmod +x build.sh && ./build.sh",
-  "devCommand": "python app.py",
   "env": {
     "PYTHONPATH": "/var/task"
   }

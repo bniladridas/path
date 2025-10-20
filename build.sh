@@ -1,15 +1,17 @@
 #!/bin/bash
 set -e
 
-# Install dependencies to a temporary directory
+# Create a temporary directory for dependencies
 TMP_DIR=$(mktemp -d)
+
+# Install all dependencies
 pip install -r requirements.txt --target $TMP_DIR
 
-# Copy all files to the function directory
-cp -R $TMP_DIR/* /var/task/
+# Copy all dependencies to the function directory
+cp -R $TMP_DIR/* /var/task/ || true
 
 # Create a path file to ensure Python can find our modules
 echo "/var/task" > /var/task/python_path.pth
 
-# Make sure the script is executable
-chmod +x /var/task/api/index.py
+# Install dependencies directly to the function directory
+pip install -r requirements.txt --target /var/task
