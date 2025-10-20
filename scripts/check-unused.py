@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: T201, N802, PTH123, PTH109, PERF401, TRY300, FA100
+# ruff: noqa: T201, PTH123, PTH109, PERF401, TRY300, FA100, N802
 """
 Unused Code Detection Script for Path Application
 
@@ -111,7 +111,7 @@ class UnusedCodeDetector:
 
             try:
                 with open(file, encoding="utf-8") as f:
-                    lines = [line.strip() for line in f.readlines() if line.strip()]
+                    lines = [line.strip() for line in f if line.strip()]
                     # Remove comments and docstrings
                     code_lines = [line for line in lines if not line.startswith("#") and not line.startswith('"""')]
                     if len(code_lines) <= 2:  # Very minimal files
