@@ -2,7 +2,7 @@ name: End-to-End Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'e2e/**'
       - 'app.py'
@@ -12,7 +12,7 @@ on:
       - 'playwright.config.js'
       - '.github/workflows/e2e.yml'
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'e2e/**'
       - 'app.py'
@@ -28,200 +28,210 @@ jobs:
     name: Run E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15  # Increased timeout for E2E tests
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.10'
-        
-    # Install Python dependencies first
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        # Install test dependencies explicitly
-        pip install pytest==7.1.2
-        
-    # Then handle Node.js and Playwright
-    - name: Set up Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: '18'
-        # Enable caching for npm
-        cache: 'npm'
-        
-    - name: Install Playwright
-      run: |
-        # Initialize package.json if it doesn't exist
-        if [ ! -f package.json ]; then
-          echo '{"name": "e2e-tests"}' > package.json
-        fi
-        
-        # Create a temporary package-lock.json if it doesn't exist
-        if [ ! -f package-lock.json ]; then
-          echo '{"name":"e2e-tests","version":"1.0.0","lockfileVersion":3,"requires":true}' > package-lock.json
-        fi
-        
-        # Install only the necessary Playwright packages
-        echo "Installing Playwright..."
-        npm install @playwright/test@latest --no-package-lock
-        
-        # Install only Chromium to save time/space
-        echo "Installing Chromium..."
-        npx playwright install --with-deps chromium
-        
-    - name: Kill existing process on port 8000
-      run: |
-        # Install necessary tools
-        sudo apt-get update
-        sudo apt-get install -y lsof procps
-        
-        # Kill any process using port 8000
-        echo "Killing processes on port 8000..."
-        # Use fuser to find and kill processes using the port
-        if command -v fuser >/dev/null 2>&1; then
-          sudo fuser -k 8000/tcp || true
-        else
-          # Fallback to lsof if fuser is not available
-          sudo pkill -f ":8000" || true
-          sudo pkill -f "flask run" || true
-          sudo kill -9 $(sudo lsof -t -i:8000) 2>/dev/null || true
-        fi
-        
-        # Verify port is free
-        if lsof -i :8000; then
-          echo "Error: Port 8000 is still in use after cleanup"
-          lsof -i :8000
-          exit 1
-         fi
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-    - name: Run Flask server and E2E tests
-      run: |
-         # Set environment variables
-         export FLASK_APP=app.py
-         export FLASK_ENV=development
-         export PYTHONUNBUFFERED=1
+      # Set up Python
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
 
-         # Create a unique log file for this run
-         export SERVER_LOG="server-$(date +%s).log"
-         echo "Using log file: $SERVER_LOG"
+      # Install Python dependencies
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # Install test dependencies explicitly
+          pip install pytest==7.1.2
 
-         # Function to start the server
-         start_server() {
-           echo "Starting Flask server on port 8000..."
-           nohup python3 -m flask run --port=8000 --host=0.0.0.0 --no-debugger --no-reload > "$SERVER_LOG" 2>&1 &
-           export FLASK_PID=$!
-           echo "Flask server started with PID: $FLASK_PID"
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '18'
+          # Enable caching for npm
+          cache: 'npm'
 
-           # Wait for server to be ready
-           echo "Waiting for server to start..."
-           for i in {1..30}; do
-             if curl -s --retry 3 --retry-delay 1 --max-time 5 http://localhost:8000 >/dev/null; then
-               echo "Server is up and running!"
-               return 0
-             fi
-             sleep 2
-             echo "Waiting for server to start... (attempt $i/30)"
-           done
-
-           echo "Server failed to start. Logs:"
-           cat "$SERVER_LOG"
-           return 1
-         }
-
-         # Function to stop the server
-         stop_server() {
-           echo "Stopping Flask server..."
-           # Kill the server process
-           if [ -n "$FLASK_PID" ]; then
-             echo "Killing Flask server process $FLASK_PID"
-             kill -9 $FLASK_PID 2>/dev/null || true
-           fi
-
-           # Make sure port 8000 is free
-           echo "Ensuring port 8000 is free..."
-           sudo pkill -f ":8000" || true
-           sudo pkill -f "flask run" || true
-           sudo kill -9 $(lsof -t -i:8000) 2>/dev/null || true
-         }
-
-         # Set up trap to ensure server is stopped on exit
-         trap stop_server EXIT
-
-         # Start the server
-         if ! start_server; then
-           echo "::error::Failed to start Flask server"
-           exit 1
-         fi
-
-         # Install Playwright browsers if not already installed
-         npx playwright install --with-deps chromium
-
-         # Run tests with retries and detailed reporting
-         npx playwright test \
-           --config=playwright.config.js \
-           --workers=1 \
-           --retries=2 \
-           --reporter=list,html,github \
-           --project=chromium
-      env:
-        BASE_URL: http://localhost:8000
-        CI: true
-        PLAYWRIGHT_TEST_TIMEOUT: 30000
-        PLAYWRIGHT_TEST_RETRIES: 2
-      timeout-minutes: 15
-        
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-report
-        path: |
-          playwright-report/
-          test-results/
-          server-*.log
-        retention-days: 7
-      
-    - name: Upload server logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: server-logs
-        path: server-*.log
-        retention-days: 7
-    
-    - name: Show server logs on error
-      if: failure()
-      run: |
-        echo "=== Server Logs ==="
-        ls -la server-*.log 2>/dev/null || echo "No server log files found"
-        for logfile in server-*.log; do
-          if [ -f "$logfile" ]; then
-            echo -e "\n=== $logfile ===\n"
-            cat "$logfile" || echo "Failed to read $logfile"
+      # Install Playwright
+      - name: Install Playwright
+        run: |
+          # Initialize package.json if it doesn't exist
+          if [ ! -f package.json ]; then
+            echo '{"name": "e2e-tests"}' > package.json
           fi
-        done
-        
-        echo -e "\n=== Test Results ==="
-        if [ -d "test-results" ]; then
-          find test-results -type f -name "*.txt" -exec echo -e "\n=== {} ===\n" \; -exec cat {} \; 2>/dev/null || true
-        else
-          echo "No test results directory found"
-        fi
-        
-        echo -e "\n=== Playwright Report ==="
-        if [ -d "playwright-report" ]; then
-          echo "Playwright report available for download as an artifact"
-          find playwright-report -type f -name "*.html" -o -name "*.json" | head -n 5 | while read -r file; do
-            echo -e "\n=== $file (first 20 lines) ===\n"
-            head -n 20 "$file" || true
-            echo -e "\n... (truncated)"
+
+          # Create a temporary package-lock.json if it doesn't exist
+          if [ ! -f package-lock.json ]; then
+            echo '{"name":"e2e-tests","version":"1.0.0","lockfileVersion":3,"requires":true}' > package-lock.json
+          fi
+
+          # Install only the necessary Playwright packages
+          echo "Installing Playwright..."
+          npm install @playwright/test@latest --no-package-lock
+
+          # Install only Chromium to save time/space
+          echo "Installing Chromium..."
+          npx playwright install --with-deps chromium
+
+      # Kill existing process on port 8000
+      - name: Kill existing process on port 8000
+        run: |
+          # Install necessary tools
+          sudo apt-get update
+          sudo apt-get install -y lsof procps
+
+          # Kill any process using port 8000
+          echo "Killing processes on port 8000..."
+          # Use fuser to find and kill processes using the port
+          if command -v fuser >/dev/null 2>&1; then
+            sudo fuser -k 8000/tcp || true
+          else
+            # Fallback to lsof if fuser is not available
+            sudo pkill -f ":8000" || true
+            sudo pkill -f "flask run" || true
+            sudo kill -9 $(sudo lsof -t -i:8000) 2>/dev/null || true
+          fi
+
+          # Verify port is free
+          if lsof -i :8000; then
+            echo "Error: Port 8000 is still in use after cleanup"
+            lsof -i :8000
+            exit 1
+          fi
+
+      # Run Flask server and E2E tests
+      - name: Run Flask server and E2E tests
+        run: |
+          # Set environment variables
+          export FLASK_APP=app.py
+          export FLASK_ENV=development
+          export PYTHONUNBUFFERED=1
+
+          # Create a unique log file for this run
+          export SERVER_LOG="server-$(date +%s).log"
+          echo "Using log file: $SERVER_LOG"
+
+          # Function to start the server
+          start_server() {
+            echo "Starting Flask server on port 8000..."
+            nohup python3 -m flask run --port=8000 --host=0.0.0.0 --no-debugger --no-reload > "$SERVER_LOG" 2>&1 &
+            export FLASK_PID=$!
+            echo "Flask server started with PID: $FLASK_PID"
+
+            # Wait for server to be ready
+            echo "Waiting for server to start..."
+            for i in {1..30}; do
+              if curl -s --retry 3 --retry-delay 1 --max-time 5 http://localhost:8000 >/dev/null; then
+                echo "Server is up and running!"
+                return 0
+              fi
+              sleep 2
+              echo "Waiting for server to start... (attempt $i/30)"
+            done
+
+            echo "Server failed to start. Logs:"
+            cat "$SERVER_LOG"
+            return 1
+          }
+
+          # Function to stop the server
+          stop_server() {
+            echo "Stopping Flask server..."
+            # Kill the server process
+            if [ -n "$FLASK_PID" ]; then
+              echo "Killing Flask server process $FLASK_PID"
+              kill -9 $FLASK_PID 2>/dev/null || true
+            fi
+
+            # Make sure port 8000 is free
+            echo "Ensuring port 8000 is free..."
+            sudo pkill -f ":8000" || true
+            sudo pkill -f "flask run" || true
+            sudo kill -9 $(lsof -t -i:8000) 2>/dev/null || true
+          }
+
+          # Set up trap to ensure server is stopped on exit
+          trap stop_server EXIT
+
+          # Start the server
+          if ! start_server; then
+            echo "::error::Failed to start Flask server"
+            exit 1
+          fi
+
+          # Install Playwright browsers if not already installed
+          npx playwright install --with-deps chromium
+
+          # Run tests with retries and detailed reporting
+          npx playwright test \
+            --config=playwright.config.js \
+            --workers=1 \
+            --retries=2 \
+            --reporter=list,html,github \
+            --project=chromium
+        env:
+          BASE_URL: http://localhost:8000
+          CI: true
+          PLAYWRIGHT_TEST_TIMEOUT: 30000
+          PLAYWRIGHT_TEST_RETRIES: 2
+        timeout-minutes: 15
+
+      # Upload test results
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+            server-*.log
+          retention-days: 7
+
+      # Upload server logs
+      - name: Upload server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-logs
+          path: server-*.log
+          retention-days: 7
+
+      # Show server logs on error
+      - name: Show server logs on error
+        if: failure()
+        run: |
+          echo "=== Server Logs ==="
+          ls -la server-*.log 2>/dev/null || echo "No server log files found"
+          for logfile in server-*.log; do
+            if [ -f "$logfile" ]; then
+              echo -e "\n=== $logfile ===\n"
+              cat "$logfile" || echo "Failed to read $logfile"
+            fi
           done
-          echo -e "\n=== End of partial report ==="
-        else
-          echo "No Playwright report directory found"
-        fi
+
+          echo -e "\n=== Test Results ==="
+          if [ -d "test-results" ]; then
+            find test-results -type f -name "*.txt" \
+              -exec echo -e "\n=== {} ===\n" \; \
+              -exec cat {} \; 2>/dev/null || true
+          else
+            echo "No test results directory found"
+          fi
+
+          echo -e "\n=== Playwright Report ==="
+          if [ -d "playwright-report" ]; then
+            echo "Playwright report available for download as an artifact"
+            find playwright-report -type f -name "*.html" -o -name "*.json" | head -n 5 | while read -r file; do
+              echo -e "\n=== $file (first 20 lines) ===\n"
+              head -n 20 "$file" || true
+              echo -e "\n... (truncated)"
+            done
+            echo -e "\n=== End of partial report ==="
+          else
+            echo "No Playwright report directory found"
+          fi

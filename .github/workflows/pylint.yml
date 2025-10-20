@@ -34,7 +34,7 @@ jobs:
       run: |
         # Install parallel-lint for running pylint in parallel
         pip install pylint-junit-xml pylint-parallel
-        
+
         # Create a pylint config file
         echo "[MASTER]
         jobs=4
@@ -42,10 +42,10 @@ jobs:
         ignore-patterns=("*_test.py", "*_tests.py")
         extension-pkg-whitelist=flask
         load-plugins=pylint_flask
-        
+
         [FORMAT]
         max-line-length=100
         " > .pylintrc
-        
+
         # Run pylint in parallel on all Python files
         find . -type f -name "*.py" -not -path "./venv/*" -not -path "./*/venv/*" | xargs pylint --rcfile=.pylintrc -j 4
