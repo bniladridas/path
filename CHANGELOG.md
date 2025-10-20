@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/bniladridas/path/compare/v1.0.0...v1.0.1) (2025-10-20)
+
+
+### Bug Fixes
+
+* **tests:** update imports from api to path module ([f3d9b69](https://github.com/bniladridas/path/commit/f3d9b698936702a1057d195b603a707503f31f3f))
+
 # 1.0.0 (2025-10-20)
 
 
