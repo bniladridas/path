@@ -5,7 +5,8 @@
       "src": "app.py",
       "use": "@vercel/python",
       "config": {
-        "installCommand": "pip install -r requirements.txt"
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.11"
       }
     },
     {
@@ -43,6 +44,11 @@
       "dest": "/app.py"
     }
   ],
+  "build": {
+    "env": {
+      "PYTHONPATH": "/var/task"
+    }
+  },
   "env": {
     "PYTHONPATH": "."
   }
