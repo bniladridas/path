@@ -1,14 +1,14 @@
 {
   "buildCommand": "python scripts/prepare-deployment.py vercel",
   "functions": {
-    "path/index.py": {
+    "api/index.py": {
       "runtime": "@vercel/python@3.9.16"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/path/index"
+      "destination": "/api/index"
     }
   ]
 }
