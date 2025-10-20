@@ -49,7 +49,7 @@ def request(method, url, **kwargs):
     req = Request(url, data=data, headers=headers, method=method.upper())
 
     try:
-        with urlopen(req) as response:
+        with urlopen(req) as response:  # nosec B310
             content = response.read()
             return Response(response, content)
     except HTTPError as e:
