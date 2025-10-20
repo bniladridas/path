@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: T201, PTH123, PTH109, PERF401, TRY300, FA100, N802
+# ruff: noqa: T201, PTH123, PTH109, PERF401, TRY300, FA100
 """
 Unused Code Detection Script for Path Application
 
