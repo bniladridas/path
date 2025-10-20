@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/bniladridas/path/compare/v1.0.8...v1.1.0) (2025-10-20)
+
+
+### Features
+
+* add static file routing for Vercel deployment ([0636a35](https://github.com/bniladridas/path/commit/0636a359c32f6bc047df80ea899b8b31bd0ef389))
+
 ## [1.0.8](https://github.com/bniladridas/path/compare/v1.0.7...v1.0.8) (2025-10-20)
 
 
