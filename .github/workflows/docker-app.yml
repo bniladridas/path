@@ -1,4 +1,4 @@
-name: docker
+name: Docker Build & Push
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-test:
+  docker-build-push:
     runs-on: ubuntu-latest
 
     steps:
