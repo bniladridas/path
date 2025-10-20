@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/bniladridas/path/compare/v1.1.2...v1.1.3) (2025-10-20)
+
+
+### Bug Fixes
+
+* use valid Python runtime version for Vercel ([d2ca693](https://github.com/bniladridas/path/commit/d2ca693a66c4035844c6b4b7840e7a3648060421))
+
 ## [1.1.2](https://github.com/bniladridas/path/compare/v1.1.1...v1.1.2) (2025-10-20)
 
 
