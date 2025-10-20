@@ -2,7 +2,7 @@
   "buildCommand": "python scripts/prepare-deployment.py vercel",
   "functions": {
     "path/index.py": {
-      "runtime": "@vercel/python"
+      "runtime": "@vercel/python@3.9.16"
     }
   },
   "rewrites": [
