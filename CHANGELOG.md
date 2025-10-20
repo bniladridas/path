@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/bniladridas/path/compare/v1.0.2...v1.0.3) (2025-10-20)
+
+
+### Bug Fixes
+
+* **vercel:** resolve 404 error after api to path rename ([5f91d8f](https://github.com/bniladridas/path/commit/5f91d8f02ab87cee32362429bd215e63f5a3762b))
+
 ## [1.0.2](https://github.com/bniladridas/path/compare/v1.0.1...v1.0.2) (2025-10-20)
 
 
