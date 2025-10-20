@@ -25,7 +25,13 @@ from pathlib import Path
 # Third-party imports
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask
+from flask import jsonify
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import session
+from flask import url_for
 
 # Local application imports
 from shared.requests_fallback import setup_requests_fallback
