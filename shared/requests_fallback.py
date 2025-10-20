@@ -6,7 +6,8 @@ This module provides a fallback for the requests module when it's not available.
 from __future__ import annotations
 
 import sys
-from typing import Any, ClassVar
+from typing import Any
+from typing import ClassVar
 
 # Try to import requests and vendor at the module level
 try:
@@ -19,7 +20,12 @@ except ImportError:
 # Try to import vendored requests
 try:
     # type: ignore[import-not-found]
-    from requests_vendor import RequestError, delete, get, post, put, request
+    from requests_vendor import RequestError
+    from requests_vendor import delete
+    from requests_vendor import get
+    from requests_vendor import post
+    from requests_vendor import put
+    from requests_vendor import request
 
     VENDORED_AVAILABLE = True
 except ImportError:
