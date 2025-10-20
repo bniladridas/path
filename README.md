@@ -11,15 +11,24 @@ All minimal documentation files created:
 
 [https://github.com/user-attachments/assets/460a42b9-d2ea-42d3-8d1f-13bd8fb54565](https://github.com/user-attachments/assets/460a42b9-d2ea-42d3-8d1f-13bd8fb54565)
 
-The codebase is a minimal Flask web application for AI-powered media exploration, structured as follows:
+The codebase is a Flask web application for AI-powered media exploration with comprehensive CI/CD and deployment infrastructure, structured as follows:
 
 **Core Structure:**
 
-* `app.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
+* `app_local.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
+* `app.py`: Docker entry point that imports from `app_local.py` for Gunicorn compatibility.
 * `templates/`: 5 HTML templates (index, verify, terms, privacy, updates) with semantic markup, accessibility features, and minimal inline JS.
 * `static/css/style.css`: Theme system using CSS custom properties, responsive design.
-* `requirements.txt`: Minimal dependencies (Flask, requests, python-dotenv).
+* `requirements.txt`: Production dependencies including Flask, Google Generative AI, Gunicorn, and security packages.
 * `tests/test_app.py`: Basic pytest tests.
+
+**Development Infrastructure:**
+
+* `.github/workflows/`: Automated CI/CD with Python 3.8-3.12 matrix testing, security scanning, Docker builds, and semantic releases.
+* `scripts/`: Unused code detection and cleanup tools.
+* `api/`: Vercel deployment structure with API endpoints.
+* `requirements-dev.txt`: Development dependencies including testing, linting, and security tools.
+* `requirements-py38.txt`: Python 3.8 compatible dependencies for legacy support.
 
 **Code Style:**
 
