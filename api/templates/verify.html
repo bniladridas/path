@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ================================================================
+         PATH - HUMAN VERIFICATION PAGE
+         ================================================================
+
+         Modern HTML5 verification interface to ensure human users
+         while maintaining accessibility and user-friendly design.
+
+         Author: Niladri Das (@bniladridas)
+         Repository: https://github.com/bniladridas/path
+         ================================================================ -->
+
+    <!-- Essential Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="harper - ensuring authentic human interaction">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Page Title -->
+    <title>harper</title>
+
+
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Performance Hints -->
+    <link rel="preload" href="{{ url_for('static', filename='css/style.css') }}" as="style">
+</head>
+
+<body>
+    <!-- ================================================================
+         VERIFICATION INTERFACE
+         ================================================================ -->
+    <div class="container" role="main">
+        <main class="hero-section">
+            <div class="hero-content">
+
+                <!-- ====================================================
+                     VERIFICATION HEADING
+                     ==================================================== -->
+                <header>
+                    <h1 class="hero-title" role="banner">verify you're human</h1>
+                </header>
+
+                <!-- ====================================================
+                     VERIFICATION SECTION
+                     ==================================================== -->
+                <section class="search-section" role="form" aria-label="Human verification form">
+
+                    <!-- Verification Image -->
+                    <div class="verification-image-container"
+                         role="img"
+                         aria-labelledby="verification-instructions">
+                        <img src="https://avatars.githubusercontent.com/u/203538727?s=400&u=03d5f82ddba3ed9bbd6b8ec6817bad7e532a44e8&v=4"
+                              alt="Verification challenge image showing a human avatar"
+                             class="verification-image"
+                             loading="eager"
+                             decoding="sync">
+                        <div id="verification-instructions" class="sr-only">
+                             Please describe what is shown in the image to verify you are human
+                        </div>
+                    </div>
+
+                    <!-- Verification Form -->
+                    <div class="search-container">
+                        <form action="/verify" method="post" novalidate>
+                            <div class="search-wrapper">
+                                <label for="verify-input" class="sr-only">
+                                     What is shown in the verification image?
+                                </label>
+                                <input type="text"
+                                       id="verify-input"
+                                       name="answer"
+                                        placeholder="what is shown in the image?"
+                                       autocomplete="off"
+                                       spellcheck="false"
+                                       required
+                                       aria-describedby="verify-help"
+                                       aria-invalid="{% if error %}true{% else %}false{% endif %}">
+                                <button type="submit"
+                                        class="search-submit"
+                                        aria-label="Submit verification answer">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M14 2L7 9L2 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="verify-help" class="sr-only">
+                                 Enter what you see in the image above
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Error Message Display -->
+                    {% if error %}
+                    <section class="response-section"
+                             role="alert"
+                             aria-live="polite"
+                             aria-atomic="true">
+                        <div id="response-container">
+                            <div class="error-message">please try again</div>
+                        </div>
+                    </section>
+                    {% endif %}
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================================================================
+         ACCESSIBILITY STYLES AND JAVASCRIPT
+         ================================================================ -->
+
+    <!-- Screen Reader Only Styles -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+
+    <script>
+        // ================================================================
+        // VERIFICATION PAGE JAVASCRIPT - Modern ES6+ with accessibility
+        // ================================================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize focus effects for verification input
+            const verifyInput = document.getElementById('verify-input');
+            const searchWrapper = document.querySelector('.search-wrapper');
+            const menuButton = document.getElementById('menu-button');
+
+            // Enhanced focus management for verification input
+            if (verifyInput && searchWrapper) {
+                verifyInput.addEventListener('focus', () => {
+                    searchWrapper.classList.add('focused');
+                });
+
+                verifyInput.addEventListener('blur', () => {
+                    searchWrapper.classList.remove('focused');
+                });
+
+                // Auto-focus on verification input for better UX
+                verifyInput.focus();
+            }
+
+            // Update menu button ARIA attributes if present
+            if (menuButton) {
+                menuButton.addEventListener('click', () => {
+                    const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+                    menuButton.setAttribute('aria-expanded', !expanded);
+                });
+            }
+
+            // Keyboard accessibility enhancements
+            document.addEventListener('keydown', function(e) {
+                // Allow Escape to clear input
+                if (e.key === 'Escape' && verifyInput) {
+                    verifyInput.value = '';
+                    verifyInput.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
