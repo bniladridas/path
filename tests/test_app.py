@@ -4,6 +4,7 @@ Basic tests for the Flask app.
 
 import os
 import sys
+
 from app import app as flask_app
 
 # Add the project root to the Python path
