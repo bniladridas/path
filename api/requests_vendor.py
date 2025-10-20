@@ -13,7 +13,7 @@ class RequestError(Exception):
     """Custom exception for request errors."""
 
 
-class Response:
+class Response:  # pylint: disable=too-few-public-methods
     """Minimal response object to match requests.Response interface."""
 
     def __init__(self, response, content):

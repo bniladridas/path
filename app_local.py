@@ -48,9 +48,9 @@ except ImportError:
         from pathlib import Path
 
         # Add the api directory to the Python path
-        api_dir = str(Path(__file__).parent / "api")
-        if api_dir not in sys.path:
-            sys.path.insert(0, api_dir)
+        API_DIR = str(Path(__file__).parent / "api")
+        if API_DIR not in sys.path:
+            sys.path.insert(0, API_DIR)
         # Import the vendored requests module
         from requests_vendor import (
             RequestError,
@@ -62,7 +62,7 @@ except ImportError:
         )
 
         # Create a requests-compatible module
-        class RequestsModule:
+        class HARPERSAI:  # pylint: disable=too-few-public-methods
             """A requests-compatible module using our vendored implementation."""
 
             request = request
