@@ -8,7 +8,7 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:headed": "playwright test --headed",
-    "vercel-build": "pip install -r requirements.txt --target /var/task",
+    "vercel-build": "./vercel_build.sh",
     "test:report": "playwright show-report"
   },
   "devDependencies": {
