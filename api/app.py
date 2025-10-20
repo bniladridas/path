@@ -1,21 +1,3 @@
-# ============================================================================
-# PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
-# ============================================================================
-#
-# "come home before it's too late"
-#
-# A Flask web application that helps people find their way home through
-# media exploration using Google's Gemini 2.0 Flash AI model.
-#
-# Core Philosophy:
-# - Authentic discovery: No manipulation, just honest responses
-# - Human longing: Honoring deeper needs behind every search
-# - Time is precious: Cutting through noise to find what matters
-# - Coming home: Helping people find their way back to themselves
-#
-# Author: Niladri Das (@bniladridas)
-# Repository: https://github.com/bniladridas/path
-# ============================================================================
 """
 PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
 
@@ -32,59 +14,29 @@ Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
 
-# Import necessary libraries for the Flask web application
+# Standard library imports
 import logging
-import os  # For accessing environment variables
-import re  # For regular expressions (text post-processing)
+import os
+import re
 import secrets  # For generating secure session tokens
+import sys
+from pathlib import Path
 
-# Try to import requests, fall back to vendored version if not available
-try:
-    import requests
-except ImportError:
-    try:
-        # Try to use the vendored version in the api directory
-        import sys
-        from pathlib import Path
+# Add the project root to Python path to ensure shared modules can be imported
+PROJECT_ROOT = str(Path(__file__).parent.parent)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-        # Add the api directory to the Python path
-        API_DIR = str(Path(__file__).parent / "api")
-        if API_DIR not in sys.path:
-            sys.path.insert(0, API_DIR)
-        # Import the vendored requests module
-        from requests_vendor import (
-            RequestError,
-            delete,
-            get,
-            post,
-            put,
-            request,
-        )
-
-        # Create a requests-compatible module
-        class HarpersAiModule:  # pylint: disable=too-few-public-methods
-            """A requests-compatible module using our vendored implementation."""
-
-            request = request
-            get = get
-            post = post
-            put = put
-            delete = delete
-            RequestError = RequestError
-
-            # Add other necessary attributes
-            codes = type("Codes", (), {"ok": 200, "not_found": 404})
-
-        # Patch sys.modules
-        sys.modules["requests"] = HarpersAiModule()
-    except ImportError as e:
-        # If vendored version is not available, raise a helpful error
-        error_msg = "The 'requests' module is not available. "
-        error_msg += "Please install it with 'pip install requests' or include a vendored version."
-        raise ImportError(error_msg) from e
-
-from dotenv import load_dotenv  # For loading environment variables from .env file
+# Third-party imports
+import requests
+from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+
+# Local application imports
+from shared.requests_fallback import setup_requests_fallback
+
+# Set up requests fallback
+setup_requests_fallback()
 
 # ============================================================================
 # APPLICATION INITIALIZATION
