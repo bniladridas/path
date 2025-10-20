@@ -43,11 +43,14 @@ try:
     import requests
 except ImportError:
     try:
-        # Try to use the vendored version in the same directory
+        # Try to use the vendored version in the api directory
         import sys
         from pathlib import Path
 
-        sys.path.append(str(Path(__file__).parent))
+        # Add the api directory to the Python path
+        api_dir = str(Path(__file__).parent / "api")
+        if api_dir not in sys.path:
+            sys.path.insert(0, api_dir)
         from requests_vendor import requests
     except ImportError as e:
         # If vendored version is not available, raise a helpful error

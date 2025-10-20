@@ -6,8 +6,7 @@
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
-        "runtime": "python3.11",
-        "includeFiles": ["app.py", "requirements.txt", "api/__init__.py", "api/requests_vendor.py"]
+        "runtime": "python3.11"
       }
     },
     {
@@ -24,5 +23,18 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
+  ],
+  "build": {
+    "env": {
+      "PYTHONPATH": "/var/task:/var/task/api"
+    }
+  },
+  "installCommand": "pip install -r requirements.txt",
+  "includeFiles": [
+    "app.py",
+    "requirements.txt",
+    "api/__init__.py",
+    "api/requests_vendor.py",
+    "api/index.py"
   ]
 }
