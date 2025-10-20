@@ -37,9 +37,10 @@ import logging
 import os  # For accessing environment variables
 import re  # For regular expressions (text post-processing)
 import secrets  # For generating secure session tokens
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+
 import requests  # For making HTTP requests to Google Gemini API
 from dotenv import load_dotenv  # For loading environment variables from .env file
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 # ============================================================================
 # APPLICATION INITIALIZATION
@@ -352,14 +353,9 @@ You approach each query with the excitement of discovering something new or shar
         if response.status_code != 200:
             # Check if it's a rate limit error
             error_message = response_json.get("error", {})
-            error_type = (
-                error_message.get("type") if isinstance(error_message, dict) else None
-            )
+            error_type = error_message.get("type") if isinstance(error_message, dict) else None
 
-            if (
-                error_type == "model_rate_limit"
-                or "rate limit" in str(error_message).lower()
-            ):
+            if error_type == "model_rate_limit" or "rate limit" in str(error_message).lower():
                 # Return a curious, learning-oriented message for rate limit errors
                 return jsonify(
                     {
