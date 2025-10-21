@@ -59,7 +59,9 @@ load_dotenv()
 
 # Initialize Flask application instance
 # Flask will serve our web interface and handle HTTP requests
-app = Flask(__name__)
+app = Flask(
+    __name__, template_folder=os.path.join(PROJECT_ROOT, "templates"), static_folder=os.path.join(PROJECT_ROOT, "static")
+)
 
 # Set a secret key for session management
 # This key is used to encrypt session data and maintain user verification state
