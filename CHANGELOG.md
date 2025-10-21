@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/bniladridas/path/compare/v1.10.3...v1.10.4) (2025-10-21)
+
+
+### Bug Fixes
+
+* make dotenv import optional for deployment ([4a6bb76](https://github.com/bniladridas/path/commit/4a6bb766bb7ba468440819dfd3ccd65edb825323))
+
 ## [1.10.3](https://github.com/bniladridas/path/compare/v1.10.2...v1.10.3) (2025-10-21)
 
 
