@@ -32,6 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo -e "\033[36m[INFO]\033[0m Upgrading pip and installing dependencies..."
           python -m pip install --upgrade pip
           if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
             pip install -r requirements-py38.txt
@@ -42,43 +43,41 @@ jobs:
 
       - name: Validate Vercel configuration
         run: |
-          echo "🔍 Validating vercel.json configuration..."
+          echo -e "\033[36m[INFO]\033[0m Validating vercel.json configuration..."
           if [ ! -f "vercel.json" ]; then
-            echo "❌ vercel.json not found"
+            echo -e "\033[31m[ERROR]\033[0m vercel.json not found"
             exit 1
           fi
 
-          # Validate JSON syntax
           python -m json.tool vercel.json > /dev/null
-          echo "✅ vercel.json is valid JSON"
+          echo -e "\033[32m[PASS]\033[0m vercel.json is valid JSON"
 
-          # Check for required app directory
           if [ ! -f "path/app.py" ]; then
-            echo "❌ path/app.py not found"
+            echo -e "\033[31m[ERROR]\033[0m path/app.py not found"
             exit 1
           fi
-          echo "✅ path/app.py exists"
+          echo -e "\033[32m[PASS]\033[0m path/app.py exists"
 
       - name: Test Flask app import
         run: |
-          echo "🔍 Testing Flask app import..."
+          echo -e "\033[36m[INFO]\033[0m Testing Flask app import..."
           cd path
           python -c "
           import sys
           sys.path.insert(0, '..')
           try:
               from app import app
-              print('✅ Flask app imported successfully')
-              print(f'✅ App name: {app.name}')
-              print(f'✅ App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
+              print('\033[32m[PASS]\033[0m Flask app imported successfully')
+              print(f'\033[36m[INFO]\033[0m App name: {app.name}')
+              print(f'\033[36m[INFO]\033[0m App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
           except Exception as e:
-              print(f'❌ Failed to import Flask app: {e}')
+              print(f'\033[31m[ERROR]\033[0m Failed to import Flask app: {e}')
               sys.exit(1)
           "
 
       - name: Test Flask app routes
         run: |
-          echo "🔍 Testing Flask app routes..."
+          echo -e "\033[36m[INFO]\033[0m Testing Flask app routes..."
           cd path
           python -c "
           import sys
@@ -86,19 +85,16 @@ jobs:
           from app import app
 
           with app.test_client() as client:
-              # Test home route with follow_redirects
               response = client.get('/', follow_redirects=True)
               assert response.status_code == 200, \
                   f'Expected 200 after redirect, got {response.status_code} for /'
-              print('✅ Home route (/) works (followed redirect)')
+              print('\033[32m[PASS]\033[0m Home route (/) works (followed redirect)')
 
-              # Test search route
               response = client.post('/search')
               assert response.status_code in [200, 400, 405], \
                   f'Expected 200, 400, or 405, got {response.status_code} for /search'
-              print('✅ Search route (/search) works')
+              print('\033[32m[PASS]\033[0m Search route (/search) works')
 
-              # Test static routes
               routes = [
                   '/terms', '/privacy', '/updates',
                   '/verify', '/bypass-verification'
@@ -107,47 +103,41 @@ jobs:
                   response = client.get(route)
                   assert response.status_code in [200, 302], \
                       f'Expected 200 or 302, got {response.status_code} for {route}'
-                  print(f'✅ {route} route works')
+                  print(f'\033[32m[PASS]\033[0m {route} route works')
 
-          print('✅ All routes tested successfully')
+          print('\033[32m[PASS]\033[0m All routes tested successfully')
           "
 
       - name: Simulate Vercel build process
         run: |
-          echo "🔍 Simulating Vercel build process..."
-
-          # Check Python version compatibility
+          echo -e "\033[36m[INFO]\033[0m Simulating Vercel build process..."
           python --version
 
-          # Install dependencies as Vercel would
           if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
             pip install -r requirements-py38.txt
           else
             pip install -r requirements.txt
           fi
 
-          # Check if static files exist
           if [ -d "static" ]; then
-            echo "✅ Static files directory found"
+            echo -e "\033[32m[PASS]\033[0m Static files directory found"
             find static -type f -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" | head -5
           fi
 
-          # Check if templates exist
           if [ -d "templates" ]; then
-            echo "✅ Templates directory found"
+            echo -e "\033[32m[PASS]\033[0m Templates directory found"
             find templates -name "*.html" | head -5
           fi
 
       - name: Test environment variables handling
         run: |
-          echo "🔍 Testing environment variables handling..."
+          echo -e "\033[36m[INFO]\033[0m Testing environment variables handling..."
           cd path
           python -c "
           import os
           import sys
           sys.path.insert(0, '..')
 
-          # Test without GEMINI_API_KEY (should not crash)
           os.environ.pop('GEMINI_API_KEY', None)
 
           try:
@@ -155,33 +145,31 @@ jobs:
               with app.test_client() as client:
                   response = client.get('/', follow_redirects=True)
                   assert response.status_code == 200
-              print('✅ App works without environment variables')
+              print('\033[32m[PASS]\033[0m App works without environment variables')
           except Exception as e:
-              print(f'❌ App failed without env vars: {e}')
+              print(f'\033[31m[ERROR]\033[0m App failed without env vars: {e}')
               sys.exit(1)
           "
 
       - name: Check for security issues
         run: |
-          echo "🔍 Checking for common security issues..."
+          echo -e "\033[36m[INFO]\033[0m Checking for common security issues..."
 
-          # Check for debug mode in production
           if grep -r "debug=True" path/ --include="*.py"; then
-            echo "⚠️  Warning: debug=True found in code"
+            echo -e "\033[33m[WARN]\033[0m debug=True found in code"
           else
-            echo "✅ No debug=True found"
+            echo -e "\033[32m[PASS]\033[0m No debug=True found"
           fi
 
-          # Check for hardcoded secrets
           if grep -r -i "api_key.*=" path/ --include="*.py" | grep -v "environ\\|getenv"; then
-            echo "⚠️  Warning: Potential hardcoded API keys found"
+            echo -e "\033[33m[WARN]\033[0m Potential hardcoded API keys found"
           else
-            echo "✅ No hardcoded API keys found"
+            echo -e "\033[32m[PASS]\033[0m No hardcoded API keys found"
           fi
 
       - name: Performance check
         run: |
-          echo "🔍 Running basic performance checks..."
+          echo -e "\033[36m[INFO]\033[0m Running basic performance checks..."
           cd path
           python -c "
           import time
@@ -189,34 +177,33 @@ jobs:
           sys.path.insert(0, '..')
           from app import app
 
-          # Test app startup time
           start_time = time.time()
           with app.test_client() as client:
               response = client.get('/')
           end_time = time.time()
 
           startup_time = (end_time - start_time) * 1000
-          print(f'✅ App response time: {startup_time:.2f}ms')
+          print(f'\033[36m[INFO]\033[0m App response time: {startup_time:.2f}ms')
 
-          if startup_time > 5000:  # 5 seconds
-              print('⚠️  Warning: App response time is slow')
+          if startup_time > 5000:
+              print('\033[33m[WARN]\033[0m App response time is slow')
           else:
-              print('✅ App response time is acceptable')
+              print('\033[32m[PASS]\033[0m App response time is acceptable')
           "
 
       - name: Generate deployment report
         run: |
-          echo "📊 Deployment Validation Report"
+          echo "Deployment Validation Report"
           echo "================================"
-          echo "✅ Python version: $(python --version)"
-          echo "✅ Flask app: Importable and functional"
-          echo "✅ Routes: All routes responding"
-          echo "✅ Configuration: vercel.json is valid"
-          echo "✅ Dependencies: All installed successfully"
-          echo "✅ Security: Basic checks passed"
-          echo "✅ Performance: Response times acceptable"
+          echo -e "\033[36m[INFO]\033[0m Python version: $(python --version)"
+          echo -e "\033[32m[PASS]\033[0m Flask app: Importable and functional"
+          echo -e "\033[32m[PASS]\033[0m Routes: All routes responding"
+          echo -e "\033[32m[PASS]\033[0m Configuration: vercel.json is valid"
+          echo -e "\033[32m[PASS]\033[0m Dependencies: All installed successfully"
+          echo -e "\033[32m[PASS]\033[0m Security: Basic checks passed"
+          echo -e "\033[32m[PASS]\033[0m Performance: Response times acceptable"
           echo ""
-          echo "🚀 Code is ready for Vercel deployment!"
+          echo -e "\033[32m[SUCCESS]\033[0m Code is ready for Vercel deployment!"
 
   notify-status:
     needs: validate-vercel-deployment
@@ -226,8 +213,8 @@ jobs:
       - name: Deployment validation status
         run: |
           if [ "${{ needs.validate-vercel-deployment.result }}" == "success" ]; then
-            echo "✅ All validation checks passed! Code is ready for Vercel deployment."
+            echo -e "\033[32m[SUCCESS]\033[0m All validation checks passed! Code is ready for Vercel deployment."
           else
-            echo "❌ Validation checks failed. Please fix issues before deploying to Vercel."
+            echo -e "\033[31m[FAIL]\033[0m Validation checks failed. Please fix issues before deploying to Vercel."
             exit 1
           fi
