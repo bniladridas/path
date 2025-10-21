@@ -1,3 +1,10 @@
+## [1.10.17](https://github.com/bniladridas/path/compare/v1.10.16...v1.10.17) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove duplicate requirements.txt from path ([4a99054](https://github.com/bniladridas/path/commit/4a99054fcbd1fbe89cd81e4bf38b1962d9f8e8b5))
+
 ## [1.10.16](https://github.com/bniladridas/path/compare/v1.10.15...v1.10.16) (2025-10-21)
 
 
