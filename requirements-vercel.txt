@@ -1,4 +1,4 @@
--e flask==3.1.2
+flask==3.1.2
 python-dotenv==1.1.1
 requests==2.32.5
 gunicorn==23.0.0
