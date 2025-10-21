@@ -28,6 +28,14 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Check requirements.txt exists
+      run: |
+        echo -e "\033[36m[INFO]\033[0m Checking for requirements.txt..."
+        if [[ ! -f requirements.txt ]]; then
+          echo -e "\033[31m[FAIL]\033[0m requirements.txt not found"
+          exit 1
+        fi
+        echo -e "\033[32m[PASS]\033[0m requirements.txt exists"
     - name: Install dependencies
       run: |
         echo -e "\033[36m[INFO]\033[0m Installing dependencies..."
