@@ -1,3 +1,5 @@
+# NOTE: To reduce duplication, consider consolidating into one app with env-based config.
+
 """
 PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
 
