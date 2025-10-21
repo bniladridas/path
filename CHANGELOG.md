@@ -1,3 +1,10 @@
+## [1.10.7](https://github.com/bniladridas/path/compare/v1.10.6...v1.10.7) (2025-10-21)
+
+
+### Bug Fixes
+
+* update root requirements.txt to match path versions ([0c4807e](https://github.com/bniladridas/path/commit/0c4807ea3ab80b4fff46868790bf9cc9ad3f40ba))
+
 ## [1.10.6](https://github.com/bniladridas/path/compare/v1.10.5...v1.10.6) (2025-10-21)
 
 
