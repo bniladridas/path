@@ -24,7 +24,6 @@ import sys
 from pathlib import Path
 
 # Third-party imports
-import requests
 from dotenv import load_dotenv
 from flask import jsonify
 from flask import redirect
@@ -32,9 +31,9 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-from flask_openapi3 import Info
-from flask_openapi3 import OpenAPI
-from flask_openapi3 import Tag
+from flask_openapi3.models.info import Info
+from flask_openapi3.models.tag import Tag
+from flask_openapi3.openapi import OpenAPI
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
@@ -51,6 +50,9 @@ try:
 except ImportError:
     # If shared module is not available, continue without fallback
     pass
+
+# Import requests after fallback setup
+import requests  # noqa: E402
 
 # ============================================================================
 # APPLICATION INITIALIZATION
