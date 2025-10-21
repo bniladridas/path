@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/bniladridas/path/compare/v1.6.0...v1.7.0) (2025-10-21)
+
+
+### Features
+
+* add colored ANSI logging to all workflow steps ([844fef6](https://github.com/bniladridas/path/commit/844fef6ac41fd4ab8d11b968e15c306fa1c1f042))
+
 # [1.6.0](https://github.com/bniladridas/path/compare/v1.5.1...v1.6.0) (2025-10-21)
 
 
