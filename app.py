@@ -54,9 +54,19 @@ except ImportError:
 # Import requests after fallback setup
 import requests  # noqa: E402
 
+# Try to import Google Generative AI
+try:
+    import google.generativeai as genai
+
+    GENAI_AVAILABLE = True
+except ImportError:
+    genai = None
+    GENAI_AVAILABLE = False
+
 # ============================================================================
 # APPLICATION INITIALIZATION
 # ============================================================================
+
 # Environment variables are loaded from Vercel environment in production
 # For local development, ensure .env file is present
 if not os.environ.get("VERCEL"):
@@ -112,6 +122,10 @@ app.secret_key = secrets.token_hex(16)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 logging.info(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")
 print(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")  # noqa: T201
+
+# Initialize Gemini if available
+if GENAI_AVAILABLE and GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)  # type: ignore[union-attr]
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
@@ -430,6 +444,16 @@ You approach each query with the excitement of discovering something new or shar
     Keep responses enthusiastic but concise, like someone sharing an exciting discovery.
     Limit responses to 2-3 sentences maximum.
     """
+
+    if not GENAI_AVAILABLE:
+        logging.error("Google Generative AI not available")
+        return jsonify(
+            {
+                "result": "AI functionality is currently unavailable. Please try again later.",
+                "error": "ai_unavailable",
+                "error_type": "service_unavailable",
+            }
+        )
 
     try:
         safe_query_for_log = query[:50].replace("\n", "").replace("\r", "")
