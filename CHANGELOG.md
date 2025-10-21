@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/bniladridas/path/compare/v1.10.2...v1.10.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* update python-dotenv version ([05d835d](https://github.com/bniladridas/path/commit/05d835dda0cd7a9edcba7bb633001c8875e21ec6))
+
 ## [1.10.2](https://github.com/bniladridas/path/compare/v1.10.1...v1.10.2) (2025-10-21)
 
 
