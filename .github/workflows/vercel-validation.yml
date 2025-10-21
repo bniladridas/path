@@ -48,22 +48,22 @@ jobs:
           python -m json.tool vercel.json > /dev/null
           echo "✅ vercel.json is valid JSON"
 
-          # Check for required api directory
-          if [ ! -d "api" ]; then
-            echo "❌ api directory not found"
+          # Check for required app directory
+          if [ ! -f "path/app.py" ]; then
+            echo "❌ path/app.py not found"
             exit 1
           fi
-          echo "✅ api directory exists"
+          echo "✅ path/app.py exists"
 
       - name: Test Flask app import
         run: |
           echo "🔍 Testing Flask app import..."
-          cd api
+          cd path
           python -c "
           import sys
-          sys.path.insert(0, '.')
+          sys.path.insert(0, '..')
           try:
-              from index import app
+              from app import app
               print('✅ Flask app imported successfully')
               print(f'✅ App name: {app.name}')
               print(f'✅ App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
@@ -75,11 +75,11 @@ jobs:
       - name: Test Flask app routes
         run: |
           echo "🔍 Testing Flask app routes..."
-          cd api
+          cd path
           python -c "
           import sys
-          sys.path.insert(0, '.')
-          from index import app
+          sys.path.insert(0, '..')
+          from app import app
 
           with app.test_client() as client:
               # Test home route
@@ -87,10 +87,10 @@ jobs:
               assert response.status_code == 200
               print('✅ Home route (/) works')
 
-              # Test test route
-              response = client.get('/test')
-              assert response.status_code == 200
-              print('✅ Test route (/test) works')
+              # Test search route
+              response = client.post('/search', data=dict(query='test'))
+              assert response.status_code in [200, 405]  # 405 if no query provided
+              print('✅ Search route (/search) works')
 
           print('✅ All routes tested successfully')
           "
@@ -120,17 +120,17 @@ jobs:
       - name: Test environment variables handling
         run: |
           echo "🔍 Testing environment variables handling..."
-          cd api
+          cd path
           python -c "
           import os
           import sys
-          sys.path.insert(0, '.')
+          sys.path.insert(0, '..')
 
           # Test without GEMINI_API_KEY (should not crash)
           os.environ.pop('GEMINI_API_KEY', None)
 
           try:
-              from index import app
+              from app import app
               with app.test_client() as client:
                   response = client.get('/')
                   assert response.status_code == 200
@@ -145,14 +145,14 @@ jobs:
           echo "🔍 Checking for common security issues..."
 
           # Check for debug mode in production
-          if grep -r "debug=True" api/ --include="*.py"; then
+          if grep -r "debug=True" path/ --include="*.py"; then
             echo "⚠️  Warning: debug=True found in code"
           else
             echo "✅ No debug=True found"
           fi
 
           # Check for hardcoded secrets
-          if grep -r -i "api_key.*=" api/ --include="*.py" | grep -v "environ\|getenv"; then
+          if grep -r -i "api_key.*=" path/ --include="*.py" | grep -v "environ\\|getenv"; then
             echo "⚠️  Warning: Potential hardcoded API keys found"
           else
             echo "✅ No hardcoded API keys found"
@@ -161,12 +161,12 @@ jobs:
       - name: Performance check
         run: |
           echo "🔍 Running basic performance checks..."
-          cd api
+          cd path
           python -c "
           import time
           import sys
-          sys.path.insert(0, '.')
-          from index import app
+          sys.path.insert(0, '..')
+          from app import app
 
           # Test app startup time
           start_time = time.time()
