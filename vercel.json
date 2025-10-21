@@ -48,13 +48,17 @@
       "src": "/verify",
       "dest": "/path/app.py"
     },
-    {
-      "src": "/bypass-verification",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/path/app.py",
+     {
+       "src": "/bypass-verification",
+       "dest": "/path/app.py"
+     },
+     {
+       "src": "/status",
+       "dest": "/path/app.py"
+     },
+     {
+       "src": "/(.*)",
+       "dest": "/path/app.py",
       "headers": {
         "X-Frame-Options": "DENY",
         "X-Content-Type-Options": "nosniff",
