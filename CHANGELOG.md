@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/bniladridas/path/compare/v1.11.0...v1.11.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* prevent pytest from collecting app routes as tests ([b6328b2](https://github.com/bniladridas/path/commit/b6328b2f7e0ebc3ac19757aef6d0185cb211277a))
+
 # [1.11.0](https://github.com/bniladridas/path/compare/v1.10.25...v1.11.0) (2025-10-21)
 
 
