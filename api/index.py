@@ -1,18 +1,11 @@
-from flask import Flask
+import sys
+from pathlib import Path
 
-app = Flask(__name__)
+from app_local import app as application
 
+# Add the parent directory to the Python path
+sys.path.append(str(Path(__file__).parent.parent))
 
-@app.route("/")
-def home():
-    return "Hello from Vercel! Flask app is working."
-
-
-@app.route("/test")
-def test():
-    return "Test route is working."
-
-
-# This is required for Vercel
+# For Vercel deployment
 if __name__ == "__main__":
-    app.run()
+    application.run(debug=True)
