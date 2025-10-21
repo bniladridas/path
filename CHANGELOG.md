@@ -1,3 +1,10 @@
+## [1.1.11](https://github.com/bniladridas/path/compare/v1.1.10...v1.1.11) (2025-10-21)
+
+
+### Bug Fixes
+
+* simplify Flask app for Vercel compatibility ([cbe3c89](https://github.com/bniladridas/path/commit/cbe3c89f3755949d2c4bd97df9c5d5e9a7e4a1a1))
+
 ## [1.1.10](https://github.com/bniladridas/path/compare/v1.1.9...v1.1.10) (2025-10-21)
 
 
