@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/bniladridas/path/compare/v1.10.1...v1.10.2) (2025-10-21)
+
+
+### Bug Fixes
+
+* requests import order and flask_openapi3 imports ([5c4dbb1](https://github.com/bniladridas/path/commit/5c4dbb1562d28e37da294293c36921eb12f19e37))
+
 ## [1.10.1](https://github.com/bniladridas/path/compare/v1.10.0...v1.10.1) (2025-10-21)
 
 
