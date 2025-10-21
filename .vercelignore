@@ -1,0 +1,11 @@
+__pycache__
+venv
+.env
+*.pyc
+.DS_Store
+*.log
+.python-version
+.pytest_cache/
+.vscode/
+*.swp
+*.swo
