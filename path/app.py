@@ -61,6 +61,10 @@ except ImportError:
 # and maintain different configurations for development and production
 load_dotenv()
 
+# Set up logging for debugging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.info("PATH app starting...")
+
 
 def get_version():
     """
@@ -102,6 +106,7 @@ app.secret_key = secrets.token_hex(16)
 # The API key authenticates our requests to Google's Gemini AI service
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+logging.info(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
@@ -343,6 +348,7 @@ def search():
     Returns:
         JSON Response: Contains either successful AI response or error information
     """
+    logging.info("Search request received")
     # ========================================================================
     # AUTHENTICATION CHECK
     # ========================================================================
@@ -350,6 +356,7 @@ def search():
     # Verify that the user has completed human verification
     # This ensures only verified humans can access the AI functionality
     if not session.get("verified"):
+        logging.warning("Search request denied: user not verified")
         return jsonify(
             {
                 "result": "please verify that you're human before using this service.",
@@ -419,6 +426,7 @@ You approach each query with the excitement of discovering something new or shar
     """
 
     try:
+        logging.info(f"Processing search query: {query[:50]}...")
         # Prepare the API request for Gemini
         # Set up the headers with content type
         headers = {"Content-Type": "application/json"}
@@ -438,6 +446,7 @@ You approach each query with the excitement of discovering something new or shar
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"gemini-{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
         )
+        logging.info("Sending request to Gemini API")
         response = requests.post(api_url, headers=headers, json=data, timeout=10)
 
         # Parse the JSON response from the API
@@ -496,6 +505,7 @@ You approach each query with the excitement of discovering something new or shar
 
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
+        logging.info("Search completed successfully")
         return jsonify({"result": result})
     except (
         requests.exceptions.RequestException,
@@ -566,3 +576,4 @@ if __name__ == "__main__":
 # For Vercel deployment
 # This exposes the Flask application as a module-level variable
 # Vercel looks for this variable to serve the application
+logging.info("PATH app initialized successfully for Vercel deployment")
