@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
 
-from app_local import app as application
+from path.app import app as application
 
-# Add the parent directory to the Python path
-sys.path.append(str(Path(__file__).parent.parent))
+# Add the project root to Python path
+PROJECT_ROOT = str(Path(__file__).parent.parent)
+sys.path.insert(0, PROJECT_ROOT)
 
 # For Vercel deployment
 if __name__ == "__main__":
