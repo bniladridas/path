@@ -104,6 +104,32 @@ class ErrorResponse(BaseModel):
 search_tag = Tag(name="Search", description="Media search and AI recommendations")
 auth_tag = Tag(name="Authentication", description="User verification and access")
 info_tag = Tag(name="Information", description="Static pages and information")
+status_tag = Tag(name="Status", description="System status and health checks")
+
+
+# ============================================================================
+# API ENDPOINTS - PROGRAMMATIC ACCESS
+# ============================================================================
+
+
+@app.get(
+    "/status",
+    summary="Get system status",
+    description="Check if the API is running and healthy",
+    tags=[status_tag],
+    responses={200: {"description": "API is healthy"}},
+)
+def get_status():
+    """
+    STATUS ENDPOINT - Health check for the API
+
+    Returns basic system information without requiring verification.
+    Useful for monitoring and load balancer health checks.
+
+    Returns:
+        JSON: Status information
+    """
+    return jsonify({"status": "healthy", "version": "1.0.0", "service": "PATH Media Exploration API"})
 
 
 # ============================================================================
