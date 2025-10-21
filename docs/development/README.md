@@ -2,6 +2,8 @@
 
 This directory contains documentation for developers working on the project.
 
+For project overview and setup, see the [main README](../../README.md).
+
 ## Table of Contents
 
 - [Development Environment Setup](./environment.md)
