@@ -59,7 +59,8 @@ import requests  # noqa: E402
 # ============================================================================
 # Environment variables are loaded from Vercel environment in production
 # For local development, ensure .env file is present
-load_dotenv()
+if not os.environ.get("VERCEL"):
+    load_dotenv()
 
 # Set up logging for debugging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
