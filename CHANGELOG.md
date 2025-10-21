@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/bniladridas/path/compare/v1.2.5...v1.2.6) (2025-10-21)
+
+
+### Bug Fixes
+
+* update python-dotenv for Python 3.8-3.12 compatibility ([9cccfd5](https://github.com/bniladridas/path/commit/9cccfd5b0a4bdc24f0cb819db60164f9d2c7a17f))
+
 ## [1.2.5](https://github.com/bniladridas/path/compare/v1.2.4...v1.2.5) (2025-10-21)
 
 
