@@ -1,3 +1,10 @@
+## [1.11.6](https://github.com/bniladridas/path/compare/v1.11.5...v1.11.6) (2025-10-21)
+
+
+### Bug Fixes
+
+* update Dockerfile to use app_local.py ([d79f1fb](https://github.com/bniladridas/path/commit/d79f1fb1d9e4cfbdf9a9507b528c8979b9685023))
+
 ## [1.11.5](https://github.com/bniladridas/path/compare/v1.11.4...v1.11.5) (2025-10-21)
 
 
