@@ -1,3 +1,10 @@
+## [1.10.16](https://github.com/bniladridas/path/compare/v1.10.15...v1.10.16) (2025-10-21)
+
+
+### Bug Fixes
+
+* use root requirements.txt for Vercel ([69538ab](https://github.com/bniladridas/path/commit/69538abff4fd496abc7095a9dc32fc8d83b60cd1))
+
 ## [1.10.15](https://github.com/bniladridas/path/compare/v1.10.14...v1.10.15) (2025-10-21)
 
 
