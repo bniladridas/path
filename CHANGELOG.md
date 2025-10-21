@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/bniladridas/path/compare/v1.9.0...v1.10.0) (2025-10-21)
+
+
+### Features
+
+* replace emojis with ANSI colored logging ([ea19fb4](https://github.com/bniladridas/path/commit/ea19fb4bcb5312ef9f8eb83b95201a3846ed505c))
+
 # [1.9.0](https://github.com/bniladridas/path/compare/v1.8.0...v1.9.0) (2025-10-21)
 
 
