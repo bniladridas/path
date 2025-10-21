@@ -99,6 +99,9 @@ known-first-party = ["path"]
     "E501",    # Line too long (handled by black)
 ]
 
+[tool.pytest.ini_options]
+python_files = "tests/*.py"
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
