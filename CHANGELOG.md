@@ -1,3 +1,10 @@
+## [1.10.9](https://github.com/bniladridas/path/compare/v1.10.8...v1.10.9) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove unused import and add dotenv loading ([3455a79](https://github.com/bniladridas/path/commit/3455a79d844ccb8acee1ec6778862079f6b9c556))
+
 ## [1.10.8](https://github.com/bniladridas/path/compare/v1.10.7...v1.10.8) (2025-10-21)
 
 
