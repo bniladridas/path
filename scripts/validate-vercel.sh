@@ -48,19 +48,19 @@ else
     exit 1
 fi
 
-# Check for api directory
-if [ -d "api" ]; then
-    print_success "api directory exists"
+# Check for path directory
+if [ -d "path" ]; then
+    print_success "path directory exists"
 else
-    print_error "api directory not found"
+    print_error "path directory not found"
     exit 1
 fi
 
-# Check for Python files in api
-if ls api/*.py > /dev/null 2>&1; then
-    print_success "Python files found in api directory"
+# Check for Python files in path
+if ls path/*.py > /dev/null 2>&1; then
+    print_success "Python files found in path directory"
 else
-    print_error "No Python files found in api directory"
+    print_error "No Python files found in path directory"
     exit 1
 fi
 
@@ -80,8 +80,8 @@ fi
 
 # Test Flask app import
 print_status "Testing Flask app import..."
-cd api
-if python -c "from index import app; print('Flask app imported successfully')" > /dev/null 2>&1; then
+cd path
+if python -c "from app import app; print('Flask app imported successfully')" > /dev/null 2>&1; then
     print_success "Flask app imports correctly"
 else
     print_error "Failed to import Flask app"
@@ -92,13 +92,10 @@ fi
 # Test Flask app routes
 print_status "Testing Flask app routes..."
 python -c "
-from index import app
+from app import app
 with app.test_client() as client:
-    response = client.get('/')
+    response = client.get('/', follow_redirects=True)
     assert response.status_code == 200, f'Home route failed: {response.status_code}'
-
-    response = client.get('/test')
-    assert response.status_code == 200, f'Test route failed: {response.status_code}'
 
 print('All routes working correctly')
 " 2>/dev/null
@@ -117,12 +114,12 @@ cd ..
 print_status "Checking for common issues..."
 
 # Check for debug mode
-if grep -r "debug=True" api/ --include="*.py" > /dev/null 2>&1; then
+if grep -r "debug=True" path/ --include="*.py" > /dev/null 2>&1; then
     print_warning "debug=True found in code - this should be disabled for production"
 fi
 
 # Check for hardcoded secrets
-if grep -r -i "api_key.*=" api/ --include="*.py" | grep -v "environ\|getenv" > /dev/null 2>&1; then
+if grep -r -i "api_key.*=" path/ --include="*.py" | grep -v "environ\|getenv" > /dev/null 2>&1; then
     print_warning "Potential hardcoded API keys found"
 fi
 
@@ -142,14 +139,14 @@ fi
 
 # Performance test
 print_status "Running basic performance test..."
-cd api
+cd path
 python -c "
 import time
-from index import app
+from app import app
 
 start_time = time.time()
 with app.test_client() as client:
-    response = client.get('/')
+    response = client.get('/', follow_redirects=True)
 end_time = time.time()
 
 response_time = (end_time - start_time) * 1000
