@@ -1,3 +1,12 @@
+## [1.10.14](https://github.com/bniladridas/path/compare/v1.10.13...v1.10.14) (2025-10-21)
+
+
+### Bug Fixes
+
+* add back PYTHONPATH for imports ([a89bedf](https://github.com/bniladridas/path/commit/a89bedfca401538f43e62d69ca70ed1eafd20b61))
+* remove PYTHONPATH from vercel config ([1a29c28](https://github.com/bniladridas/path/commit/1a29c281ceccf7ea640851d7a790ca4b3695de4c))
+* use python3.9 runtime for Vercel ([4b13d44](https://github.com/bniladridas/path/commit/4b13d444b182b234cdd5c0bdaf594493858d3b9d))
+
 ## [1.10.13](https://github.com/bniladridas/path/compare/v1.10.12...v1.10.13) (2025-10-21)
 
 
