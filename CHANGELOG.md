@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/bniladridas/path/compare/v1.2.14...v1.3.0) (2025-10-21)
+
+
+### Features
+
+* enhance OpenAPI spec with models and tags ([76e0343](https://github.com/bniladridas/path/commit/76e034371ec6f10d3a5f4df31bddecc1f98bf2d4))
+
 ## [1.2.14](https://github.com/bniladridas/path/compare/v1.2.13...v1.2.14) (2025-10-21)
 
 
