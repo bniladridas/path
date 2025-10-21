@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/bniladridas/path/compare/v1.1.4...v1.1.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove api directory and use legacy Vercel config ([cd2e7fb](https://github.com/bniladridas/path/commit/cd2e7fb138b95e8dcce625e8845f62a71ace4914))
+
 ## [1.1.4](https://github.com/bniladridas/path/compare/v1.1.3...v1.1.4) (2025-10-20)
 
 
