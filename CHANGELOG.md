@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/bniladridas/path/compare/v1.1.7...v1.1.8) (2025-10-21)
+
+
+### Bug Fixes
+
+* switch to modern Vercel functions format ([678026e](https://github.com/bniladridas/path/commit/678026ea6e4f4852e4aa3a3a17750b1976a3aadb))
+
 ## [1.1.7](https://github.com/bniladridas/path/compare/v1.1.6...v1.1.7) (2025-10-21)
 
 
