@@ -13,7 +13,8 @@ def hello():
 
 
 @app.route("/test")
-def test():
+def test_route():
+    """Test route to verify app functionality."""
     return "Test route is working."
 
 
