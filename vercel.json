@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "path/app.py",
+      "src": "app.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
@@ -26,48 +26,45 @@
     },
     {
       "src": "/",
-      "dest": "/path/app.py"
+      "dest": "/app.py"
     },
     {
       "src": "/search",
-      "dest": "/path/app.py",
+      "dest": "/app.py",
       "methods": ["POST"]
     },
     {
       "src": "/terms",
-      "dest": "/path/app.py"
+      "dest": "/app.py"
     },
     {
       "src": "/privacy",
-      "dest": "/path/app.py"
+      "dest": "/app.py"
     },
     {
       "src": "/updates",
-      "dest": "/path/app.py"
+      "dest": "/app.py"
     },
     {
       "src": "/verify",
-      "dest": "/path/app.py"
+      "dest": "/app.py"
     },
      {
        "src": "/bypass-verification",
-       "dest": "/path/app.py"
+       "dest": "/app.py"
      },
      {
        "src": "/status",
-       "dest": "/path/app.py"
+       "dest": "/app.py"
      },
      {
        "src": "/(.*)",
-       "dest": "/path/app.py",
+       "dest": "/app.py",
       "headers": {
         "X-Frame-Options": "DENY",
         "X-Content-Type-Options": "nosniff",
         "Referrer-Policy": "strict-origin-when-cross-origin"
       }
     }
-   ],
-   "env": {
-     "PYTHONPATH": ".:path"
-   }
+   ]
 }
