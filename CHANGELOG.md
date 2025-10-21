@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/bniladridas/path/compare/v1.2.0...v1.2.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* update vercel.json with correct runtime configuration ([fb6b634](https://github.com/bniladridas/path/commit/fb6b634fdd23ed9da910dd15373370c80e2738f1))
+
 # [1.2.0](https://github.com/bniladridas/path/compare/v1.1.11...v1.2.0) (2025-10-21)
 
 
