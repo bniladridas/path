@@ -64,6 +64,7 @@ load_dotenv()
 # Set up logging for debugging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.info("PATH app starting...")
+print("PATH app starting...")  # noqa: T201
 
 
 def get_version():
@@ -107,6 +108,7 @@ app.secret_key = secrets.token_hex(16)
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 logging.info(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")
+print(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")  # noqa: T201
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
@@ -349,6 +351,7 @@ def search():
         JSON Response: Contains either successful AI response or error information
     """
     logging.info("Search request received")
+    print("Search request received")  # noqa: T201
     # ========================================================================
     # AUTHENTICATION CHECK
     # ========================================================================
@@ -427,6 +430,7 @@ You approach each query with the excitement of discovering something new or shar
 
     try:
         logging.info(f"Processing search query: {query[:50]}...")
+        print(f"Processing search query: {query[:50]}...")  # noqa: T201
         # Prepare the API request for Gemini
         # Set up the headers with content type
         headers = {"Content-Type": "application/json"}
@@ -506,6 +510,7 @@ You approach each query with the excitement of discovering something new or shar
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
         logging.info("Search completed successfully")
+        print("Search completed successfully")  # noqa: T201
         return jsonify({"result": result})
     except (
         requests.exceptions.RequestException,
@@ -517,6 +522,7 @@ You approach each query with the excitement of discovering something new or shar
         # This ensures internal info is not exposed to the user
         # Frontend receives only generic error information
         logging.error("Error in /search route: %s", str(e), exc_info=True)
+        print(f"Error in /search route: {e!s}")  # noqa: T201
         return jsonify(
             {
                 "result": (
@@ -577,3 +583,4 @@ if __name__ == "__main__":
 # This exposes the Flask application as a module-level variable
 # Vercel looks for this variable to serve the application
 logging.info("PATH app initialized successfully for Vercel deployment")
+print("PATH app initialized successfully for Vercel deployment")  # noqa: T201
