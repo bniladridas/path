@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/bniladridas/path/compare/v1.4.0...v1.4.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* change app host to 127.0.0.1 for localhost access ([5ddd390](https://github.com/bniladridas/path/commit/5ddd3909ab0cbf8474ae8e2d57a7271f739f73dd))
+
 # [1.4.0](https://github.com/bniladridas/path/compare/v1.3.0...v1.4.0) (2025-10-21)
 
 
