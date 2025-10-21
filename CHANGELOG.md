@@ -1,3 +1,10 @@
+## [1.2.14](https://github.com/bniladridas/path/compare/v1.2.13...v1.2.14) (2025-10-21)
+
+
+### Bug Fixes
+
+* use py38 requirements in vercel build simulation ([6d6182d](https://github.com/bniladridas/path/commit/6d6182d90917c93c1ab03196f56d574af8eb3559))
+
 ## [1.2.13](https://github.com/bniladridas/path/compare/v1.2.12...v1.2.13) (2025-10-21)
 
 
