@@ -33,16 +33,20 @@ from flask import request
 from flask import session
 from flask import url_for
 
-# Local application imports
-from shared.requests_fallback import setup_requests_fallback
-
 # Add the project root to Python path to ensure shared modules can be imported
 PROJECT_ROOT = str(Path(__file__).parent.parent)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-# Set up requests fallback
-setup_requests_fallback()
+# Local application imports (after path setup)
+try:
+    from shared.requests_fallback import setup_requests_fallback
+
+    # Set up requests fallback
+    setup_requests_fallback()
+except ImportError:
+    # If shared module is not available, continue without fallback
+    pass
 
 # ============================================================================
 # APPLICATION INITIALIZATION
