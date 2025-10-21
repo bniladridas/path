@@ -121,7 +121,4 @@ Commit messages must follow this format:
 
 ### History Cleanup
 
-```bash
-./scripts/rewrite_msg.sh
-git push --force-with-lease
-```
+Note: The rewrite_msg.sh script was removed in commit b3f1221 as it's dangerous.
