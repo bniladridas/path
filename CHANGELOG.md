@@ -1,3 +1,14 @@
+## [1.11.2](https://github.com/bniladridas/path/compare/v1.11.1...v1.11.2) (2025-10-21)
+
+
+### Bug Fixes
+
+* suppress DeprecationWarnings in pytest ([4b367c0](https://github.com/bniladridas/path/commit/4b367c08d58bb8a92ca6884d91d4447d22327985))
+* update e2e workflow for path/app.py ([5cd6445](https://github.com/bniladridas/path/commit/5cd64452acaacf5dc9b78f22b33b75ff776f7f39))
+* update references to app.py in scripts and configs ([634e956](https://github.com/bniladridas/path/commit/634e9564433c90253d92c3f81990bde73bef2812))
+* update template/static paths after moving app.py ([4b87cd3](https://github.com/bniladridas/path/commit/4b87cd37d925af0cbda9d319a1acfa1f10e7cfb7))
+* update vercel validation workflow for path/app.py ([f0e2347](https://github.com/bniladridas/path/commit/f0e23478ee2b4148718b7fcb89ef50355f68bdae))
+
 ## [1.11.1](https://github.com/bniladridas/path/compare/v1.11.0...v1.11.1) (2025-10-21)
 
 
