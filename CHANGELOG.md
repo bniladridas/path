@@ -1,3 +1,10 @@
+## [1.10.8](https://github.com/bniladridas/path/compare/v1.10.7...v1.10.8) (2025-10-21)
+
+
+### Bug Fixes
+
+* update Jinja2 to fix security vulnerabilities ([4a8d7f2](https://github.com/bniladridas/path/commit/4a8d7f2c496bddfe9d448c29cd66cc81f8cbaee9))
+
 ## [1.10.7](https://github.com/bniladridas/path/compare/v1.10.6...v1.10.7) (2025-10-21)
 
 
