@@ -120,7 +120,11 @@ jobs:
           python --version
 
           # Install dependencies as Vercel would
-          pip install -r requirements.txt
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+            pip install -r requirements-py38.txt
+          else
+            pip install -r requirements.txt
+          fi
 
           # Check if static files exist
           if [ -d "static" ]; then
