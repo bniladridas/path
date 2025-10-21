@@ -53,8 +53,8 @@ jobs:
           python -m json.tool vercel.json > /dev/null
           echo -e "\033[32m[PASS]\033[0m vercel.json is valid JSON"
 
-          if [ ! -f "app.py" ]; then
-            echo -e "\033[31m[ERROR]\033[0m app.py not found"
+          if [ ! -f "path/app.py" ]; then
+            echo -e "\033[31m[ERROR]\033[0m path/app.py not found"
             exit 1
           fi
           echo -e "\033[32m[PASS]\033[0m app.py exists"
@@ -62,9 +62,9 @@ jobs:
       - name: Test Flask app import
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing Flask app import..."
-          python -c "
+          PYTHONPATH=. python -c "
           try:
-              from app import app
+              from path.app import app
               print('\033[32m[PASS]\033[0m Flask app imported successfully')
               print(f'\033[36m[INFO]\033[0m App name: {app.name}')
               print(f'\033[36m[INFO]\033[0m App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
@@ -76,8 +76,8 @@ jobs:
       - name: Test Flask app routes
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing Flask app routes..."
-          python -c "
-          from app import app
+          PYTHONPATH=. python -c "
+          from path.app import app
 
           with app.test_client() as client:
               response = client.get('/', follow_redirects=True)
@@ -127,13 +127,13 @@ jobs:
       - name: Test environment variables handling
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing environment variables handling..."
-          python -c "
+          PYTHONPATH=. python -c "
           import os
 
           os.environ.pop('GEMINI_API_KEY', None)
 
           try:
-              from app import app
+              from path.app import app
               with app.test_client() as client:
                   response = client.get('/', follow_redirects=True)
                   assert response.status_code == 200
@@ -162,9 +162,9 @@ jobs:
       - name: Performance check
         run: |
           echo -e "\033[36m[INFO]\033[0m Running basic performance checks..."
-          python -c "
+          PYTHONPATH=. python -c "
           import time
-          from app import app
+          from path.app import app
 
           start_time = time.time()
           with app.test_client() as client:
