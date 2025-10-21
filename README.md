@@ -18,7 +18,7 @@ The codebase is a minimal Flask web application for AI-powered media exploration
 
 **Core Structure:**
 
-* `app.py`: Main Flask app (in repo root) with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
+* `path/app.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
 * `templates/`: 5 HTML templates (index, verify, terms, privacy, updates) with semantic markup, accessibility features, and minimal inline JS.
 * `static/css/style.css`: Theme system using CSS custom properties, responsive design.
 * `requirements.txt`: Minimal dependencies (Flask, requests, python-dotenv).
@@ -60,7 +60,7 @@ npx playwright install
 ### Running the Application
 
 ```bash
-GEMINI_API_KEY=your-key python app.py
+GEMINI_API_KEY=your-key python path/app.py
 ```
 
 ## Testing
