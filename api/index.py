@@ -1,5 +1,6 @@
 """
 Simple Vercel serverless function for testing.
+Updated to trigger new deployment.
 """
 
 from flask import Flask
