@@ -1,3 +1,10 @@
+## [1.11.5](https://github.com/bniladridas/path/compare/v1.11.4...v1.11.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* update gunicorn CMD to path.app:app ([fdcef07](https://github.com/bniladridas/path/commit/fdcef07ccaed878b444a0ba35a02747e06a43a7a))
+
 ## [1.11.4](https://github.com/bniladridas/path/compare/v1.11.3...v1.11.4) (2025-10-21)
 
 
