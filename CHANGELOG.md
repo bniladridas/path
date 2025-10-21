@@ -1,3 +1,10 @@
+## [1.2.11](https://github.com/bniladridas/path/compare/v1.2.10...v1.2.11) (2025-10-21)
+
+
+### Bug Fixes
+
+* update vercel runtime to 3.9+ for compatibility ([ffca293](https://github.com/bniladridas/path/commit/ffca293c20a42627b7572182a7f14ac97baa53c9))
+
 ## [1.2.10](https://github.com/bniladridas/path/compare/v1.2.9...v1.2.10) (2025-10-21)
 
 
