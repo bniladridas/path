@@ -1,3 +1,10 @@
+## [1.10.18](https://github.com/bniladridas/path/compare/v1.10.17...v1.10.18) (2025-10-21)
+
+
+### Bug Fixes
+
+* move app.py to root for Vercel deployment ([32457f0](https://github.com/bniladridas/path/commit/32457f06780c89c3364647fe462dda4aa2ef72ec))
+
 ## [1.10.17](https://github.com/bniladridas/path/compare/v1.10.16...v1.10.17) (2025-10-21)
 
 
