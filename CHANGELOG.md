@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/bniladridas/path/compare/v1.2.2...v1.2.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* update Vercel config for nested path structure ([0cc5a87](https://github.com/bniladridas/path/commit/0cc5a87e31f3967bdb46a4357e27803929ed9b2a))
+
 ## [1.2.2](https://github.com/bniladridas/path/compare/v1.2.1...v1.2.2) (2025-10-21)
 
 
