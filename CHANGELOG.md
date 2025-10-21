@@ -1,3 +1,10 @@
+## [1.10.21](https://github.com/bniladridas/path/compare/v1.10.20...v1.10.21) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove PYTHONPATH from vercel.json ([6e9d90f](https://github.com/bniladridas/path/commit/6e9d90f4b06af912010f0925af9a24fdfac512e9))
+
 ## [1.10.20](https://github.com/bniladridas/path/compare/v1.10.19...v1.10.20) (2025-10-21)
 
 
