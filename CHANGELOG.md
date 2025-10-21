@@ -6,6 +6,17 @@
 * correct PROJECT_ROOT for template paths ([8469bd1](https://github.com/bniladridas/path/commit/8469bd161bbb7a4d5abdf1a0b13238c8768adad2))
 * update scripts for app.py in root and path/ structure ([6fb1683](https://github.com/bniladridas/path/commit/6fb1683820f6289061f6f24acb157d85e6af5862))
 * update workflow for app.py in root ([9438c41](https://github.com/bniladridas/path/commit/9438c41cf97093c52cf75323e3797b616be3d07c))
+* use python3.10 runtime for Vercel ([8c45284](https://github.com/bniladridas/path/commit/8c45284485e208626ae96db6eb295e17fb188c9b))
+* use python3.11 runtime ([e631d36](https://github.com/bniladridas/path/commit/e631d36bcdc618f872d50849f58807b6efc380f0))
+
+## [1.10.19](https://github.com/bniladridas/path/compare/v1.10.18...v1.10.19) (2025-10-21)
+
+
+### Bug Fixes
+
+* correct PROJECT_ROOT for template paths ([8469bd1](https://github.com/bniladridas/path/commit/8469bd161bbb7a4d5abdf1a0b13238c8768adad2))
+* update scripts for app.py in root and path/ structure ([6fb1683](https://github.com/bniladridas/path/commit/6fb1683820f6289061f6f24acb157d85e6af5862))
+* update workflow for app.py in root ([9438c41](https://github.com/bniladridas/path/commit/9438c41cf97093c52cf75323e3797b616be3d07c))
 * use python3.11 runtime ([e631d36](https://github.com/bniladridas/path/commit/e631d36bcdc618f872d50849f58807b6efc380f0))
 
 ## [1.10.19](https://github.com/bniladridas/path/compare/v1.10.18...v1.10.19) (2025-10-21)
