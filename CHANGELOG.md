@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/bniladridas/path/compare/v1.10.0...v1.10.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* sanitize query in logs to prevent log injection ([6804088](https://github.com/bniladridas/path/commit/6804088b40b9da8fb7476b1e5a5512ff8396faba))
+
 # [1.10.0](https://github.com/bniladridas/path/compare/v1.9.0...v1.10.0) (2025-10-21)
 
 
