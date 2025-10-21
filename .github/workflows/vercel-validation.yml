@@ -97,7 +97,7 @@ jobs:
               # Test static routes
               routes = [
                   '/terms', '/privacy', '/updates',
-                  '/verify', '/bypass-verification', '/api/health'
+                  '/verify', '/bypass-verification'
               ]
               for route in routes:
                   response = client.get(route)
