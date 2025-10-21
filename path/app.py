@@ -107,8 +107,8 @@ info = Info(title="PATH API", version=get_version(), description="AI-powered med
 app = OpenAPI(
     __name__,
     info=info,
-    template_folder=os.path.join(PROJECT_ROOT, "templates"),
-    static_folder=os.path.join(PROJECT_ROOT, "static"),
+    template_folder=os.path.join(PROJECT_ROOT, "..", "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "..", "static"),
 )
 
 # Set a secret key for session management
