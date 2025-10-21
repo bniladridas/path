@@ -2,29 +2,20 @@
   "version": 2,
   "builds": [
     {
-      "src": "path/app.py",
+      "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
         "runtime": "python3.11",
-        "python": {
-          "entrypoint": "path.path.app:app"
-        },
         "includeFiles": [
           "path/app.py",
-          "path/requirements.txt",
-          "path/static/**/*",
-          "path/templates/**/*",
+          "path/__init__.py",
           "app_local.py",
           "requirements.txt",
           "templates/**/*",
           "static/**/*"
         ]
       }
-    },
-    {
-      "src": "path/static/**",
-      "use": "@vercel/static"
     },
     {
       "src": "static/**",
@@ -34,11 +25,11 @@
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/path/static/$1"
+      "dest": "/static/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/path/app.py"
+      "dest": "/api/index.py"
     }
   ]
 }
