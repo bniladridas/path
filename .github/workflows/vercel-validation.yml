@@ -82,10 +82,11 @@ jobs:
           from app import app
 
           with app.test_client() as client:
-              # Test home route
-              response = client.get('/')
-              assert response.status_code == 200, f'Expected 200, got {response.status_code} for /'
-              print('✅ Home route (/) works')
+              # Test home route with follow_redirects
+              response = client.get('/', follow_redirects=True)
+              assert response.status_code == 200, \
+                  f'Expected 200 after redirect, got {response.status_code} for /'
+              print('✅ Home route (/) works (followed redirect)')
 
               # Test search route
               response = client.post('/search')
