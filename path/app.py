@@ -25,13 +25,14 @@ from pathlib import Path
 # Third-party imports
 import requests
 from dotenv import load_dotenv
-from flask import Flask
 from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask_openapi3 import Info
+from flask_openapi3 import OpenAPI
 
 # Add the project root to Python path to ensure shared modules can be imported
 PROJECT_ROOT = str(Path(__file__).parent.parent)
@@ -57,10 +58,14 @@ except ImportError:
 # and maintain different configurations for development and production
 load_dotenv()
 
-# Initialize Flask application instance
-# Flask will serve our web interface and handle HTTP requests
-app = Flask(
-    __name__, template_folder=os.path.join(PROJECT_ROOT, "templates"), static_folder=os.path.join(PROJECT_ROOT, "static")
+# Initialize OpenAPI application instance
+# OpenAPI will serve our web interface and handle HTTP requests with API documentation
+info = Info(title="PATH API", version="1.0.0", description="AI-powered media exploration API")
+app = OpenAPI(
+    __name__,
+    info=info,
+    template_folder=os.path.join(PROJECT_ROOT, "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "static"),
 )
 
 # Set a secret key for session management
