@@ -1,3 +1,10 @@
+## [1.10.10](https://github.com/bniladridas/path/compare/v1.10.9...v1.10.10) (2025-10-21)
+
+
+### Bug Fixes
+
+* conditionally load dotenv for local dev only ([0b266dd](https://github.com/bniladridas/path/commit/0b266ddffaf58b6cdccb1e02aa755d6052cba5f4))
+
 ## [1.10.9](https://github.com/bniladridas/path/compare/v1.10.8...v1.10.9) (2025-10-21)
 
 
