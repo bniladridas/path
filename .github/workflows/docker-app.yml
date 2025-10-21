@@ -28,14 +28,16 @@ jobs:
 
     - name: Verify Docker setup
       run: |
+        echo -e "\033[36m[INFO]\033[0m Verifying Docker setup..."
         echo "Docker version:"
         docker version
         echo "Available builders:"
         docker buildx ls || echo "Buildx not available, using standard Docker"
+        echo -e "\033[32m[PASS]\033[0m Docker setup verified"
 
     - name: Build Docker image
       run: |
-        echo "Building Docker image..."
+        echo -e "\033[36m[INFO]\033[0m Building Docker image..."
         if docker buildx version >/dev/null 2>&1; then
           echo "Using Docker Buildx"
           docker buildx build \
@@ -52,39 +54,43 @@ jobs:
           docker build -t path-app:test .
         fi
         docker images path-app:test
+        echo -e "\033[32m[PASS]\033[0m Docker image built successfully"
 
     - name: Create test environment
       run: |
+        echo -e "\033[36m[INFO]\033[0m Creating test environment..."
         docker run -d --name path-test \
           -p 8000:8000 \
           -e GEMINI_API_KEY=test-key \
           -e FLASK_DEBUG=1 \
           path-app:test
         docker ps
+        echo -e "\033[32m[PASS]\033[0m Test environment created"
 
     - name: Wait for app to start
       run: |
-        echo "Waiting for app to start..."
+        echo -e "\033[36m[INFO]\033[0m Waiting for app to start..."
         sleep 10
         docker logs path-test
         timeout 60 bash -c 'until curl -f http://localhost:8000/ > /dev/null 2>&1; do
           echo "Waiting..."; sleep 3;
         done' || {
-          echo "App failed to start, checking logs:"
+          echo -e "\033[31m[ERROR]\033[0m App failed to start, checking logs:"
           docker logs path-test
           exit 1
         }
+        echo -e "\033[32m[PASS]\033[0m App started successfully"
 
     - name: Run health check
       run: |
-        echo "Testing app endpoints..."
+        echo -e "\033[36m[INFO]\033[0m Testing app endpoints..."
         echo "Root endpoint:"
         curl -s http://localhost:8000/ | head -20
         echo -e "\n\nVerify endpoint:"
         if curl -s http://localhost:8000/verify | grep -q "verification"; then
-          echo "✅ App is responding correctly"
+          echo -e "\033[32m[PASS]\033[0m App is responding correctly"
         else
-          echo "❌ App not responding as expected"
+          echo -e "\033[31m[ERROR]\033[0m App not responding as expected"
           echo "Response content:"
           curl -s http://localhost:8000/verify | head -20
           docker logs path-test
@@ -93,5 +99,7 @@ jobs:
 
     - name: Clean up
       run: |
+        echo -e "\033[36m[INFO]\033[0m Cleaning up test environment..."
         docker stop path-test || true
         docker rm path-test || true
+        echo -e "\033[32m[PASS]\033[0m Cleanup completed"
