@@ -1,3 +1,10 @@
+## [1.10.15](https://github.com/bniladridas/path/compare/v1.10.14...v1.10.15) (2025-10-21)
+
+
+### Bug Fixes
+
+* specify requirements path in vercel config ([78ae438](https://github.com/bniladridas/path/commit/78ae4381c86ecc924ff10c186ceca3ca7a198d80))
+
 ## [1.10.14](https://github.com/bniladridas/path/compare/v1.10.13...v1.10.14) (2025-10-21)
 
 
