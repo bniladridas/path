@@ -53,11 +53,6 @@
       "dest": "/path/app.py"
     },
     {
-      "src": "/api/health",
-      "dest": "/path/app.py",
-      "methods": ["GET"]
-    },
-    {
       "src": "/(.*)",
       "dest": "/path/app.py",
       "headers": {
