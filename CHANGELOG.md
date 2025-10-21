@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/bniladridas/path/compare/v1.10.4...v1.10.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove dotenv dependency for deployment ([8abe84a](https://github.com/bniladridas/path/commit/8abe84a6b3927454f5929a9baf6e97c0cd60caef))
+
 ## [1.10.4](https://github.com/bniladridas/path/compare/v1.10.3...v1.10.4) (2025-10-21)
 
 
