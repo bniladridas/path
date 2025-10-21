@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/bniladridas/path/compare/v1.7.0...v1.8.0) (2025-10-21)
+
+
+### Features
+
+* add logging for Vercel debugging ([064e914](https://github.com/bniladridas/path/commit/064e9142abb782ca0f93571b3f1447977ecb9134))
+* add print() with noqa for Vercel logging ([c075883](https://github.com/bniladridas/path/commit/c075883ed33519ca503bd18852f316fa52e8c4d9))
+
 # [1.7.0](https://github.com/bniladridas/path/compare/v1.6.0...v1.7.0) (2025-10-21)
 
 
