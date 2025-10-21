@@ -152,12 +152,12 @@ test.describe('Navigation', () => {
               result.status = 'passed';
               result.destination = elementInfo.href;
               testResults.passed++;
-              console.log(`✅ External link has correct href: ${elementInfo.href}`);
+              console.log(`\x1b[32m[PASS]\x1b[0m External link has correct href: ${elementInfo.href}`);
             } else {
               result.status = 'failed';
               result.reason = `Expected href "${expectedUrl}" but got "${elementInfo.href}"`;
               testResults.failed++;
-              console.log(`❌ External link href mismatch: expected ${expectedUrl}, got ${elementInfo.href}`);
+              console.log(`\x1b[31m[FAIL]\x1b[0m External link href mismatch: expected ${expectedUrl}, got ${elementInfo.href}`);
             }
           } else {
             // For internal links, test actual navigation
@@ -180,13 +180,13 @@ test.describe('Navigation', () => {
               result.status = 'passed';
               result.destination = currentUrl.toString();
               testResults.passed++;
-              console.log(`✅ Navigation successful to: ${currentUrl.toString()}`);
+              console.log(`\x1b[32m[PASS]\x1b[0m Navigation successful to: ${currentUrl.toString()}`);
             } else {
               result.status = 'failed';
               result.reason = 'Navigation did not change URL as expected';
               result.destination = currentUrl.toString();
               testResults.failed++;
-              console.log(`❌ Navigation failed or stayed on the same page`);
+              console.log(`\x1b[31m[FAIL]\x1b[0m Navigation failed or stayed on the same page`);
             }
           }
 
@@ -194,7 +194,7 @@ test.describe('Navigation', () => {
           result.status = 'error';
           result.reason = error.message;
           testResults.failed++;
-          console.error(`❌ Error testing navigation [${navItem.selector}]:`, error.message);
+          console.error(`\x1b[31m[ERROR]\x1b[0m Error testing navigation [${navItem.selector}]:`, error.message);
 
           // Take screenshot on error
           const screenshotPath = `navigation-error-${index + 1}.png`;
@@ -208,17 +208,17 @@ test.describe('Navigation', () => {
       // Generate test summary
       console.log('\n=== Navigation Test Summary ===');
       console.log(`Total: ${testResults.total}`);
-      console.log(`✅ Passed: ${testResults.passed}`);
-      console.log(`❌ Failed: ${testResults.failed}`);
-      console.log(`⏩ Skipped: ${testResults.skipped}`);
+      console.log(`\x1b[32m[PASS]\x1b[0m Passed: ${testResults.passed}`);
+      console.log(`\x1b[31m[FAIL]\x1b[0m Failed: ${testResults.failed}`);
+      console.log(`\x1b[33m[SKIP]\x1b[0m Skipped: ${testResults.skipped}`);
 
       // Log detailed results
       if (testResults.details.length > 0) {
         console.log('\n=== Detailed Results ===');
         testResults.details.forEach(detail => {
-          const statusIcon = detail.status === 'passed' ? '✅' :
-                           detail.status === 'failed' ? '❌' :
-                           detail.status === 'skipped' ? '⏩' : '❓';
+          const statusIcon = detail.status === 'passed' ? '\x1b[32m[PASS]\x1b[0m' :
+                           detail.status === 'failed' ? '\x1b[31m[FAIL]\x1b[0m' :
+                           detail.status === 'skipped' ? '\x1b[33m[SKIP]\x1b[0m' : '\x1b[37m[UNKNOWN]\x1b[0m';
           console.log(`${statusIcon} [${detail.index}] ${detail.selector}`);
           if (detail.reason) console.log(`   Reason: ${detail.reason}`);
           if (detail.destination) console.log(`   Destination: ${detail.destination}`);
