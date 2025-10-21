@@ -33,6 +33,8 @@ from flask import session
 from flask import url_for
 from flask_openapi3 import Info
 from flask_openapi3 import OpenAPI
+from flask_openapi3 import Tag
+from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
 PROJECT_ROOT = str(Path(__file__).parent.parent)
@@ -81,6 +83,27 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
 GEMINI_MODEL = "2.0-flash"
+
+
+# API Models for OpenAPI documentation
+class SearchRequest(BaseModel):
+    query: str
+
+
+class APIResponse(BaseModel):
+    result: str
+
+
+class ErrorResponse(BaseModel):
+    result: str
+    error: str
+    error_type: str
+
+
+# Tags for organizing endpoints
+search_tag = Tag(name="Search", description="Media search and AI recommendations")
+auth_tag = Tag(name="Authentication", description="User verification and access")
+info_tag = Tag(name="Information", description="Static pages and information")
 
 
 # ============================================================================
@@ -229,7 +252,17 @@ def bypass_verification():
 # ============================================================================
 
 
-@app.route("/search", methods=["POST"])
+@app.post(
+    "/search",
+    summary="Search for media recommendations",
+    description="Query the AI for media exploration and recommendations",
+    tags=[search_tag],
+    responses={
+        200: APIResponse,
+        400: ErrorResponse,
+        403: ErrorResponse,
+    },
+)
 def search():
     """
     SEARCH PROCESSING - Handle media exploration queries with AI
