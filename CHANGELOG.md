@@ -1,3 +1,10 @@
+## [1.2.9](https://github.com/bniladridas/path/compare/v1.2.8...v1.2.9) (2025-10-21)
+
+
+### Bug Fixes
+
+* update requests to 2.32.4 (2.32.5 doesn't exist) ([b1ccef0](https://github.com/bniladridas/path/commit/b1ccef08ed87f35e4eac76708fba1b0b54ecf984))
+
 ## [1.2.8](https://github.com/bniladridas/path/compare/v1.2.7...v1.2.8) (2025-10-21)
 
 
