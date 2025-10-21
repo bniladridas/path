@@ -65,5 +65,8 @@
         "Referrer-Policy": "strict-origin-when-cross-origin"
       }
      }
-   ]
+   ],
+   "env": {
+     "PYTHONPATH": ".:path"
+   }
  }
