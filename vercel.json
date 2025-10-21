@@ -1,26 +1,17 @@
 {
-  "version": 2,
-  "builds": [
+  "functions": {
+    "api/index.py": {
+      "runtime": "@vercel/python"
+    }
+  },
+  "rewrites": [
     {
-      "src": "path/test_app.py",
-      "use": "@vercel/python"
+      "source": "/static/(.*)",
+      "destination": "/static/$1"
     },
     {
-      "src": "static/**",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "destination": "/api/index"
     }
-  ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/path/test_app.py"
-    }
-  ],
-  "env": {
-    "PYTHONPATH": "."
-  }
+  ]
 }
