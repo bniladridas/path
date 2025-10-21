@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/bniladridas/path/compare/v1.3.0...v1.4.0) (2025-10-21)
+
+
+### Features
+
+* add /status endpoint for API health checks ([6454140](https://github.com/bniladridas/path/commit/645414021b6fd77ca68b7ccae9c41c0848a2369c))
+
 # [1.3.0](https://github.com/bniladridas/path/compare/v1.2.14...v1.3.0) (2025-10-21)
 
 
