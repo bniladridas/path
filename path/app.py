@@ -24,10 +24,6 @@ import sys
 from pathlib import Path
 
 # Third-party imports
-try:
-    from dotenv import load_dotenv
-except ImportError:
-    load_dotenv = None
 from flask import jsonify
 from flask import redirect
 from flask import render_template
@@ -61,11 +57,8 @@ import requests  # noqa: E402
 # APPLICATION INITIALIZATION
 # ============================================================================
 
-# Load environment variables from .env file
-# This allows us to store sensitive information like API keys outside of the code
-# and maintain different configurations for development and production
-if load_dotenv:
-    load_dotenv()
+# Environment variables are loaded from Vercel environment in production
+# For local development, ensure .env file is present
 
 # Set up logging for debugging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
