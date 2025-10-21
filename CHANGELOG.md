@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/bniladridas/path/compare/v1.1.11...v1.2.0) (2025-10-21)
+
+
+### Features
+
+* add Vercel deployment validation workflow and script ([ff04f4e](https://github.com/bniladridas/path/commit/ff04f4e121a27edb1d06451b4247447da1475a89))
+
 ## [1.1.11](https://github.com/bniladridas/path/compare/v1.1.10...v1.1.11) (2025-10-21)
 
 
