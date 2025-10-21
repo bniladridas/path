@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/bniladridas/path/compare/v1.2.1...v1.2.2) (2025-10-21)
+
+
+### Bug Fixes
+
+* update config ([ff67a06](https://github.com/bniladridas/path/commit/ff67a06fc3b2ae8da73644ea5ece86c21c2b70b9))
+
 ## [1.2.1](https://github.com/bniladridas/path/compare/v1.2.0...v1.2.1) (2025-10-21)
 
 
