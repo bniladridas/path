@@ -1,3 +1,10 @@
+## [1.11.4](https://github.com/bniladridas/path/compare/v1.11.3...v1.11.4) (2025-10-21)
+
+
+### Bug Fixes
+
+* correct FLASK_APP to module format for gunicorn ([3e35d1b](https://github.com/bniladridas/path/commit/3e35d1b8940119abb3047bedcc2377441c49297c))
+
 ## [1.11.3](https://github.com/bniladridas/path/compare/v1.11.2...v1.11.3) (2025-10-21)
 
 
