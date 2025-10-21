@@ -19,7 +19,7 @@ import logging
 import os
 import re
 import secrets
-import subprocess
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -71,7 +71,7 @@ def get_version():
         # Get the latest tag
         result = subprocess.run(
             ["git", "describe", "--tags", "--abbrev=0"], capture_output=True, text=True, cwd=PROJECT_ROOT, check=False
-        )
+        )  # nosec B603 B607
         if result.returncode == 0:
             version = result.stdout.strip()
             # Remove 'v' prefix if present
