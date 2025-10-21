@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/bniladridas/path/compare/v1.1.6...v1.1.7) (2025-10-21)
+
+
+### Bug Fixes
+
+* disable debug mode in test app for security ([fc1b79a](https://github.com/bniladridas/path/commit/fc1b79a530bad0470199a6fe004c5f8af6ad7b37))
+
 ## [1.1.6](https://github.com/bniladridas/path/compare/v1.1.5...v1.1.6) (2025-10-21)
 
 
