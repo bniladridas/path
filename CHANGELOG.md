@@ -1,3 +1,10 @@
+## [1.10.24](https://github.com/bniladridas/path/compare/v1.10.23...v1.10.24) (2025-10-21)
+
+
+### Bug Fixes
+
+* add dependencies to pyproject.toml for Vercel ([0a7a634](https://github.com/bniladridas/path/commit/0a7a63406fbabdcc01170990d66a745722db4c3c))
+
 ## [1.10.23](https://github.com/bniladridas/path/compare/v1.10.22...v1.10.23) (2025-10-21)
 
 
