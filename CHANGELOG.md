@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/bniladridas/path/compare/v1.5.0...v1.5.1) (2025-10-21)
+
+
+### Bug Fixes
+
+* add nosec comments for bandit security warnings ([49daa32](https://github.com/bniladridas/path/commit/49daa3269a43366703ab6b72cd05ec9c4bd9b38b))
+
 # [1.5.0](https://github.com/bniladridas/path/compare/v1.4.1...v1.5.0) (2025-10-21)
 
 
