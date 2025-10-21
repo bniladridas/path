@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/bniladridas/path/compare/v1.2.7...v1.2.8) (2025-10-21)
+
+
+### Bug Fixes
+
+* follow redirects in env vars test ([e226f5b](https://github.com/bniladridas/path/commit/e226f5b2cd41242b7fcba7c8f4f392c87f33c183))
+
 ## [1.2.7](https://github.com/bniladridas/path/compare/v1.2.6...v1.2.7) (2025-10-21)
 
 
