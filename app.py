@@ -13,6 +13,7 @@ Core Philosophy:
 Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
+# Trigger CI
 
 # Standard library imports
 import logging
