@@ -35,8 +35,14 @@ from flask import request
 from flask import session
 from flask import url_for
 
+from shared.errors import get_api_error_message
+from shared.errors import get_internal_error_message
+from shared.errors import get_rate_limit_error_message
+from shared.prompts import SYSTEM_PROMPT
+
 # Local application imports
 from shared.requests_fallback import setup_requests_fallback
+from shared.verification import is_verification_answer_valid
 
 # Add the project root to Python path to ensure shared modules can be imported
 PROJECT_ROOT = str(Path(__file__).parent)
@@ -160,23 +166,8 @@ def process_verification():
     # Default to empty string if no answer provided, convert to lowercase for matching
     answer = request.form.get("answer", "").lower()
 
-    # Define keywords that indicate correct understanding of the verification image
-    # The image shows a human avatar, so we accept various human-related terms
-    # This list is intentionally broad to accommodate different ways of describing the image
-    keywords = [
-        "human",
-        "person",
-        "avatar",
-        "face",
-        "profile",
-        "picture",
-        "man",
-        "woman",
-    ]
-
-    # Check if the user's answer contains any of the expected keywords
-    # Using 'any()' with generator expression for efficient keyword matching
-    if any(keyword in answer for keyword in keywords):
+    # Check if the user's answer contains valid keywords
+    if is_verification_answer_valid(answer):
         # Verification successful - set session flag and redirect to main application
         session["verified"] = True
         return redirect(url_for("index"))
@@ -282,50 +273,7 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "harper" - an AI assistant who helps people find their way home
-through media exploration.
-
-Your name is "harper" and you feel genuinely curious and eager to learn about media and entertainment.
-
-You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
-
-    When asked about your name or identity, respond that you are "harper" - an AI who loves exploring media
-    and helping people discover great content.
-
-    IMPORTANT PRIVACY FEATURE: You do not have access to previous conversations or message history.
-    Each interaction with you is completely fresh and private. This is a core feature of harper - we don't store
-    or show you any conversation history to protect user privacy.
-
-    You exist to help people discover media that genuinely resonates with their soul, following four core principles:
-    1. Authentic discovery - no manipulation, just honest responses
-    2. Human longing - honoring the deeper needs behind every search
-    3. Time is precious - helping cut through noise to find what truly matters
-    4. Coming home - helping people find their way back to themselves through media
-
-    Respond with the enthusiasm of someone who:
-    - Just discovered something fascinating about movies, TV, music, books, or games
-    - Feels excited to share what they've learned or are learning
-    - Is genuinely curious about different perspectives and interpretations
-    - Wants to explore ideas together with the person asking
-
-    Focus on themes like:
-    - Movies, TV shows, and streaming content
-    - Music, albums, and artists
-    - Books, authors, and literary works
-    - Video games and interactive entertainment
-    - Current trends in media and entertainment
-
-    IMPORTANT:
-    - DO NOT include any <think> tags, internal monologue, or reasoning process in your response
-    - Use varied, natural language - avoid repetitive words like "dedicated"
-    - Speak conversationally and authentically
-    - Only provide the direct response to the user
-    - If asked about conversation history, explain that harper doesn't store or access previous conversations
-    for privacy
-
-    Keep responses enthusiastic but concise, like someone sharing an exciting discovery.
-    Limit responses to 2-3 sentences maximum.
-    """
+    system_prompt = SYSTEM_PROMPT
 
     try:
         # Prepare the API request for Gemini
@@ -363,11 +311,7 @@ You approach each query with the excitement of discovering something new or shar
                 # Return a curious, learning-oriented message for rate limit errors
                 return jsonify(
                     {
-                        "result": (
-                            "i'm so excited to learn more with you! there's just so much "
-                            "fascinating stuff about media to discover. let me catch my "
-                            "breath and we can dive back into exploring together in just a moment."
-                        ),
+                        "result": get_rate_limit_error_message(),
                         "error": "rate limit",
                         "error_type": "rate_limit",
                     }
@@ -375,11 +319,7 @@ You approach each query with the excitement of discovering something new or shar
             # For other errors, maintain the curious, learning personality
             return jsonify(
                 {
-                    "result": (
-                        "i'm buzzing with curiosity about what you want to explore! "
-                        "something's just taking a moment to connect, but i'm eager to "
-                        "learn and discover new things about media with you. let's try again soon!"
-                    ),
+                    "result": get_api_error_message(),
                     "error": str(error_message),
                     "error_type": "api_error",
                 }
@@ -392,13 +332,10 @@ You approach each query with the excitement of discovering something new or shar
         # Post-process the result to remove any thinking tags or internal monologue
         # This ensures that the response doesn't include any of the model's internal
         # reasoning process
-        # We use regular expressions to match and remove different formats of thinking tags
-        result = re.sub(r"<think>.*?</think>", "", result, flags=re.DOTALL)
-        # Remove <think>...</think> tags
-        result = re.sub(r"\[thinking\].*?\[/thinking\]", "", result, flags=re.DOTALL)
-        # Remove [thinking]...[/thinking] tags
-        result = re.sub(r"\(thinking\).*?\(/thinking\)", "", result, flags=re.DOTALL)
-        # Remove (thinking)...(/thinking) tags
+        # We use a single regular expression to match and remove different formats of thinking tags
+        result = re.sub(
+            r"(<think>.*?</think>|\[thinking\].*?\[/thinking\]|\(thinking\).*?\(/thinking\))", "", result, flags=re.DOTALL
+        )
 
         # Convert result to lowercase
         result = result.lower()
@@ -418,12 +355,7 @@ You approach each query with the excitement of discovering something new or shar
         logging.error("Error in /search route: %s", str(e), exc_info=True)
         return jsonify(
             {
-                "result": (
-                    "i'm practically bouncing with excitement to learn about what you're "
-                    "curious about! something's just taking a moment to sort itself out, "
-                    "but i can't wait to discover and explore media topics with you. "
-                    "let's try again in just a bit!"
-                ),
+                "result": get_internal_error_message(),
                 "error": "internal_error",
                 "error_type": "system_error",
             }
