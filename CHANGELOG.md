@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/bniladridas/path/compare/v1.4.1...v1.5.0) (2025-10-21)
+
+
+### Features
+
+* add OpenAPI spec, versioning, status endpoint ([3359e9c](https://github.com/bniladridas/path/commit/3359e9cd385170ef787831434bcd0fa41c0d7366))
+
 ## [1.4.1](https://github.com/bniladridas/path/compare/v1.4.0...v1.4.1) (2025-10-21)
 
 
