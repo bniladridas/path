@@ -39,6 +39,12 @@ print_status "Copying static files to path/static/..."
 rm -rf path/static
 cp -r static path/static
 
+# Copy app.py from root if it exists
+if [ -f "app.py" ]; then
+    print_status "Copying app.py to path/..."
+    cp app.py path/app.py
+fi
+
 # Verify core API files exist
 if [ ! -f "path/app.py" ]; then
     print_error "path/app.py not found! This is required for Vercel deployment."
