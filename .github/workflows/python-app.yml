@@ -31,7 +31,7 @@ jobs:
     - name: Check requirements.txt exists
       run: |
         echo -e "\033[36m[INFO]\033[0m Checking for requirements.txt..."
-        if [[ ! -f requirements.txt ]]; then
+        if ! test -f requirements.txt; then
           echo -e "\033[31m[FAIL]\033[0m requirements.txt not found. Run 'pip freeze > requirements.txt' to create it."
           exit 1
         fi
