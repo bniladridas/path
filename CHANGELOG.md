@@ -1,3 +1,10 @@
+## [1.2.12](https://github.com/bniladridas/path/compare/v1.2.11...v1.2.12) (2025-10-21)
+
+
+### Bug Fixes
+
+* add flask-openapi3 to py38 requirements ([b5ce667](https://github.com/bniladridas/path/commit/b5ce6676fd56b6ec3ad354a97a227150b6bdefcd))
+
 ## [1.2.11](https://github.com/bniladridas/path/compare/v1.2.10...v1.2.11) (2025-10-21)
 
 
