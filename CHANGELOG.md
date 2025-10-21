@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/bniladridas/path/compare/v1.8.0...v1.9.0) (2025-10-21)
+
+
+### Features
+
+* add colored ANSI logging to e2e.yml workflow ([7df18e5](https://github.com/bniladridas/path/commit/7df18e5a911c6d088016dd460bad26ede47d7b3d))
+
 # [1.8.0](https://github.com/bniladridas/path/compare/v1.7.0...v1.8.0) (2025-10-21)
 
 
