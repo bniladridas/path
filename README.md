@@ -73,6 +73,7 @@ path/
 The application handles Python path configuration for different environments:
 
 **Local Development:**
+
 ```python
 # Uses root directory structure
 PROJECT_ROOT = str(Path(__file__).parent.parent)
@@ -80,6 +81,7 @@ sys.path.insert(0, PROJECT_ROOT)
 ```
 
 **Vercel Deployment:**
+
 ```python
 # Robust import handling with fallbacks
 try:
@@ -91,6 +93,7 @@ except ImportError:
 ```
 
 **Docker Deployment:**
+
 ```python
 # Uses PYTHONPATH environment variable
 ENV PYTHONPATH="."
