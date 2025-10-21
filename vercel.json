@@ -4,11 +4,11 @@
     {
       "src": "path/app.py",
       "use": "@vercel/python",
-       "config": {
-         "maxLambdaSize": "50mb",
-         "runtime": "python3.11"
-         "requirementsPath": "requirements.txt"
-       }
+        "config": {
+          "maxLambdaSize": "50mb",
+          "runtime": "python3.11",
+          "requirementsPath": "requirements.txt"
+        }
     },
     {
       "src": "static/**",
