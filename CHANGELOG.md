@@ -1,3 +1,10 @@
+## [1.10.23](https://github.com/bniladridas/path/compare/v1.10.22...v1.10.23) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove invalid -e from requirements-vercel.txt ([3560862](https://github.com/bniladridas/path/commit/3560862e72c7770344221a227d93a5651d376ac6))
+
 ## [1.10.22](https://github.com/bniladridas/path/compare/v1.10.21...v1.10.22) (2025-10-21)
 
 
