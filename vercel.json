@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.py",
+      "src": "path/app.py",
       "use": "@vercel/python",
 
     },
@@ -18,27 +18,27 @@
     },
     {
       "src": "/terms",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     },
     {
       "src": "/privacy",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     },
     {
       "src": "/updates",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     },
     {
       "src": "/verify",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     },
     {
       "src": "/bypass-verification",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/app.py"
+      "dest": "/path/app.py"
     }
   ],
   "env": {
