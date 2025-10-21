@@ -1,3 +1,10 @@
+## [1.10.20](https://github.com/bniladridas/path/compare/v1.10.19...v1.10.20) (2025-10-21)
+
+
+### Bug Fixes
+
+* revert vercel.json to working config ([e44919e](https://github.com/bniladridas/path/commit/e44919e930213567068ddf9b33985251e3a3cbdc))
+
 ## [1.10.19](https://github.com/bniladridas/path/compare/v1.10.18...v1.10.19) (2025-10-21)
 
 
