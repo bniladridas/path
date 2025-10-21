@@ -2,23 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.py",
+      "src": "path/app.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
-        "runtime": "python3.11",
-        "includeFiles": [
-          "path/app.py",
-          "path/__init__.py",
-          "app_local.py",
-          "requirements.txt",
-          "templates/**/*",
-          "static/**/*"
-        ]
+        "runtime": "python3.11"
       }
     },
     {
       "src": "static/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "path/static/**",
       "use": "@vercel/static"
     }
   ],
@@ -28,8 +24,50 @@
       "dest": "/static/$1"
     },
     {
+      "src": "/",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/search",
+      "dest": "/path/app.py",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/terms",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/privacy",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/updates",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/verify",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/bypass-verification",
+      "dest": "/path/app.py"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/path/app.py",
+      "methods": ["GET"]
+    },
+    {
       "src": "/(.*)",
-      "dest": "/api/index.py"
+      "dest": "/path/app.py",
+      "headers": {
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      }
     }
-  ]
+  ],
+  "env": {
+    "PYTHONPATH": ".:path"
+  }
 }
