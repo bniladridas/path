@@ -1,3 +1,10 @@
+## [1.10.22](https://github.com/bniladridas/path/compare/v1.10.21...v1.10.22) (2025-10-21)
+
+
+### Bug Fixes
+
+* make google-generativeai import optional for Vercel ([bf79d6e](https://github.com/bniladridas/path/commit/bf79d6e0738c9f1e28da880f223b53043e788b1d))
+
 ## [1.10.21](https://github.com/bniladridas/path/compare/v1.10.20...v1.10.21) (2025-10-21)
 
 
