@@ -116,11 +116,7 @@ class DeploymentPrep:
         if not self.ensure_path_structure():
             return False
 
-        # Copy app.py from root to path/ if it exists in root
-        root_app = self.root / "app.py"
-        if root_app.exists():
-            shutil.copy(root_app, self.path_dir / "app.py")
-            self.print_status("Copied app.py from root to path/")
+        # app.py is already in path/, no need to copy
 
         if not self.copy_templates():
             return False
