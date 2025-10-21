@@ -4,6 +4,7 @@
 
 All minimal documentation files created:
 
+* [API.md](API.md) — API endpoints and usage examples
 * [docs/development/README.md](docs/development/README.md) — Main development documentation
 * [docs/development/hooks/README.md](docs/development/hooks/README.md) — Git hooks overview
 * [docs/development/hooks/ruff.md](docs/development/hooks/ruff.md) — Ruff configuration and usage
