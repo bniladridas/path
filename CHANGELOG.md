@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/bniladridas/path/compare/v1.1.8...v1.1.9) (2025-10-21)
+
+
+### Bug Fixes
+
+* add Python runtime version to Vercel config ([39ea1ec](https://github.com/bniladridas/path/commit/39ea1ec82bb373443a6ddfd72b10cf21608651e2))
+
 ## [1.1.8](https://github.com/bniladridas/path/compare/v1.1.7...v1.1.8) (2025-10-21)
 
 
