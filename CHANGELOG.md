@@ -1,3 +1,11 @@
+## [1.2.10](https://github.com/bniladridas/path/compare/v1.2.9...v1.2.10) (2025-10-21)
+
+
+### Bug Fixes
+
+* update vercel runtime to 3.9+ for compatibility ([71813ef](https://github.com/bniladridas/path/commit/71813ef557c2846a78389f7795667e6fb64096f9))
+* use py38 requirements in vercel validation for 3.8 ([1fcae94](https://github.com/bniladridas/path/commit/1fcae94cba5146e7ada5638e8b2a953e53e80ab6))
+
 ## [1.2.9](https://github.com/bniladridas/path/compare/v1.2.8...v1.2.9) (2025-10-21)
 
 
