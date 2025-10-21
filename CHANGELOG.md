@@ -1,3 +1,10 @@
+## [1.10.12](https://github.com/bniladridas/path/compare/v1.10.11...v1.10.12) (2025-10-21)
+
+
+### Bug Fixes
+
+* specify python3.12 runtime for Vercel ([5e62482](https://github.com/bniladridas/path/commit/5e624823acea9d9781bb5f9c01290de216d23d0c))
+
 ## [1.10.11](https://github.com/bniladridas/path/compare/v1.10.10...v1.10.11) (2025-10-21)
 
 
