@@ -1,3 +1,10 @@
+## [1.1.10](https://github.com/bniladridas/path/compare/v1.1.9...v1.1.10) (2025-10-21)
+
+
+### Bug Fixes
+
+* let Vercel auto-detect Python version ([35d107d](https://github.com/bniladridas/path/commit/35d107df3ff70e245baa957708c439d3df297d45))
+
 ## [1.1.9](https://github.com/bniladridas/path/compare/v1.1.8...v1.1.9) (2025-10-21)
 
 
