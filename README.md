@@ -47,6 +47,64 @@ The codebase is a Flask web application for AI-powered media exploration with co
 - Privacy-focused (no conversation storage).
 - Ready for deployment (Vercel/Docker support).
 
+## Python Path and Module Structure
+
+The project uses a modular structure with proper Python path management for different deployment environments:
+
+### Directory Structure
+
+```
+path/
+├── path/                    # Main application module
+│   ├── app.py              # Flask application with all routes
+│   ├── index.py            # Vercel entry point
+│   ├── templates/          # HTML templates
+│   ├── static/             # CSS and static assets
+│   └── requirements.txt    # Module-specific dependencies
+├── shared/                 # Shared utilities
+│   └── requests_fallback.py # HTTP client fallback implementation
+├── templates/              # Root templates (copied to path/ for deployment)
+├── static/                 # Root static files (copied to path/ for deployment)
+└── scripts/                # Deployment and utility scripts
+```
+
+### Python Path Management
+
+The application handles Python path configuration for different environments:
+
+**Local Development:**
+```python
+# Uses root directory structure
+PROJECT_ROOT = str(Path(__file__).parent.parent)
+sys.path.insert(0, PROJECT_ROOT)
+```
+
+**Vercel Deployment:**
+```python
+# Robust import handling with fallbacks
+try:
+    from shared.requests_fallback import setup_requests_fallback
+    setup_requests_fallback()
+except ImportError:
+    # Graceful fallback if shared modules unavailable
+    pass
+```
+
+**Docker Deployment:**
+```python
+# Uses PYTHONPATH environment variable
+ENV PYTHONPATH="."
+```
+
+### Module Import Strategy
+
+1. **Path Setup First**: Add project root to `sys.path` before imports
+2. **Graceful Fallbacks**: Handle missing modules without crashing
+3. **Environment Awareness**: Different import strategies for different deployment targets
+4. **Shared Utilities**: Common code in `shared/` directory accessible across modules
+
+This structure ensures the application works consistently across local development, Vercel serverless functions, and Docker containers while maintaining clean separation of concerns.
+
 ## Setup
 
 ### Prerequisites
