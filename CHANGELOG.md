@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/bniladridas/path/compare/v1.1.5...v1.1.6) (2025-10-21)
+
+
+### Bug Fixes
+
+* make imports more robust for Vercel deployment ([265901f](https://github.com/bniladridas/path/commit/265901fce4a8fd4cf38ce12a186507aed97dd67e))
+
 ## [1.1.5](https://github.com/bniladridas/path/compare/v1.1.4...v1.1.5) (2025-10-21)
 
 
