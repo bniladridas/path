@@ -27,7 +27,7 @@ USER app
 EXPOSE 8000
 
 # Set environment variables
-ENV FLASK_APP=path/app.py
+ENV FLASK_APP=path.app:app
 ENV PYTHONPATH=.
 
 # Health check
