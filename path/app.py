@@ -1,3 +1,5 @@
+# NOTE: To reduce duplication, consider consolidating into one app with env-based config.
+
 """
 "Path" serves both as the app's name and its guiding metaphor.
 The project helps users "find their path" through media exploration—like a guide on a personal journey.
