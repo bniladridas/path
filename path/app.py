@@ -429,8 +429,9 @@ You approach each query with the excitement of discovering something new or shar
     """
 
     try:
-        logging.info(f"Processing search query: {query[:50]}...")
-        print(f"Processing search query: {query[:50]}...")  # noqa: T201
+        safe_query_for_log = query[:50].replace("\n", "").replace("\r", "")
+        logging.info(f"Processing search query: {safe_query_for_log}...")
+        print(f"Processing search query: {safe_query_for_log}...")  # noqa: T201
         # Prepare the API request for Gemini
         # Set up the headers with content type
         headers = {"Content-Type": "application/json"}
