@@ -1,3 +1,11 @@
+## [1.10.19](https://github.com/bniladridas/path/compare/v1.10.18...v1.10.19) (2025-10-21)
+
+
+### Bug Fixes
+
+* update scripts for app.py in root and path/ structure ([6fb1683](https://github.com/bniladridas/path/commit/6fb1683820f6289061f6f24acb157d85e6af5862))
+* update workflow for app.py in root ([9438c41](https://github.com/bniladridas/path/commit/9438c41cf97093c52cf75323e3797b616be3d07c))
+
 ## [1.10.18](https://github.com/bniladridas/path/compare/v1.10.17...v1.10.18) (2025-10-21)
 
 

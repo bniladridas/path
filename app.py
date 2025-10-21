@@ -37,7 +37,7 @@ from flask_openapi3.openapi import OpenAPI
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
-PROJECT_ROOT = str(Path(__file__).parent.parent)
+PROJECT_ROOT = str(Path(__file__).parent)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
