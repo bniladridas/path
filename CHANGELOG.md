@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/bniladridas/path/compare/v1.2.6...v1.2.7) (2025-10-21)
+
+
+### Bug Fixes
+
+* set template and static folders to project root paths ([58da6b3](https://github.com/bniladridas/path/commit/58da6b371b0446a86e50399a1f79820d62292973))
+
 ## [1.2.6](https://github.com/bniladridas/path/compare/v1.2.5...v1.2.6) (2025-10-21)
 
 
