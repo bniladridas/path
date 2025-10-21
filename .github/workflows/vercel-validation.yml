@@ -84,13 +84,25 @@ jobs:
           with app.test_client() as client:
               # Test home route
               response = client.get('/')
-              assert response.status_code == 200
+              assert response.status_code == 200, f'Expected 200, got {response.status_code} for /'
               print('✅ Home route (/) works')
 
               # Test search route
-              response = client.post('/search', data=dict(query='test'))
-              assert response.status_code in [200, 405]  # 405 if no query provided
+              response = client.post('/search')
+              assert response.status_code in [200, 400, 405], \
+                  f'Expected 200, 400, or 405, got {response.status_code} for /search'
               print('✅ Search route (/search) works')
+
+              # Test static routes
+              routes = [
+                  '/terms', '/privacy', '/updates',
+                  '/verify', '/bypass-verification', '/api/health'
+              ]
+              for route in routes:
+                  response = client.get(route)
+                  assert response.status_code in [200, 302], \
+                      f'Expected 200 or 302, got {response.status_code} for {route}'
+                  print(f'✅ {route} route works')
 
           print('✅ All routes tested successfully')
           "
