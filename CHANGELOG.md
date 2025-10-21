@@ -1,3 +1,10 @@
+## [1.10.25](https://github.com/bniladridas/path/compare/v1.10.24...v1.10.25) (2025-10-21)
+
+
+### Bug Fixes
+
+* add deps to pyproject.toml for Vercel ([f06f441](https://github.com/bniladridas/path/commit/f06f441df602e6d8f4ca37cf0c108658ac8aace9))
+
 ## [1.10.24](https://github.com/bniladridas/path/compare/v1.10.23...v1.10.24) (2025-10-21)
 
 
