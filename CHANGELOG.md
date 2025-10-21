@@ -1,3 +1,10 @@
+## [1.10.6](https://github.com/bniladridas/path/compare/v1.10.5...v1.10.6) (2025-10-21)
+
+
+### Bug Fixes
+
+* add missing packages to path/requirements.txt ([d92aa16](https://github.com/bniladridas/path/commit/d92aa1646947933c25c12c15d8cc832822081b82))
+
 ## [1.10.5](https://github.com/bniladridas/path/compare/v1.10.4...v1.10.5) (2025-10-21)
 
 
