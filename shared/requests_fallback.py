@@ -3,8 +3,6 @@ Shared requests fallback implementation.
 This module provides a fallback for the requests module when it's not available.
 """
 
-from __future__ import annotations
-
 import sys
 from typing import Any
 from typing import ClassVar
