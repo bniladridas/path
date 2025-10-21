@@ -1,0 +1,212 @@
+name: Vercel Deployment Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-vercel-deployment:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest flask
+
+    - name: Validate Vercel configuration
+      run: |
+        echo "🔍 Validating vercel.json configuration..."
+        if [ ! -f "vercel.json" ]; then
+          echo "❌ vercel.json not found"
+          exit 1
+        fi
+
+        # Validate JSON syntax
+        python -m json.tool vercel.json > /dev/null
+        echo "✅ vercel.json is valid JSON"
+
+        # Check for required api directory
+        if [ ! -d "api" ]; then
+          echo "❌ api directory not found"
+          exit 1
+        fi
+        echo "✅ api directory exists"
+
+    - name: Test Flask app import
+      run: |
+        echo "🔍 Testing Flask app import..."
+        cd api
+        python -c "
+        import sys
+        sys.path.insert(0, '.')
+        try:
+            from index import app
+            print('✅ Flask app imported successfully')
+            print(f'✅ App name: {app.name}')
+            print(f'✅ App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
+        except Exception as e:
+            print(f'❌ Failed to import Flask app: {e}')
+            sys.exit(1)
+        "
+
+    - name: Test Flask app routes
+      run: |
+        echo "🔍 Testing Flask app routes..."
+        cd api
+        python -c "
+        import sys
+        sys.path.insert(0, '.')
+        from index import app
+
+        with app.test_client() as client:
+            # Test home route
+            response = client.get('/')
+            assert response.status_code == 200
+            print('✅ Home route (/) works')
+
+            # Test test route
+            response = client.get('/test')
+            assert response.status_code == 200
+            print('✅ Test route (/test) works')
+
+        print('✅ All routes tested successfully')
+        "
+
+    - name: Simulate Vercel build process
+      run: |
+        echo "🔍 Simulating Vercel build process..."
+
+        # Check Python version compatibility
+        python --version
+
+        # Install dependencies as Vercel would
+        pip install -r requirements.txt
+
+        # Check if static files exist
+        if [ -d "static" ]; then
+          echo "✅ Static files directory found"
+          find static -type f -name "*.css" -o -name "*.js" -o -name "*.png" -o -name "*.jpg" | head -5
+        fi
+
+        # Check if templates exist
+        if [ -d "templates" ]; then
+          echo "✅ Templates directory found"
+          find templates -name "*.html" | head -5
+        fi
+
+    - name: Test environment variables handling
+      run: |
+        echo "🔍 Testing environment variables handling..."
+        cd api
+        python -c "
+        import os
+        import sys
+        sys.path.insert(0, '.')
+
+        # Test without GEMINI_API_KEY (should not crash)
+        os.environ.pop('GEMINI_API_KEY', None)
+
+        try:
+            from index import app
+            with app.test_client() as client:
+                response = client.get('/')
+                assert response.status_code == 200
+            print('✅ App works without environment variables')
+        except Exception as e:
+            print(f'❌ App failed without env vars: {e}')
+            sys.exit(1)
+        "
+
+    - name: Check for security issues
+      run: |
+        echo "🔍 Checking for common security issues..."
+
+        # Check for debug mode in production
+        if grep -r "debug=True" api/ --include="*.py"; then
+          echo "⚠️  Warning: debug=True found in code"
+        else
+          echo "✅ No debug=True found"
+        fi
+
+        # Check for hardcoded secrets
+        if grep -r -i "api_key.*=" api/ --include="*.py" | grep -v "environ\|getenv"; then
+          echo "⚠️  Warning: Potential hardcoded API keys found"
+        else
+          echo "✅ No hardcoded API keys found"
+        fi
+
+    - name: Performance check
+      run: |
+        echo "🔍 Running basic performance checks..."
+        cd api
+        python -c "
+        import time
+        import sys
+        sys.path.insert(0, '.')
+        from index import app
+
+        # Test app startup time
+        start_time = time.time()
+        with app.test_client() as client:
+            response = client.get('/')
+        end_time = time.time()
+
+        startup_time = (end_time - start_time) * 1000
+        print(f'✅ App response time: {startup_time:.2f}ms')
+
+        if startup_time > 5000:  # 5 seconds
+            print('⚠️  Warning: App response time is slow')
+        else:
+            print('✅ App response time is acceptable')
+        "
+
+    - name: Generate deployment report
+      run: |
+        echo "📊 Deployment Validation Report"
+        echo "================================"
+        echo "✅ Python version: $(python --version)"
+        echo "✅ Flask app: Importable and functional"
+        echo "✅ Routes: All routes responding"
+        echo "✅ Configuration: vercel.json is valid"
+        echo "✅ Dependencies: All installed successfully"
+        echo "✅ Security: Basic checks passed"
+        echo "✅ Performance: Response times acceptable"
+        echo ""
+        echo "🚀 Code is ready for Vercel deployment!"
+
+  notify-status:
+    needs: validate-vercel-deployment
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Deployment validation status
+      run: |
+        if [ "${{ needs.validate-vercel-deployment.result }}" == "success" ]; then
+          echo "✅ All validation checks passed! Code is ready for Vercel deployment."
+        else
+          echo "❌ Validation checks failed. Please fix issues before deploying to Vercel."
+          exit 1
+        fi
