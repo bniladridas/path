@@ -30,6 +30,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        echo -e "\033[36m[INFO]\033[0m Installing dependencies..."
         python -m pip install --upgrade pip
         pip install ruff pytest
         if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
@@ -37,13 +38,20 @@ jobs:
         else
           pip install -r requirements.txt
         fi
+        echo -e "\033[32m[PASS]\033[0m Dependencies installed successfully"
     - name: Lint and format with ruff
       run: |
+        echo -e "\033[36m[INFO]\033[0m Running Ruff lint and format check..."
         ruff check .
         ruff format --check .
+        echo -e "\033[32m[PASS]\033[0m Ruff checks passed"
     - name: Prepare deployment files for testing
       run: |
+        echo -e "\033[36m[INFO]\033[0m Preparing deployment files for testing..."
         python scripts/prepare-deployment.py vercel
+        echo -e "\033[32m[PASS]\033[0m Deployment files prepared"
     - name: Test with pytest
       run: |
+        echo -e "\033[36m[INFO]\033[0m Running tests with pytest..."
         PYTHONPATH=. pytest
+        echo -e "\033[32m[PASS]\033[0m Tests completed successfully"
