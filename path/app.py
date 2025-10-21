@@ -19,6 +19,7 @@ import logging
 import os
 import re
 import secrets
+import subprocess
 import sys
 from pathlib import Path
 
@@ -60,9 +61,31 @@ except ImportError:
 # and maintain different configurations for development and production
 load_dotenv()
 
+
+def get_version():
+    """
+    Get the current version from git tags.
+    Falls back to '1.0.0' if git is not available.
+    """
+    try:
+        # Get the latest tag
+        result = subprocess.run(
+            ["git", "describe", "--tags", "--abbrev=0"], capture_output=True, text=True, cwd=PROJECT_ROOT, check=False
+        )
+        if result.returncode == 0:
+            version = result.stdout.strip()
+            # Remove 'v' prefix if present
+            if version.startswith("v"):
+                version = version[1:]
+            return version
+    except (subprocess.SubprocessError, FileNotFoundError):
+        pass
+    return "1.0.0"
+
+
 # Initialize OpenAPI application instance
 # OpenAPI will serve our web interface and handle HTTP requests with API documentation
-info = Info(title="PATH API", version="1.0.0", description="AI-powered media exploration API")
+info = Info(title="PATH API", version=get_version(), description="AI-powered media exploration API")
 app = OpenAPI(
     __name__,
     info=info,
@@ -129,7 +152,7 @@ def get_status():
     Returns:
         JSON: Status information
     """
-    return jsonify({"status": "healthy", "version": "1.0.0", "service": "PATH Media Exploration API"})
+    return jsonify({"status": "healthy", "version": get_version(), "service": "PATH Media Exploration API"})
 
 
 # ============================================================================
