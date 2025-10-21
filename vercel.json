@@ -1,14 +1,15 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "path/app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "50mb",
-        "runtime": "python3.9, python3.10, python3.11, python3.12"
-      }
-    },
+     {
+       "src": "path/app.py",
+       "use": "@vercel/python",
+       "config": {
+         "maxLambdaSize": "50mb",
+         "runtime": "python3.9, python3.10, python3.11, python3.12",
+         "requirements": "requirements.txt"
+       }
+     },
     {
       "src": "static/**",
       "use": "@vercel/static"
