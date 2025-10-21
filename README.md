@@ -1,124 +1,362 @@
-# harper
+# Harper TypeScript API Library
 
-## Documentation
+[![NPM version](<https://img.shields.io/npm/v/harper.svg?label=npm%20(stable)>)](https://npmjs.org/package/harper) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/harper)
 
-All minimal documentation files created:
+This library provides convenient access to the Harper REST API from server-side TypeScript or JavaScript.
 
-* [API.md](API.md) — API endpoints and usage examples
-* [docs/development/README.md](docs/development/README.md) — Main development documentation
-* [docs/development/hooks/README.md](docs/development/hooks/README.md) — Git hooks overview
-* [docs/development/hooks/ruff.md](docs/development/hooks/ruff.md) — Ruff configuration and usage
-* [docs/development/hooks/pre-commit.md](docs/development/hooks/pre-commit.md) — Pre-commit hooks guide
+The full API of this library can be found in [api.md](api.md).
 
-## Demo
+It is generated with [Stainless](https://www.stainless.com/).
 
-[https://github.com/user-attachments/assets/460a42b9-d2ea-42d3-8d1f-13bd8fb54565](https://github.com/user-attachments/assets/460a42b9-d2ea-42d3-8d1f-13bd8fb54565)
+## Installation
 
-The codebase is a minimal Flask web application for AI-powered media exploration, structured as follows:
-
-**Core Structure:**
-
-* `path/app.py`: Main Flask app with routes for index, verify, search, terms, privacy, updates. Uses Google Gemini 2.0 Flash API for AI responses. Implements human verification, session management, and error handling.
-* `templates/`: 5 HTML templates (index, verify, terms, privacy, updates) with semantic markup, accessibility features, and minimal inline JS.
-* `static/css/style.css`: Theme system using CSS custom properties, responsive design.
-* `requirements.txt`: Minimal dependencies (Flask, requests, python-dotenv).
-* `tests/test_app.py`: Basic pytest tests.
-
-**Code Style:**
-
-* Clean, readable Python with type hints and docstrings.
-* Semantic HTML5 with ARIA attributes for accessibility.
-* Vanilla JavaScript with event listeners, no frameworks.
-* Consistent indentation, lowercase responses, minimal comments.
-* Error handling with user-friendly messages.
-* No unnecessary complexity; focused on core functionality.
-
-**Current State:**
-
-* All routes functional, AI integration working.
-* Responsive design with 5 theme options.
-* Human verification with keyword matching.
-* Privacy-focused (no conversation storage).
-* Ready for deployment (Vercel/Docker support).
-
-## Setup
-
-### Prerequisites
-
-* Python 3.8+
-* Node.js 16+
-* npm
-
-```bash
-git clone https://github.com/bniladridas/path.git
-cd path
-pip install -r requirements.txt
-npm install
-npx playwright install
+```sh
+npm install git+ssh://git@github.com:stainless-sdks/harper-typescript.git
 ```
 
-### Running the Application
+> [!NOTE]
+> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install harper`
 
-```bash
-GEMINI_API_KEY=your-key python path/app.py
+## Usage
+
+The full API of this library can be found in [api.md](api.md).
+
+<!-- prettier-ignore -->
+```js
+import Harper from 'harper';
+
+const client = new Harper({
+  apiKey: process.env['HARPER_API_KEY'], // This is the default and can be omitted
+});
+
+const response = await client.search.recommend();
+
+console.log(response.result);
 ```
 
-## Testing
+### Request & Response types
 
-### Unit Tests
+This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
 
-```bash
-pytest
+<!-- prettier-ignore -->
+```ts
+import Harper from 'harper';
+
+const client = new Harper({
+  apiKey: process.env['HARPER_API_KEY'], // This is the default and can be omitted
+});
+
+const response: Harper.SearchRecommendResponse = await client.search.recommend();
 ```
 
-### API Key Testing
+Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
-```bash
-curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY"
+## Handling errors
+
+When the library is unable to connect to the API,
+or if the API returns a non-success status code (i.e., 4xx or 5xx response),
+a subclass of `APIError` will be thrown:
+
+<!-- prettier-ignore -->
+```ts
+const response = await client.search.recommend().catch(async (err) => {
+  if (err instanceof Harper.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
-### End-to-End Tests
+Error codes are as follows:
 
-```bash
-npm test          # headless
-npm run test:ui   # interactive
-npm run test:headed
-npm run test:debug
+| Status Code | Error Type                 |
+| ----------- | -------------------------- |
+| 400         | `BadRequestError`          |
+| 401         | `AuthenticationError`      |
+| 403         | `PermissionDeniedError`    |
+| 404         | `NotFoundError`            |
+| 422         | `UnprocessableEntityError` |
+| 429         | `RateLimitError`           |
+| >=500       | `InternalServerError`      |
+| N/A         | `APIConnectionError`       |
+
+### Retries
+
+Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
+Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
+429 Rate Limit, and >=500 Internal errors will all be retried by default.
+
+You can use the `maxRetries` option to configure or disable this:
+
+<!-- prettier-ignore -->
+```js
+// Configure the default for all requests:
+const client = new Harper({
+  maxRetries: 0, // default is 2
+});
+
+// Or, configure per-request:
+await client.search.recommend({
+  maxRetries: 5,
+});
 ```
 
-### Test Structure
+### Timeouts
 
-* `e2e/`: End-to-end test files
+Requests time out after 1 minute by default. You can configure this with a `timeout` option:
 
-  * `fixtures/`: Shared test fixtures and utilities
-  * `navigation.spec.js`: Tests for navigation and static pages
-  * `search.spec.js`: Tests for search functionality
-  * `verification.spec.js`: Tests for user verification flow
-* `tests/`: Unit tests
+<!-- prettier-ignore -->
+```ts
+// Configure the default for all requests:
+const client = new Harper({
+  timeout: 20 * 1000, // 20 seconds (default is 1 minute)
+});
 
-  * `test_app.py`: Basic route tests
-
-The code is production-ready, maintainable, and follows best practices for a small web app. Comprehensive test coverage ensures reliability and prevents regressions.
-
-## Conventional Commits
-
-This project uses conventional commit standards to maintain a clean and consistent git history.
-
-### Setup
-
-```bash
-cp scripts/commit-msg .git/hooks/commit-msg
-chmod +x .git/hooks/commit-msg
+// Override per-request:
+await client.search.recommend({
+  timeout: 5 * 1000,
+});
 ```
 
-### Usage
+On timeout, an `APIConnectionTimeoutError` is thrown.
 
-Commit messages must follow this format:
+Note that requests which time out will be [retried twice by default](#retries).
 
-* Start with a type: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
-* First line lowercase and ≤60 characters
-* Example: `feat: add user authentication`
+## Advanced Usage
 
-### History Cleanup
+### Accessing raw Response data (e.g., headers)
 
-Note: The rewrite_msg.sh script was removed in commit b3f1221 as it's dangerous.
+The "raw" `Response` returned by `fetch()` can be accessed through the `.asResponse()` method on the `APIPromise` type that all methods return.
+This method returns as soon as the headers for a successful response are received and does not consume the response body, so you are free to write custom parsing or streaming logic.
+
+You can also use the `.withResponse()` method to get the raw `Response` along with the parsed data.
+Unlike `.asResponse()` this method consumes the body, returning once it is parsed.
+
+<!-- prettier-ignore -->
+```ts
+const client = new Harper();
+
+const response = await client.search.recommend().asResponse();
+console.log(response.headers.get('X-My-Header'));
+console.log(response.statusText); // access the underlying Response object
+
+const { data: response, response: raw } = await client.search.recommend().withResponse();
+console.log(raw.headers.get('X-My-Header'));
+console.log(response.result);
+```
+
+### Logging
+
+> [!IMPORTANT]
+> All log messages are intended for debugging only. The format and content of log messages
+> may change between releases.
+
+#### Log levels
+
+The log level can be configured in two ways:
+
+1. Via the `HARPER_LOG` environment variable
+2. Using the `logLevel` client option (overrides the environment variable if set)
+
+```ts
+import Harper from 'harper';
+
+const client = new Harper({
+  logLevel: 'debug', // Show all log messages
+});
+```
+
+Available log levels, from most to least verbose:
+
+- `'debug'` - Show debug messages, info, warnings, and errors
+- `'info'` - Show info messages, warnings, and errors
+- `'warn'` - Show warnings and errors (default)
+- `'error'` - Show only errors
+- `'off'` - Disable all logging
+
+At the `'debug'` level, all HTTP requests and responses are logged, including headers and bodies.
+Some authentication-related headers are redacted, but sensitive data in request and response bodies
+may still be visible.
+
+#### Custom logger
+
+By default, this library logs to `globalThis.console`. You can also provide a custom logger.
+Most logging libraries are supported, including [pino](https://www.npmjs.com/package/pino), [winston](https://www.npmjs.com/package/winston), [bunyan](https://www.npmjs.com/package/bunyan), [consola](https://www.npmjs.com/package/consola), [signale](https://www.npmjs.com/package/signale), and [@std/log](https://jsr.io/@std/log). If your logger doesn't work, please open an issue.
+
+When providing a custom logger, the `logLevel` option still controls which messages are emitted, messages
+below the configured level will not be sent to your logger.
+
+```ts
+import Harper from 'harper';
+import pino from 'pino';
+
+const logger = pino();
+
+const client = new Harper({
+  logger: logger.child({ name: 'Harper' }),
+  logLevel: 'debug', // Send all messages to pino, allowing it to filter
+});
+```
+
+### Making custom/undocumented requests
+
+This library is typed for convenient access to the documented API. If you need to access undocumented
+endpoints, params, or response properties, the library can still be used.
+
+#### Undocumented endpoints
+
+To make requests to undocumented endpoints, you can use `client.get`, `client.post`, and other HTTP verbs.
+Options on the client, such as retries, will be respected when making these requests.
+
+```ts
+await client.post('/some/path', {
+  body: { some_prop: 'foo' },
+  query: { some_query_arg: 'bar' },
+});
+```
+
+#### Undocumented request params
+
+To make requests using undocumented parameters, you may use `// @ts-expect-error` on the undocumented
+parameter. This library doesn't validate at runtime that the request matches the type, so any extra values you
+send will be sent as-is.
+
+```ts
+client.search.recommend({
+  // ...
+  // @ts-expect-error baz is not yet public
+  baz: 'undocumented option',
+});
+```
+
+For requests with the `GET` verb, any extra params will be in the query, all other requests will send the
+extra param in the body.
+
+If you want to explicitly send an extra argument, you can do so with the `query`, `body`, and `headers` request
+options.
+
+#### Undocumented response properties
+
+To access undocumented response properties, you may access the response object with `// @ts-expect-error` on
+the response object, or cast the response object to the requisite type. Like the request params, we do not
+validate or strip extra properties from the response from the API.
+
+### Customizing the fetch client
+
+By default, this library expects a global `fetch` function is defined.
+
+If you want to use a different `fetch` function, you can either polyfill the global:
+
+```ts
+import fetch from 'my-fetch';
+
+globalThis.fetch = fetch;
+```
+
+Or pass it to the client:
+
+```ts
+import Harper from 'harper';
+import fetch from 'my-fetch';
+
+const client = new Harper({ fetch });
+```
+
+### Fetch options
+
+If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
+
+```ts
+import Harper from 'harper';
+
+const client = new Harper({
+  fetchOptions: {
+    // `RequestInit` options
+  },
+});
+```
+
+#### Configuring proxies
+
+To modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy
+options to requests:
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
+
+```ts
+import Harper from 'harper';
+import * as undici from 'undici';
+
+const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
+const client = new Harper({
+  fetchOptions: {
+    dispatcher: proxyAgent,
+  },
+});
+```
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
+
+```ts
+import Harper from 'harper';
+
+const client = new Harper({
+  fetchOptions: {
+    proxy: 'http://localhost:8888',
+  },
+});
+```
+
+<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
+
+```ts
+import Harper from 'npm:harper';
+
+const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
+const client = new Harper({
+  fetchOptions: {
+    client: httpClient,
+  },
+});
+```
+
+## Frequently Asked Questions
+
+## Semantic versioning
+
+This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+
+1. Changes that only affect static types, without breaking runtime behavior.
+2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
+3. Changes that we do not expect to impact the vast majority of users in practice.
+
+We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
+
+We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/harper-typescript/issues) with questions, bugs, or suggestions.
+
+## Requirements
+
+TypeScript >= 4.9 is supported.
+
+The following runtimes are supported:
+
+- Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
+- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
+- Deno v1.28.0 or higher.
+- Bun 1.0 or later.
+- Cloudflare Workers.
+- Vercel Edge Runtime.
+- Jest 28 or greater with the `"node"` environment (`"jsdom"` is not supported at this time).
+- Nitro v2.6 or greater.
+
+Note that React Native is not supported at this time.
+
+If you are interested in other runtime environments, please open or upvote an issue on GitHub.
+
+## Contributing
+
+See [the contributing documentation](./CONTRIBUTING.md).
+
