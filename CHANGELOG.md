@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/bniladridas/path/compare/v1.2.4...v1.2.5) (2025-10-21)
+
+
+### Bug Fixes
+
+* improve route tests and fix yaml linting ([58c94bf](https://github.com/bniladridas/path/commit/58c94bfd973c16a754bfc7517453487a74ebe8a8))
+
 ## [1.2.4](https://github.com/bniladridas/path/compare/v1.2.3...v1.2.4) (2025-10-21)
 
 
