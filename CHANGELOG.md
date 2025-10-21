@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/bniladridas/path/compare/v1.10.25...v1.11.0) (2025-10-21)
+
+
+### Features
+
+* add google-generativeai for AI features ([0a5c5e0](https://github.com/bniladridas/path/commit/0a5c5e0ff6527b198936c107484f68a359897d5e))
+
 ## [1.10.25](https://github.com/bniladridas/path/compare/v1.10.24...v1.10.25) (2025-10-21)
 
 
