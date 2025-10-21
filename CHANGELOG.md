@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/bniladridas/path/compare/v1.5.1...v1.6.0) (2025-10-21)
+
+
+### Features
+
+* add workflow_dispatch to all workflows ([06b89d2](https://github.com/bniladridas/path/commit/06b89d2a4b84ee91136a7f234177b917f177efbd))
+
 ## [1.5.1](https://github.com/bniladridas/path/compare/v1.5.0...v1.5.1) (2025-10-21)
 
 
