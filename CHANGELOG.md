@@ -1,3 +1,10 @@
+## [1.11.3](https://github.com/bniladridas/path/compare/v1.11.2...v1.11.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* remove extra whitespace in vercel.json ([5671f83](https://github.com/bniladridas/path/commit/5671f83cbdcc436b8bfad2d0875aeb46897ade3c))
+
 ## [1.11.2](https://github.com/bniladridas/path/compare/v1.11.1...v1.11.2) (2025-10-21)
 
 
