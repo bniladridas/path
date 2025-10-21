@@ -1,5 +1,10 @@
 """
-PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
+"Path" serves both as the app's name and its guiding metaphor.
+The project helps users "find their path" through media exploration—like a guide on a personal journey.
+
+In the codebase, `path/` is the main Python package containing the application logic (e.g., app.py).
+The name follows the standard convention where the package name matches the project title.
+Note: it's not a filesystem path reference, but a conceptual one—symbolizing user discovery.
 
 A Flask web application that helps people find their way home through
 media exploration using Google's Gemini 2.0 Flash AI model.
@@ -8,7 +13,7 @@ Core Philosophy:
 - Authentic discovery: No manipulation, just honest responses
 - Human longing: Honoring deeper needs behind every search
 - Time is precious: Cutting through noise to find what matters
-- Coming home: Helping people find their way back to themselves
+- Coming home: Helping people reconnect with themselves
 
 Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
