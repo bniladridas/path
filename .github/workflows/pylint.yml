@@ -20,6 +20,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
+          echo -e "\033[36m[INFO]\033[0m Installing dependencies..."
           python -m pip install --upgrade pip
           pip install pylint yamllint
           if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
@@ -27,8 +28,10 @@ jobs:
           else
             pip install -r requirements.txt
           fi
+          echo -e "\033[32m[PASS]\033[0m Dependencies installed successfully"
       - name: Lint YAML files
         run: |
+          echo -e "\033[36m[INFO]\033[0m Linting YAML files..."
           # Run yamllint on all YAML files except those in .venv and .git directories
           find . -type f \( -name "*.yaml" -o -name "*.yml" \) \
             -not -path "./venv/*" \
@@ -36,9 +39,11 @@ jobs:
             -not -path "./.git/*" \
             -not -path "./node_modules/*" \
             | xargs yamllint -c .yamllint
+          echo -e "\033[32m[PASS]\033[0m YAML linting completed"
 
       - name: Run pylint
         run: |
+          echo -e "\033[36m[INFO]\033[0m Running pylint..."
           # Install pylint-junit for JUnit XML output
           pip install pylint-junit
 
@@ -57,3 +62,4 @@ jobs:
           find . -name "*.py" -not -path "./venv/*" \
             | xargs pylint --output-format=pylint_junit.JUnitReporter \
             > pylint-results.xml || true
+          echo -e "\033[32m[PASS]\033[0m Pylint analysis completed"
