@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'e2e/**'
-      - 'app.py'
+      - 'path/app.py'
       - 'templates/**'
       - 'static/**'
       - 'tests/**'
@@ -15,7 +15,7 @@ on:
     branches: [main]
     paths:
       - 'e2e/**'
-      - 'app.py'
+      - 'path/app.py'
       - 'templates/**'
       - 'static/**'
       - 'tests/**'
@@ -118,7 +118,7 @@ jobs:
         run: |
           echo -e "\033[36m[INFO]\033[0m Starting Flask server and E2E tests..."
           # Set environment variables
-          export FLASK_APP=app.py
+          export FLASK_APP=path/app.py
           export FLASK_ENV=development
           export PYTHONUNBUFFERED=1
 
