@@ -24,7 +24,6 @@ import sys
 from pathlib import Path
 
 # Third-party imports
-from dotenv import load_dotenv
 from flask import jsonify
 from flask import redirect
 from flask import render_template
@@ -60,6 +59,8 @@ import requests  # noqa: E402
 # Environment variables are loaded from Vercel environment in production
 # For local development, ensure .env file is present
 if not os.environ.get("VERCEL"):
+    from dotenv import load_dotenv
+
     load_dotenv()
 
 # Set up logging for debugging
