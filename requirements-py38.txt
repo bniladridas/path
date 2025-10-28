@@ -1,6 +1,6 @@
 # Python 3.8 compatible requirements
 flask==2.3.3
-python-dotenv==1.0.1
+python-dotenv==1.2.1
 requests==2.31.0
 gunicorn==23.0.0
 # google-generativeai is not compatible with Python 3.8
