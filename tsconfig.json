@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "harper/*": ["./src/*"],
-      "harper": ["./src/index.ts"]
+      "harpertoken/*": ["./src/*"],
+      "harpertoken": ["./src/index.ts"]
     },
     "noEmit": true,
 

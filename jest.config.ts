@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^harper$': '<rootDir>/src/index.ts',
-    '^harper/(.*)$': '<rootDir>/src/$1',
+    '^harpertoken$': '<rootDir>/src/index.ts',
+    '^harpertoken/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

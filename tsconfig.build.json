@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "harper/*": ["./dist/src/*"],
-      "harper": ["./dist/src/index.ts"]
+      "harpertoken/*": ["./dist/src/*"],
+      "harpertoken": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
