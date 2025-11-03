@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from 'harper/internal/uploads';
-import { toFile } from 'harper/core/uploads';
+import { multipartFormRequestOptions, createForm } from 'harpertoken/internal/uploads';
+import { toFile } from 'harpertoken/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

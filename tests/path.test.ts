@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from 'harper/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from 'harpertoken/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 

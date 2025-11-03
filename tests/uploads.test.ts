@@ -1,6 +1,6 @@
 import fs from 'fs';
-import type { ResponseLike } from 'harper/internal/to-file';
-import { toFile } from 'harper/core/uploads';
+import type { ResponseLike } from 'harpertoken/internal/to-file';
+import { toFile } from 'harpertoken/core/uploads';
 import { File } from 'node:buffer';
 
 class MyClass {
@@ -97,7 +97,7 @@ describe('missing File error message', () => {
   });
 
   test('is thrown', async () => {
-    const uploads = await import('harper/core/uploads');
+    const uploads = await import('harpertoken/core/uploads');
     await expect(
       uploads.toFile(mockResponse({ url: 'https://example.com/my/audio.mp3' })),
     ).rejects.toMatchInlineSnapshot(
