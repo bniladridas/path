@@ -116,6 +116,8 @@ class DeploymentPrep:
         if not self.ensure_path_structure():
             return False
 
+        # app.py is already in path/, no need to copy
+
         if not self.copy_templates():
             return False
 

@@ -1,3 +1,17 @@
+[project]
+name = "path"
+version = "1.0.0"
+dependencies = [
+    "flask==3.1.2",
+    "python-dotenv==1.1.1",
+    "requests==2.32.5",
+    "gunicorn==23.0.0",
+    "flask-openapi3==4.0.0",
+    "pydantic==2.9.0",
+    "Werkzeug>=3.1.0",
+    "google-generativeai==0.8.5",
+]
+
 [tool.black]
 line-length = 127
 target-version = ["py38", "py39", "py310", "py311", "py312"]
@@ -83,6 +97,12 @@ known-first-party = ["path"]
     "PTH118",  # os.path.abspath should be replaced by pathlib.Path
     "PTH120",  # os.path.dirname should be replaced by pathlib.Path
     "E501",    # Line too long (handled by black)
+]
+
+[tool.pytest.ini_options]
+python_files = "tests/*.py"
+filterwarnings = [
+    "ignore::DeprecationWarning",
 ]
 
 [tool.ruff.format]

@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -57,17 +57,14 @@ jobs:
             echo -e "\033[31m[ERROR]\033[0m path/app.py not found"
             exit 1
           fi
-          echo -e "\033[32m[PASS]\033[0m path/app.py exists"
+          echo -e "\033[32m[PASS]\033[0m app.py exists"
 
       - name: Test Flask app import
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing Flask app import..."
-          cd path
-          python -c "
-          import sys
-          sys.path.insert(0, '..')
+          PYTHONPATH=. python -c "
           try:
-              from app import app
+              from path.app import app
               print('\033[32m[PASS]\033[0m Flask app imported successfully')
               print(f'\033[36m[INFO]\033[0m App name: {app.name}')
               print(f'\033[36m[INFO]\033[0m App routes: {[rule.rule for rule in app.url_map.iter_rules()]}')
@@ -79,11 +76,8 @@ jobs:
       - name: Test Flask app routes
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing Flask app routes..."
-          cd path
-          python -c "
-          import sys
-          sys.path.insert(0, '..')
-          from app import app
+          PYTHONPATH=. python -c "
+          from path.app import app
 
           with app.test_client() as client:
               response = client.get('/', follow_redirects=True)
@@ -133,16 +127,13 @@ jobs:
       - name: Test environment variables handling
         run: |
           echo -e "\033[36m[INFO]\033[0m Testing environment variables handling..."
-          cd path
-          python -c "
+          PYTHONPATH=. python -c "
           import os
-          import sys
-          sys.path.insert(0, '..')
 
           os.environ.pop('GEMINI_API_KEY', None)
 
           try:
-              from app import app
+              from path.app import app
               with app.test_client() as client:
                   response = client.get('/', follow_redirects=True)
                   assert response.status_code == 200
@@ -156,13 +147,13 @@ jobs:
         run: |
           echo -e "\033[36m[INFO]\033[0m Checking for common security issues..."
 
-          if grep -r "debug=True" path/ --include="*.py"; then
+          if grep -r "debug=True" --include="*.py" .; then
             echo -e "\033[33m[WARN]\033[0m debug=True found in code"
           else
             echo -e "\033[32m[PASS]\033[0m No debug=True found"
           fi
 
-          if grep -r -i "api_key.*=" path/ --include="*.py" | grep -v "environ\\|getenv"; then
+          if grep -r -i "api_key.*=" --include="*.py" . | grep -v "environ\\|getenv"; then
             echo -e "\033[33m[WARN]\033[0m Potential hardcoded API keys found"
           else
             echo -e "\033[32m[PASS]\033[0m No hardcoded API keys found"
@@ -171,12 +162,9 @@ jobs:
       - name: Performance check
         run: |
           echo -e "\033[36m[INFO]\033[0m Running basic performance checks..."
-          cd path
-          python -c "
+          PYTHONPATH=. python -c "
           import time
-          import sys
-          sys.path.insert(0, '..')
-          from app import app
+          from path.app import app
 
           start_time = time.time()
           with app.test_client() as client:

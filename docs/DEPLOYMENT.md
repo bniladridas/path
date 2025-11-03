@@ -10,7 +10,7 @@ This project supports multiple deployment targets with automated file preparatio
 - **Templates**: Copied to `path/templates/`
 
 ### 2. Docker (Containerized)
-- **Entry Point**: `app_local.py` via `app.py`
+- **Entry Point**: `app_local.py` via `path/app.py`
 - **Static Files**: Root `static/`
 - **Templates**: Root `templates/`
 
@@ -24,11 +24,10 @@ This project supports multiple deployment targets with automated file preparatio
 ```
 project/
 ├── app_local.py          # Main Flask app (local/Docker)
-├── app.py               # Docker entry point
 ├── templates/           # Source templates
 ├── static/              # Source static files
 ├── path/
-│   ├── app.py          # Vercel Flask app
+│   ├── app.py          # Flask app (Vercel/Docker)
 │   ├── index.py        # Vercel entry point
 │   ├── templates/      # Generated (ignored by git)
 │   └── static/         # Generated (ignored by git)

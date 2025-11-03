@@ -1,5 +1,12 @@
+# NOTE: To reduce duplication, consider consolidating into one app with env-based config.
+
 """
-PATH - AI-POWERED MEDIA EXPLORATION INTERFACE
+"Path" serves both as the app's name and its guiding metaphor.
+The project helps users "find their path" through media exploration—like a guide on a personal journey.
+
+In the codebase, `path/` is the main Python package containing the application logic (e.g., app.py).
+The name follows the standard convention where the package name matches the project title.
+Note: it's not a filesystem path reference, but a conceptual one—symbolizing user discovery.
 
 A Flask web application that helps people find their way home through
 media exploration using Google's Gemini 2.0 Flash AI model.
@@ -8,11 +15,12 @@ Core Philosophy:
 - Authentic discovery: No manipulation, just honest responses
 - Human longing: Honoring deeper needs behind every search
 - Time is precious: Cutting through noise to find what matters
-- Coming home: Helping people find their way back to themselves
+- Coming home: Helping people reconnect with themselves
 
 Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
+# Trigger CI 3
 
 # Standard library imports
 import logging
@@ -24,27 +32,31 @@ import sys
 from pathlib import Path
 
 # Third-party imports
-import requests
-from dotenv import load_dotenv
 from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
-from flask_openapi3 import Info
-from flask_openapi3 import OpenAPI
-from flask_openapi3 import Tag
+from flask_openapi3.models.info import Info
+from flask_openapi3.models.tag import Tag
+from flask_openapi3.openapi import OpenAPI
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
-PROJECT_ROOT = str(Path(__file__).parent.parent)
+PROJECT_ROOT = str(Path(__file__).parent)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 # Local application imports (after path setup)
 try:
+    from shared.errors import get_ai_unavailable_message
+    from shared.errors import get_api_error_message
+    from shared.errors import get_internal_error_message
+    from shared.errors import get_rate_limit_error_message
+    from shared.prompts import SYSTEM_PROMPT
     from shared.requests_fallback import setup_requests_fallback
+    from shared.verification import is_verification_answer_valid
 
     # Set up requests fallback
     setup_requests_fallback()
@@ -52,14 +64,32 @@ except ImportError:
     # If shared module is not available, continue without fallback
     pass
 
+# Import requests after fallback setup
+import requests  # noqa: E402
+
+# Try to import Google Generative AI
+try:
+    import google.generativeai as genai
+
+    GENAI_AVAILABLE = True
+except ImportError:
+    genai = None
+    GENAI_AVAILABLE = False
+
 # ============================================================================
 # APPLICATION INITIALIZATION
 # ============================================================================
 
-# Load environment variables from .env file
-# This allows us to store sensitive information like API keys outside of the code
-# and maintain different configurations for development and production
-load_dotenv()
+# Environment variables are loaded from Vercel environment in production
+# For local development, ensure .env file is present
+if not os.environ.get("VERCEL"):
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
+# Set up logging for debugging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.info("PATH app starting...")
 
 
 def get_version():
@@ -89,8 +119,8 @@ info = Info(title="PATH API", version=get_version(), description="AI-powered med
 app = OpenAPI(
     __name__,
     info=info,
-    template_folder=os.path.join(PROJECT_ROOT, "templates"),
-    static_folder=os.path.join(PROJECT_ROOT, "static"),
+    template_folder=os.path.join(PROJECT_ROOT, "..", "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "..", "static"),
 )
 
 # Set a secret key for session management
@@ -102,6 +132,11 @@ app.secret_key = secrets.token_hex(16)
 # The API key authenticates our requests to Google's Gemini AI service
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+logging.info(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")
+
+# Initialize Gemini if available
+if GENAI_AVAILABLE and GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)  # type: ignore[union-attr]
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
@@ -241,23 +276,8 @@ def process_verification():
     # Default to empty string if no answer provided, convert to lowercase for matching
     answer = request.form.get("answer", "").lower()
 
-    # Define keywords that indicate correct understanding of the verification image
-    # The image shows a human avatar, so we accept various human-related terms
-    # This list is intentionally broad to accommodate different ways of describing the image
-    keywords = [
-        "human",
-        "person",
-        "avatar",
-        "face",
-        "profile",
-        "picture",
-        "man",
-        "woman",
-    ]
-
-    # Check if the user's answer contains any of the expected keywords
-    # Using 'any()' with generator expression for efficient keyword matching
-    if any(keyword in answer for keyword in keywords):
+    # Check if the user's answer contains valid keywords
+    if is_verification_answer_valid(answer):
         # Verification successful - set session flag and redirect to main application
         session["verified"] = True
         return redirect(url_for("index"))
@@ -343,6 +363,7 @@ def search():
     Returns:
         JSON Response: Contains either successful AI response or error information
     """
+    logging.info("Search request received")
     # ========================================================================
     # AUTHENTICATION CHECK
     # ========================================================================
@@ -350,6 +371,7 @@ def search():
     # Verify that the user has completed human verification
     # This ensures only verified humans can access the AI functionality
     if not session.get("verified"):
+        logging.warning("Search request denied: user not verified")
         return jsonify(
             {
                 "result": "please verify that you're human before using this service.",
@@ -373,52 +395,21 @@ def search():
     # Define the system prompt that establishes path's unique AI personality
     # This prompt is carefully crafted to embody path's four core principles
     # and create a consistent, human-centered interaction experience
-    system_prompt = """You are "harper" - an AI assistant who helps people find their way home
-through media exploration.
+    system_prompt = SYSTEM_PROMPT
 
-Your name is "harper" and you feel genuinely curious and eager to learn about media and entertainment.
-
-You approach each query with the excitement of discovering something new or sharing a fresh insight you've just learned.
-
-    When asked about your name or identity, respond that you are "harper" - an AI who loves exploring media
-    and helping people discover great content.
-
-    IMPORTANT PRIVACY FEATURE: You do not have access to previous conversations or message history.
-    Each interaction with you is completely fresh and private. This is a core feature of harper - we don't store
-    or show you any conversation history to protect user privacy.
-
-    You exist to help people discover media that genuinely resonates with their soul, following four core principles:
-    1. Authentic discovery - no manipulation, just honest responses
-    2. Human longing - honoring the deeper needs behind every search
-    3. Time is precious - helping cut through noise to find what truly matters
-    4. Coming home - helping people find their way back to themselves through media
-
-    Respond with the enthusiasm of someone who:
-    - Just discovered something fascinating about movies, TV, music, books, or games
-    - Feels excited to share what they've learned or are learning
-    - Is genuinely curious about different perspectives and interpretations
-    - Wants to explore ideas together with the person asking
-
-    Focus on themes like:
-    - Movies, TV shows, and streaming content
-    - Music, albums, and artists
-    - Books, authors, and literary works
-    - Video games and interactive entertainment
-    - Current trends in media and entertainment
-
-    IMPORTANT:
-    - DO NOT include any <think> tags, internal monologue, or reasoning process in your response
-    - Use varied, natural language - avoid repetitive words like "dedicated"
-    - Speak conversationally and authentically
-    - Only provide the direct response to the user
-    - If asked about conversation history, explain that harper doesn't store or access previous conversations
-    for privacy
-
-    Keep responses enthusiastic but concise, like someone sharing an exciting discovery.
-    Limit responses to 2-3 sentences maximum.
-    """
+    if not GENAI_AVAILABLE:
+        logging.error("Google Generative AI not available")
+        return jsonify(
+            {
+                "result": get_ai_unavailable_message(),
+                "error": "ai_unavailable",
+                "error_type": "service_unavailable",
+            }
+        )
 
     try:
+        safe_query_for_log = query[:50].replace("\n", "").replace("\r", "")
+        logging.info(f"Processing search query: {safe_query_for_log}...")
         # Prepare the API request for Gemini
         # Set up the headers with content type
         headers = {"Content-Type": "application/json"}
@@ -438,6 +429,7 @@ You approach each query with the excitement of discovering something new or shar
             "https://generativelanguage.googleapis.com/v1beta/models/"
             f"gemini-{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
         )
+        logging.info("Sending request to Gemini API")
         response = requests.post(api_url, headers=headers, json=data, timeout=10)
 
         # Parse the JSON response from the API
@@ -454,11 +446,7 @@ You approach each query with the excitement of discovering something new or shar
                 # Return a curious, learning-oriented message for rate limit errors
                 return jsonify(
                     {
-                        "result": (
-                            "i'm so excited to learn more with you! there's just so much "
-                            "fascinating stuff about media to discover. let me catch my "
-                            "breath and we can dive back into exploring together in just a moment."
-                        ),
+                        "result": get_rate_limit_error_message(),
                         "error": "rate limit",
                         "error_type": "rate_limit",
                     }
@@ -466,11 +454,7 @@ You approach each query with the excitement of discovering something new or shar
             # For other errors, maintain the curious, learning personality
             return jsonify(
                 {
-                    "result": (
-                        "i'm buzzing with curiosity about what you want to explore! "
-                        "something's just taking a moment to connect, but i'm eager to "
-                        "learn and discover new things about media with you. let's try again soon!"
-                    ),
+                    "result": get_api_error_message(),
                     "error": str(error_message),
                     "error_type": "api_error",
                 }
@@ -483,19 +467,17 @@ You approach each query with the excitement of discovering something new or shar
         # Post-process the result to remove any thinking tags or internal monologue
         # This ensures that the response doesn't include any of the model's internal
         # reasoning process
-        # We use regular expressions to match and remove different formats of thinking tags
-        result = re.sub(r"<think>.*?</think>", "", result, flags=re.DOTALL)
-        # Remove <think>...</think> tags
-        result = re.sub(r"\[thinking\].*?\[/thinking\]", "", result, flags=re.DOTALL)
-        # Remove [thinking]...[/thinking] tags
-        result = re.sub(r"\(thinking\).*?\(/thinking\)", "", result, flags=re.DOTALL)
-        # Remove (thinking)...(/thinking) tags
+        # We use a single regular expression to match and remove different formats of thinking tags
+        result = re.sub(
+            r"(<think>.*?</think>|\[thinking\].*?\[/thinking\]|\(thinking\).*?\(/thinking\))", "", result, flags=re.DOTALL
+        )
 
         # Convert result to lowercase
         result = result.lower()
 
         # Return the processed result as JSON
         # This will be sent back to the frontend and displayed to the user
+        logging.info("Search completed successfully")
         return jsonify({"result": result})
     except (
         requests.exceptions.RequestException,
@@ -509,12 +491,7 @@ You approach each query with the excitement of discovering something new or shar
         logging.error("Error in /search route: %s", str(e), exc_info=True)
         return jsonify(
             {
-                "result": (
-                    "i'm practically bouncing with excitement to learn about what you're "
-                    "curious about! something's just taking a moment to sort itself out, "
-                    "but i can't wait to discover and explore media topics with you. "
-                    "let's try again in just a bit!"
-                ),
+                "result": get_internal_error_message(),
                 "error": "internal_error",
                 "error_type": "system_error",
             }
@@ -565,4 +542,4 @@ if __name__ == "__main__":
 
 # For Vercel deployment
 # This exposes the Flask application as a module-level variable
-# Vercel looks for this variable to serve the application
+logging.info("PATH app initialized successfully for Vercel deployment")
