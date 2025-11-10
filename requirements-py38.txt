@@ -7,7 +7,7 @@ gunicorn==23.0.0
 # Use a mock or skip AI features for Python 3.8 testing
 vercel==0.2.1
 flask-openapi3==4.0.0
-pydantic==2.9.0
+pydantic==2.12.4
 Werkzeug>=2.3.0,<4.0.0
 Jinja2>=3.1.0,<3.2.0
 itsdangerous>=2.1.0,<2.3.0
