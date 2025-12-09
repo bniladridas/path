@@ -9,3 +9,14 @@ dist-deno
 .idea/
 .eslintcache
 
+# Environment files
+.env
+!.env.example
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
