@@ -8,7 +8,7 @@ if [[ -n "$1" && "$1" != '--'* ]]; then
   URL="$1"
   shift
 else
-  URL="$(grep 'openapi_spec_url' .stats.yml | cut -d' ' -f2)"
+  URL="$(sed -n 's/^openapi_spec_url: //p' .stats.yml)"
 fi
 
 # Check if the URL is empty
