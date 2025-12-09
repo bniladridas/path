@@ -224,7 +224,7 @@ send will be sent as-is.
 ```ts
 client.search.recommend({
   // ...
-  // @ts-expect-error baz is not yet public
+  // @ts-expect-error baz is an undocumented parameter
   baz: 'undocumented option',
 });
 ```
