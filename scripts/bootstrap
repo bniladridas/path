@@ -18,6 +18,8 @@ if [ -f "Brewfile" ] && [ "$(uname -s)" = "Darwin" ] && [ "$SKIP_BREW" != "1" ] 
     esac
     echo
   }
+else
+  echo "==> Skipping Homebrew setup (not on macOS or Brewfile not found)"
 fi
 
 echo "==> Installing Node dependencies…"
