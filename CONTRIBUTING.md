@@ -49,7 +49,7 @@ Alternatively, to link a local copy of the repo:
 
 ```sh
 # Clone
-$ git clone https://www.github.com/bniladridas/path
+git clone https://www.github.com/harpertoken/harpertoken
 $ cd path
 
 # With yarn
