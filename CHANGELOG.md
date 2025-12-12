@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/bniladridas/path/compare/v1.11.6...v1.12.0) (2025-12-12)
+
+
+### Features
+
+* update playwright and gemini model ([808cabf](https://github.com/bniladridas/path/commit/808cabfe15c15f777f93eae38208790ede2fc1f8))
+
 ## [1.11.6](https://github.com/bniladridas/path/compare/v1.11.5...v1.11.6) (2025-10-21)
 
 
