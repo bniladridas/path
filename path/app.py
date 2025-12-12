@@ -44,7 +44,7 @@ from flask_openapi3.openapi import OpenAPI
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
-PROJECT_ROOT = str(Path(__file__).parent)
+PROJECT_ROOT = str(Path(__file__).parent.parent)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -119,8 +119,8 @@ info = Info(title="PATH API", version=get_version(), description="AI-powered med
 app = OpenAPI(
     __name__,
     info=info,
-    template_folder=os.path.join(PROJECT_ROOT, "..", "templates"),
-    static_folder=os.path.join(PROJECT_ROOT, "..", "static"),
+    template_folder=os.path.join(PROJECT_ROOT, "templates"),
+    static_folder=os.path.join(PROJECT_ROOT, "static"),
 )
 
 # Set a secret key for session management
@@ -140,7 +140,7 @@ if GENAI_AVAILABLE and GEMINI_API_KEY:
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
-GEMINI_MODEL = "2.0-flash"
+GEMINI_MODEL = "2.5-flash"
 
 
 # API Models for OpenAPI documentation
