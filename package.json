@@ -1,6 +1,6 @@
 {
   "name": "harpertoken",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The official TypeScript library for the Harper API",
   "author": "Harper <>",
   "types": "dist/index.d.ts",
