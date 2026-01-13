@@ -1,17 +1,55 @@
 {
-  "name": "path-e2e",
+  "name": "path-electron",
   "version": "0.1.0",
-  "description": "End-to-end tests for PATH application",
-  "private": true,
+  "description": "Electron app for PATH application",
+  "main": "main.js",
   "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:headed": "playwright test --headed",
-    "vercel-build": "./vercel_build.sh",
     "test:report": "playwright show-report"
   },
+  "dependencies": {
+    "express": "^4.18.0",
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.0",
+    "express-session": "^1.17.0"
+  },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "electron-builder": "^24.0.0",
+    "electron": "^30.0.0"
+  },
+  "build": {
+    "appId": "com.harper.path",
+    "productName": "Harper",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**/*",
+      "!build/**/*",
+      "!tests/**/*",
+      "!scripts/**/*",
+      "!shared/**/*",
+      "!path/**/*",
+      "!*.md",
+      "!*.lock"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }

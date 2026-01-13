@@ -1,291 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- ================================================================
-         PATH - MODERN HTML5 MEDIA EXPLORATION INTERFACE
-         ================================================================
+    <head>
+        <!-- ================================================================
+          PATH - MODERN HTML5 MEDIA EXPLORATION INTERFACE
+          ===============================================================
 
-         "come home before it's too late"
+          "come home before it's too late"
 
-         A modern, semantic HTML5 interface for AI-powered media discovery.
-         Built with accessibility, performance, and human-centered design.
+          A modern, semantic HTML5 interface for AI-powered media discovery.
+          Built with accessibility, performance, and human-centered design.
 
-         Author: Niladri Das (@bniladridas)
-         Repository: https://github.com/bniladridas/path
-         ================================================================ -->
-
-    <!-- Essential Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="path - helping people find their way home through media exploration using AI">
-    <meta name="keywords" content="ai, media discovery, movies, music, books, games, authentic exploration, human-centered">
-    <meta name="author" content="Niladri Das">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#000000">
-
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="path - come home before it's too late">
-    <meta property="og:description" content="helping people find their way home through media exploration">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://path.example.com/">
-    <meta property="og:image" content="{{ url_for('static', filename='images/logo.svg', _external=True) }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="path - AI-powered media exploration interface">
-    <meta property="og:site_name" content="path">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="@bniladridas">
-    <meta name="twitter:title" content="path - come home before it's too late">
-    <meta name="twitter:description" content="helping people find their way home through media exploration">
-    <meta name="twitter:image" content="{{ url_for('static', filename='images/logo.svg', _external=True) }}">
-
-    <!-- Page Title -->
-    <title>harper</title>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-    <!-- Performance and Accessibility -->
-    <link rel="preload" href="{{ url_for('static', filename='css/style.css') }}" as="style">
-
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer">
-
-    <!-- Performance Hints -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-</head>
-
-<body>
-    <!-- ================================================================
+          Author: Niladri Das (@bniladridas)
+          Repository: https://github.com/bniladridas/path
+================================================================ -->
+        <!-- Essential Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="path - helping people find their way home through media exploration using AI">
+        <meta name="keywords"
+              content="ai, media discovery, movies, music, books, games, authentic exploration, human-centered">
+        <meta name="author" content="Niladri Das">
+        <meta name="robots" content="index, follow">
+        <meta name="theme-color" content="#000000">
+        <!-- Open Graph / Social Media Meta Tags -->
+        <meta property="og:title" content="path - come home before it's too late">
+        <meta property="og:description"
+              content="helping people find their way home through media exploration">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://path.example.com/">
+        <meta property="og:image" content="/images/logo.svg">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt"
+              content="path - AI-powered media exploration interface">
+        <meta property="og:site_name" content="path">
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:creator" content="@bniladridas">
+        <meta name="twitter:title" content="path - come home before it's too late">
+        <meta name="twitter:description"
+              content="helping people find their way home through media exploration">
+        <meta name="twitter:image" content="/images/logo.svg">
+        <!-- Page Title -->
+        <title>harper</title>
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+        <link rel="apple-touch-icon" href="/images/favicon.svg">
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+              rel="stylesheet">
+        <!-- Styles -->
+        <link rel="stylesheet" href="/css/style.css">
+        <!-- Performance and Accessibility -->
+        <link rel="preload" href="/css/style.css" as="style">
+        <!-- Font Awesome for icons -->
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+              integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer">
+        <!-- Performance Hints -->
+        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    </head>
+    <body>
+        <!-- ================================================================
          MAIN APPLICATION CONTAINER
          ================================================================ -->
-    <div class="container" role="main">
-
-        <!-- ============================================================
+        <div class="container" role="main">
+            <!-- ============================================================
              NAVIGATION MENU - Three-dot menu with tools and themes
              ============================================================ -->
-        <nav class="menu-container" role="navigation" aria-label="Main navigation and tools">
-            <button class="menu-button"
-                    id="menu-button"
-                    type="button"
-                    aria-label="Open main menu with tools and themes"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    aria-controls="menu-dropdown">
-                <span class="menu-dots" aria-hidden="true">⋯</span>
-            </button>
-
-            <div class="menu-dropdown"
-                 id="menu-dropdown"
-                 role="menu"
-                 aria-labelledby="menu-button"
-                 aria-hidden="true">
-
-                <!-- Tool Menu Items with Semantic Roles -->
-                <div class="menu-item" id="about-menu" role="menuitem" tabindex="-1">
-                    about <span class="shortcut" aria-label="Keyboard shortcut: A">A</span>
+            <nav class="menu-container"
+                 role="navigation"
+                 aria-label="Main navigation and tools">
+                <button class="menu-button"
+                        id="menu-button"
+                        type="button"
+                        aria-label="Open main menu with tools and themes"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="menu-dropdown">
+                    <span class="menu-dots" aria-hidden="true">⋯</span>
+                </button>
+                <div class="menu-dropdown"
+                     id="menu-dropdown"
+                     role="menu"
+                     aria-labelledby="menu-button"
+                     aria-hidden="true">
+                    <!-- Tool Menu Items with Semantic Roles -->
+                    <div class="menu-item" id="about-menu" role="menuitem" tabindex="-1">
+                        about <span class="shortcut" aria-label="Keyboard shortcut: A">A</span>
+                    </div>
+                    <div class="menu-item" id="reset-menu" role="menuitem" tabindex="-1">
+                        reset <span class="shortcut" aria-label="Keyboard shortcut: R">R</span>
+                    </div>
+                    <div class="menu-item" id="help-menu" role="menuitem" tabindex="-1">
+                        help <span class="shortcut" aria-label="Keyboard shortcut: H">H</span>
+                    </div>
+                    <div class="menu-item" id="product-menu" role="menuitem" tabindex="-1">
+                        product <span class="shortcut" aria-label="Keyboard shortcut: P">P</span>
+                    </div>
+                    <div class="menu-item" id="token-menu" role="menuitem" tabindex="-1">
+                        token <span class="shortcut" aria-label="Keyboard shortcut: T">T</span>
+                    </div>
+                    <div class="menu-item" id="protocol-menu" role="menuitem" tabindex="-1">
+                        protocol <span class="shortcut" aria-label="Keyboard shortcut: O">O</span>
+                    </div>
+                    <div class="menu-item" id="gmail-menu" role="menuitem" tabindex="-1">
+                        gmail <span class="shortcut" aria-label="Keyboard shortcut: G">G</span>
+                    </div>
+                    <div class="menu-item" id="neural-nets-menu" role="menuitem" tabindex="-1">
+                        neural <span class="shortcut" aria-label="Keyboard shortcut: N">N</span>
+                    </div>
+                    <div class="menu-item" id="blog-menu" role="menuitem" tabindex="-1">
+                        blog <span class="shortcut" aria-label="Keyboard shortcut: B">B</span>
+                    </div>
+                    <div class="menu-item" id="coders-menu" role="menuitem" tabindex="-1">
+                        coders <span class="shortcut" aria-label="Keyboard shortcut: C">C</span>
+                    </div>
+                    <!-- Menu Separator -->
+                    <div class="menu-separator" role="separator" aria-hidden="true"></div>
+                    <!-- Theme Menu Items -->
+                    <div class="menu-item" id="theme-908b70" role="menuitem" tabindex="-1">
+                        908b70 <span class="shortcut" aria-label="Keyboard shortcut: 1">1</span>
+                    </div>
+                    <div class="menu-item" id="theme-4e4c40" role="menuitem" tabindex="-1">
+                        4e4c40 <span class="shortcut" aria-label="Keyboard shortcut: 2">2</span>
+                    </div>
+                    <div class="menu-item" id="theme-a9844f" role="menuitem" tabindex="-1">
+                        a9844f <span class="shortcut" aria-label="Keyboard shortcut: 3">3</span>
+                    </div>
+                    <div class="menu-item" id="theme-d5c9bc" role="menuitem" tabindex="-1">
+                        d5c9bc <span class="shortcut" aria-label="Keyboard shortcut: 4">4</span>
+                    </div>
+                    <div class="menu-item" id="theme-141614" role="menuitem" tabindex="-1">
+                        141614 <span class="shortcut" aria-label="Keyboard shortcut: 5">5</span>
+                    </div>
                 </div>
-                <div class="menu-item" id="reset-menu" role="menuitem" tabindex="-1">
-                    reset <span class="shortcut" aria-label="Keyboard shortcut: R">R</span>
-                </div>
-                <div class="menu-item" id="help-menu" role="menuitem" tabindex="-1">
-                    help <span class="shortcut" aria-label="Keyboard shortcut: H">H</span>
-                </div>
-                <div class="menu-item" id="product-menu" role="menuitem" tabindex="-1">
-                    product <span class="shortcut" aria-label="Keyboard shortcut: P">P</span>
-                </div>
-                <div class="menu-item" id="token-menu" role="menuitem" tabindex="-1">
-                    token <span class="shortcut" aria-label="Keyboard shortcut: T">T</span>
-                </div>
-                <div class="menu-item" id="protocol-menu" role="menuitem" tabindex="-1">
-                    protocol <span class="shortcut" aria-label="Keyboard shortcut: O">O</span>
-                </div>
-                <div class="menu-item" id="gmail-menu" role="menuitem" tabindex="-1">
-                    gmail <span class="shortcut" aria-label="Keyboard shortcut: G">G</span>
-                </div>
-                <div class="menu-item" id="neural-nets-menu" role="menuitem" tabindex="-1">
-                    neural <span class="shortcut" aria-label="Keyboard shortcut: N">N</span>
-                </div>
-                <div class="menu-item" id="blog-menu" role="menuitem" tabindex="-1">
-                    blog <span class="shortcut" aria-label="Keyboard shortcut: B">B</span>
-                </div>
-                <div class="menu-item" id="coders-menu" role="menuitem" tabindex="-1">
-                    coders <span class="shortcut" aria-label="Keyboard shortcut: C">C</span>
-                </div>
-
-                <!-- Menu Separator -->
-                <div class="menu-separator" role="separator" aria-hidden="true"></div>
-
-                <!-- Theme Menu Items -->
-                <div class="menu-item" id="theme-908b70" role="menuitem" tabindex="-1">
-                    908b70 <span class="shortcut" aria-label="Keyboard shortcut: 1">1</span>
-                </div>
-                <div class="menu-item" id="theme-4e4c40" role="menuitem" tabindex="-1">
-                    4e4c40 <span class="shortcut" aria-label="Keyboard shortcut: 2">2</span>
-                </div>
-                <div class="menu-item" id="theme-a9844f" role="menuitem" tabindex="-1">
-                    a9844f <span class="shortcut" aria-label="Keyboard shortcut: 3">3</span>
-                </div>
-                <div class="menu-item" id="theme-d5c9bc" role="menuitem" tabindex="-1">
-                    d5c9bc <span class="shortcut" aria-label="Keyboard shortcut: 4">4</span>
-                </div>
-                <div class="menu-item" id="theme-141614" role="menuitem" tabindex="-1">
-                    141614 <span class="shortcut" aria-label="Keyboard shortcut: 5">5</span>
-                </div>
-            </div>
-        </nav>
-
-        <!-- ============================================================
+            </nav>
+            <!-- ============================================================
              MAIN CONTENT AREA - Hero section with search interface
              ============================================================ -->
-        <main class="hero-section" role="main">
-            <div class="hero-content">
-
-                <!-- ====================================================
+            <main class="hero-section" role="main">
+                <div class="hero-content">
+                    <!-- ====================================================
                      PRIMARY HEADING - Application title and identity
                      ==================================================== -->
-                <header>
-                     <h1 class="hero-title" id="hero-title" role="banner">
-                         harper
-                     </h1>
-                </header>
-
-                <!-- ====================================================
+                    <header>
+                        <h1 class="hero-title" id="hero-title" role="banner">harper</h1>
+                    </header>
+                    <!-- ====================================================
                      RESPONSE SECTION - AI responses and tool content
                      ==================================================== -->
-                <section class="response-section"
-                         id="response-section"
-                         style="display: none;"
-                         role="region"
-                         aria-label="AI response and tool content"
-                         aria-live="polite">
-                    <div id="response-container" role="article"></div>
-                </section>
-
-                <!-- ====================================================
+                    <section class="response-section"
+                             id="response-section"
+                             style="display: none"
+                             role="region"
+                             aria-label="AI response and tool content"
+                             aria-live="polite">
+                        <div id="response-container" role="article"></div>
+                    </section>
+                    <!-- ====================================================
                      SEARCH INTERFACE - Media exploration input
                      ==================================================== -->
-                <section class="search-section" role="search" aria-label="Media exploration search">
-                    <div class="search-container">
-                        <form id="search-form" role="search">
-                            <div class="search-wrapper">
-                                <label for="search-input" class="sr-only">
-                                    Search for media recommendations and exploration
-                                </label>
-                                <input type="text"
-                                       id="search-input"
-                                       name="query"
-                                       placeholder="message harper"
-                                       autocomplete="off"
-                                       spellcheck="false"
-                                       aria-describedby="search-help">
-                                <button type="submit"
-                                        class="search-submit"
-                                        aria-label="Submit search query">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                        <path d="M14 2L7 9L2 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div id="search-help" class="sr-only">
-                                Enter your media exploration query and press enter or click submit
-                            </div>
-                        </form>
-                    </div>
-
-                     <!-- ================================================
+                    <section class="search-section"
+                             role="search"
+                             aria-label="Media exploration search">
+                        <div class="search-container">
+                            <form id="search-form" role="search">
+                                <div class="search-wrapper">
+                                    <label for="search-input" class="sr-only">Search for media recommendations and exploration</label>
+                                    <input type="text"
+                                           id="search-input"
+                                           name="query"
+                                           placeholder="message harper"
+                                           autocomplete="off"
+                                           spellcheck="false"
+                                           aria-describedby="search-help">
+                                    <button type="submit" class="search-submit" aria-label="Submit search query">
+                                        <svg width="16"
+                                             height="16"
+                                             viewBox="0 0 16 16"
+                                             fill="none"
+                                             aria-hidden="true">
+                                            <path d="M14 2L7 9L2 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="search-help" class="sr-only">Enter your media exploration query and press enter or click submit</div>
+                            </form>
+                        </div>
+                        <!-- ================================================
                           SUGGESTION PILLS - Quick start options
                           ================================================ -->
-                     <div class="suggestions-section"
-                          role="group"
-                          aria-label="Quick search suggestions">
-                         <button class="suggestion-pill"
-                                 type="button"
-                                 data-query="recommend a movie for tonight"
-                                 aria-label="Quick search: recommend a movie">
-                             recommend a movie
-                         </button>
-                         <button class="suggestion-pill"
-                                 type="button"
-                                 data-query="what's trending in music right now"
-                                 aria-label="Quick search: what's trending in music">
-                             what's trending in music
-                         </button>
-                         <button class="suggestion-pill"
-                                 type="button"
-                                 data-query="suggest a good book to read"
-                                 aria-label="Quick search: suggest a good book">
-                             suggest a good book
-                         </button>
-                         <button class="suggestion-pill"
-                                 type="button"
-                                 data-query="tell me about new video games"
-                                 aria-label="Quick search: new video games">
-                             new video games
-                         </button>
-                     </div>
-                </section>
-            </div>
-        </main>
-
-
-    </div>
-
-    <!-- Footer with legal links -->
-    <footer class="legal-footer">
-        <div class="legal-content">
-            <span class="copyright">© harper</span>
-            <span class="legal-separator">•</span>
-            <span class="legal-text">
-                <a href="/terms" target="_blank" data-testid="nav-terms">terms</a> •
-                <a href="/privacy" target="_blank" data-testid="nav-privacy">privacy</a> •
-                <a href="https://github.com/bniladridas/path" target="_blank" data-testid="nav-source">source</a> •
-                <a href="https://github.com/harpertoken" target="_blank" data-testid="nav-community">community</a>
-            </span>
+                        <div class="suggestions-section"
+                             role="group"
+                             aria-label="Quick search suggestions">
+                            <button class="suggestion-pill"
+                                    type="button"
+                                    data-query="recommend a movie for tonight"
+                                    aria-label="Quick search: recommend a movie">recommend a movie</button>
+                            <button class="suggestion-pill"
+                                    type="button"
+                                    data-query="what's trending in music right now"
+                                    aria-label="Quick search: what's trending in music">
+                                what's trending in music
+                            </button>
+                            <button class="suggestion-pill"
+                                    type="button"
+                                    data-query="suggest a good book to read"
+                                    aria-label="Quick search: suggest a good book">suggest a good book</button>
+                            <button class="suggestion-pill"
+                                    type="button"
+                                    data-query="tell me about new video games"
+                                    aria-label="Quick search: new video games">new video games</button>
+                        </div>
+                    </section>
+                </div>
+            </main>
         </div>
-    </footer>
-
-    <!-- Error Modal -->
-    <div id="error-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3 class="modal-title">A Moment for Reflection</h3>
-            <div class="modal-body">
-                <div class="message-container">
-                    <i class="fas fa-pause-circle message-icon"></i>
-                    <div class="message-title">The digital landscape is taking a brief pause.</div>
-                    <p id="modal-message">Media has the power to transform our understanding of the world and connect us across different cultures and experiences.</p>
-                    <ul class="message-list">
-                        <li>The API may be experiencing high demand</li>
-                        <li>Our systems are processing many requests</li>
-                        <li>This is a temporary moment of reflection</li>
-                    </ul>
+        <!-- Footer with legal links -->
+        <footer class="legal-footer">
+            <div class="legal-content">
+                <span class="copyright">© harper</span>
+                <span class="legal-separator">•</span>
+                <span class="legal-text">
+                    <a href="/downloads">downloads</a> •
+                    <a href="/terms" target="_blank" data-testid="nav-terms">terms</a> •
+                    <a href="/privacy" target="_blank" data-testid="nav-privacy">privacy</a> •
+                    <a href="https://github.com/bniladridas/path"
+                       target="_blank"
+                       data-testid="nav-source">source</a> •
+                    <a href="https://github.com/harpertoken"
+                       target="_blank"
+                       data-testid="nav-community">community</a>
+                </span>
+            </div>
+        </footer>
+        <!-- Error Modal -->
+        <div id="error-modal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h3 class="modal-title">A Moment for Reflection</h3>
+                <div class="modal-body">
+                    <div class="message-container">
+                        <i class="fas fa-pause-circle message-icon"></i>
+                        <div class="message-title">The digital landscape is taking a brief pause.</div>
+                        <p id="modal-message">
+                            Media has the power to transform our understanding of the world and connect us across different cultures and experiences.
+                        </p>
+                        <ul class="message-list">
+                            <li>The API may be experiencing high demand</li>
+                            <li>Our systems are processing many requests</li>
+                            <li>This is a temporary moment of reflection</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="modal-close-btn">Continue</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn" id="modal-close-btn">Continue</button>
-            </div>
         </div>
-    </div>
-
-
-
-    <script>
+        <script>
         // Clean initialization
         document.addEventListener('DOMContentLoaded', function() {
             // Auto-hiding footer functionality (macOS style)
@@ -1307,6 +1287,6 @@ happy coding! press F12 and dive into the sources tab :)
         }
 
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>
