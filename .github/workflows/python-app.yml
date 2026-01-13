@@ -53,15 +53,19 @@ jobs:
     - name: Lint and format with ruff
       run: |
         echo -e "\033[36m[INFO]\033[0m Running Ruff lint and format check..."
-        ruff check .
-        ruff format --check .
+        if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
+          ./venv/bin/ruff check .
+          ./venv/bin/ruff format --check .
+        else
+          ruff check .
+          ruff format --check .
+        fi
         echo -e "\033[32m[PASS]\033[0m Ruff checks passed"
     - name: Prepare deployment files for testing
       run: |
         echo -e "\033[36m[INFO]\033[0m Preparing deployment files for testing..."
         if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
-          source venv/bin/activate
-          python scripts/prepare-deployment.py vercel
+          source venv/bin/activate && python scripts/prepare-deployment.py vercel
         else
           python scripts/prepare-deployment.py vercel
         fi
@@ -70,8 +74,7 @@ jobs:
       run: |
         echo -e "\033[36m[INFO]\033[0m Running tests with pytest..."
         if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
-          source venv/bin/activate
-          PYTHONPATH=. pytest
+          source venv/bin/activate && PYTHONPATH=. pytest
         else
           PYTHONPATH=. pytest
         fi

@@ -440,24 +440,38 @@ def search():
 
         except (ConnectionError, TimeoutError, ValueError):
             logging.exception("Gemini API connection error")
-        except Exception as api_error:
-            logging.exception("Gemini API unexpected error")
-
-            # Check for rate limit errors
-            if "rate limit" in str(api_error).lower() or "429" in str(api_error):
-                return jsonify(
-                    {
-                        "result": get_rate_limit_error_message(),
-                        "error": "rate limit",
-                        "error_type": "rate_limit",
-                    }
-                )
-            # For other errors, maintain the curious, learning personality
+            # Return a friendly error response instead of continuing without a result
             return jsonify(
                 {
                     "result": get_api_error_message(),
-                    "error": str(api_error),
+                    "error": "connection_error",
                     "error_type": "api_error",
+                }
+            )
+        except Exception as api_error:
+            logging.exception("Gemini API unexpected error")
+
+            # Check for rate limit errors more robustly
+            # Try to get status code from exception attributes
+            status_code = getattr(api_error, "code", None) or getattr(api_error, "status_code", None)
+            error_msg = str(api_error).lower()
+
+            # Determine error type and response
+            if status_code == 429 or "rate limit" in error_msg or "429" in error_msg:
+                error_result = get_rate_limit_error_message()
+                error_type = "rate_limit"
+                error_code = "rate limit"
+            else:
+                # For other errors, maintain the curious, learning personality
+                error_result = get_api_error_message()
+                error_type = "api_error"
+                error_code = str(api_error)
+
+            return jsonify(
+                {
+                    "result": error_result,
+                    "error": error_code,
+                    "error_type": error_type,
                 }
             )
 
