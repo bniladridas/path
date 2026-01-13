@@ -31,14 +31,23 @@ jobs:
     - name: Install dependencies
       run: |
         echo -e "\033[36m[INFO]\033[0m Installing dependencies..."
-        python -m pip install --upgrade pip
-        pip install ruff pytest
-        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
-          pip install -r requirements-py38.txt
-        elif [[ "${{ matrix.python-version }}" == "3.9" ]]; then
-          pip install -r requirements-py39.txt
-        else
+        if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
+          # Use virtual environment for Python 3.14 due to externally managed environment
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install ruff pytest
           pip install -r requirements.txt
+        else
+          python -m pip install --upgrade pip
+          pip install ruff pytest
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+            pip install -r requirements-py38.txt
+          elif [[ "${{ matrix.python-version }}" == "3.9" ]]; then
+            pip install -r requirements-py39.txt
+          else
+            pip install -r requirements.txt
+          fi
         fi
         echo -e "\033[32m[PASS]\033[0m Dependencies installed successfully"
     - name: Lint and format with ruff
@@ -50,10 +59,20 @@ jobs:
     - name: Prepare deployment files for testing
       run: |
         echo -e "\033[36m[INFO]\033[0m Preparing deployment files for testing..."
-        python scripts/prepare-deployment.py vercel
+        if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
+          source venv/bin/activate
+          python scripts/prepare-deployment.py vercel
+        else
+          python scripts/prepare-deployment.py vercel
+        fi
         echo -e "\033[32m[PASS]\033[0m Deployment files prepared"
     - name: Test with pytest
       run: |
         echo -e "\033[36m[INFO]\033[0m Running tests with pytest..."
-        PYTHONPATH=. pytest
+        if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
+          source venv/bin/activate
+          PYTHONPATH=. pytest
+        else
+          PYTHONPATH=. pytest
+        fi
         echo -e "\033[32m[PASS]\033[0m Tests completed successfully"
