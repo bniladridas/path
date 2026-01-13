@@ -40,6 +40,9 @@ jobs:
         if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
           pip install -r requirements-py38.txt
           pip install pytest pytest-cov ruff black isort bandit safety codecov
+        elif [[ "${{ matrix.python-version }}" == "3.9" ]]; then
+          pip install -r requirements-py38.txt
+          pip install pytest pytest-cov ruff black isort bandit safety codecov
         else
           pip install -r requirements-dev.txt
         fi
