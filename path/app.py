@@ -438,7 +438,7 @@ def search():
             # Extract the result from the response
             result = response.text
 
-        except (ConnectionError, TimeoutError, ValueError) as api_error:
+        except (ConnectionError, TimeoutError, ValueError):
             logging.exception("Gemini API connection error")
         except Exception as api_error:
             logging.exception("Gemini API unexpected error")
