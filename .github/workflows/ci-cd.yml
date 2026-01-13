@@ -72,7 +72,12 @@ jobs:
     - name: Check code formatting with Black
       run: |
         echo -e "\033[36m[INFO]\033[0m Checking code formatting with Black..."
-        black --check .
+        if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
+          source venv/bin/activate
+          black --check .
+        else
+          black --check .
+        fi
         echo -e "\033[32m[PASS]\033[0m Code formatting check passed"
 
     - name: Run tests with coverage
