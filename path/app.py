@@ -465,7 +465,8 @@ def search():
                 # For other errors, maintain the curious, learning personality
                 error_result = get_api_error_message()
                 error_type = "api_error"
-                error_code = str(api_error)
+                # Do not expose raw exception details to the client
+                error_code = "internal_error"
 
             return jsonify(
                 {
