@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/bniladridas/path/compare/v1.12.0...v1.13.0) (2026-01-13)
+
+
+### Features
+
+* add Python 3.9 support with legacy google-generativeai ([#105](https://github.com/bniladridas/path/issues/105)) ([a6cf1ca](https://github.com/bniladridas/path/commit/a6cf1cac44165f942b877f339b83d2579a235b5c))
+
 # [1.12.0](https://github.com/bniladridas/path/compare/v1.11.6...v1.12.0) (2025-12-12)
 
 
