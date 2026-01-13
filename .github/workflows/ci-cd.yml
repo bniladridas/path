@@ -74,8 +74,8 @@ jobs:
         echo -e "\033[36m[INFO]\033[0m Running Ruff lint and format check..."
         if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
           source venv/bin/activate
-          ruff check .
-          ruff format --check .
+          ./venv/bin/ruff check .
+          ./venv/bin/ruff format --check .
         else
           ruff check .
           ruff format --check .
