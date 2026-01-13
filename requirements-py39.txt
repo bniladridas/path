@@ -1,14 +1,12 @@
-# Python 3.9+ compatible requirements (uses legacy google-generativeai)
-flask==2.3.3
-python-dotenv==1.0.1
-requests==2.31.0
+# Python 3.9 compatible requirements (uses google-genai 1.47.0)
+flask==3.0.3
+python-dotenv==1.1.1
+requests==2.32.5
 gunicorn==23.0.0
-google-generativeai>=0.8.0,<0.9.0
-vercel==0.2.1
-flask-openapi3==4.0.0
-pydantic==2.9.0
-Werkzeug>=2.3.0,<4.0.0
+google-genai==1.47.0
+Werkzeug>=3.0.0,<3.1.0
 Jinja2>=3.1.0,<3.2.0
-itsdangerous>=2.1.0,<2.3.0
-click>=8.0.0,<9.0.0
+itsdangerous>=2.1.0,<2.2.0
+click>=8.1.0,<9.0.0
 MarkupSafe>=2.1.0,<2.2.0
+blinker>=1.6.2
