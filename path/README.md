@@ -42,8 +42,10 @@ FLASK_DEBUG=1  # for development
 ## Usage
 
 ### Local Development
+Run commands from the project root directory:
+
 ```bash
-python app.py
+python run.py
 ```
 Open http://127.0.0.1:8000 in your browser.
 
@@ -63,7 +65,7 @@ This application is configured for deployment on Vercel. The `index.py` file ser
 Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## License
-[Specify your license here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Author
 Niladri Das (@bniladridas)
