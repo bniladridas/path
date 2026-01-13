@@ -1,8 +1,9 @@
-# Python 3.8 compatible requirements (no AI features - not supported)
+# Python 3.9+ compatible requirements (uses legacy google-generativeai)
 flask==2.3.3
 python-dotenv==1.0.1
 requests==2.31.0
 gunicorn==23.0.0
+google-generativeai>=0.8.0,<0.9.0
 vercel==0.2.1
 flask-openapi3==4.0.0
 pydantic==2.9.0
