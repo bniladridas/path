@@ -69,16 +69,18 @@ jobs:
         fi
         echo -e "\033[32m[PASS]\033[0m Deployment files prepared"
 
-    - name: Check code formatting with Black
+    - name: Run Ruff linter and Black formatter
       run: |
-        echo -e "\033[36m[INFO]\033[0m Checking code formatting with Black..."
+        echo -e "\033[36m[INFO]\033[0m Running Ruff lint and format check..."
         if [[ "${{ matrix.python-version }}" == "3.14" ]]; then
           source venv/bin/activate
-          black --check .
+          ruff check .
+          ruff format --check .
         else
-          black --check .
+          ruff check .
+          ruff format --check .
         fi
-        echo -e "\033[32m[PASS]\033[0m Code formatting check passed"
+        echo -e "\033[32m[PASS]\033[0m Ruff checks passed"
 
     - name: Run tests with coverage
       run: |
