@@ -41,7 +41,7 @@ The codebase is a minimal Flask web application for AI-powered media exploration
 * Privacy-focused (no conversation storage).
 * Ready for deployment (Vercel/Docker support).
 
-**Branches:**
+## Branches
 
 * `main`: Web version (Flask/Python) for browser use
 * `desktop`: Desktop version (Electron/Node.js) for native app experience
