@@ -36,7 +36,7 @@ jobs:
         if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
           pip install -r requirements-py38.txt
         elif [[ "${{ matrix.python-version }}" == "3.9" ]]; then
-          pip install -r requirements-py38.txt
+          pip install -r requirements-py39.txt
         else
           pip install -r requirements.txt
         fi
