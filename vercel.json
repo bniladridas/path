@@ -1,46 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "path/app.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "static/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/terms",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/privacy",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/updates",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/verify",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/bypass-verification",
-      "dest": "/path/app.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/path/app.py"
-    }
-  ],
-  "env": {
-    "PYTHONPATH": "."
-  }
+  "buildCommand": "mkdir -p dist && echo '<html><body>Desktop app - not for web deployment</body></html>' > dist/index.html",
+  "outputDirectory": "dist",
+  "framework": null
 }

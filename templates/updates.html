@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- ================================================================
+    <head>
+        <!-- ================================================================
          PATH - UPDATES AND CHANGELOG PAGE
          ================================================================
 
@@ -10,209 +10,231 @@
 
          Author: Niladri Das (@bniladridas)
          Repository: https://github.com/bniladridas/path
-         ================================================================ -->
-
-    <!-- Essential Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Updates and changelog for harper - tracking our journey in AI-powered media exploration">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#000000">
-
-    <!-- Page Title -->
-    <title>updates & changelog</title>
-
-     <!-- Google Fonts -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-     <!-- Stylesheet -->
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-     <!-- Performance Hints -->
-     <link rel="preload" href="{{ url_for('static', filename='css/style.css') }}" as="style">
-</head>
-
-<body>
-    <!-- ================================================================
+================================================================ -->
+        <!-- Essential Meta Tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="Updates and changelog for harper - tracking our journey in AI-powered media exploration">
+        <meta name="robots" content="index, follow">
+        <meta name="theme-color" content="#000000">
+        <!-- Page Title -->
+        <title>updates & changelog</title>
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+              rel="stylesheet">
+        <!-- Stylesheet -->
+        <link rel="stylesheet"
+              href="{{ url_for('static', filename='css/style.css') }}">
+        <!-- Performance Hints -->
+        <link rel="preload"
+              href="{{ url_for('static', filename='css/style.css') }}"
+              as="style">
+    </head>
+    <body>
+        <!-- ================================================================
          UPDATES AND CHANGELOG DOCUMENT
          ================================================================ -->
-    <div class="container" role="main">
-        <main class="hero-section">
-            <article class="hero-content">
-
-                <!-- ====================================================
+        <div class="container" role="main">
+            <main class="hero-section">
+                <article class="hero-content">
+                    <!-- ====================================================
                      DOCUMENT HEADER
                      ==================================================== -->
-                <header>
-                    <h1 class="hero-title" role="banner">harper updates</h1>
-                    <p class="last-updated" role="contentinfo">tracking our journey home</p>
-                </header>
-
-                <!-- ====================================================
+                    <header>
+                        <h1 class="hero-title" role="banner">harper updates</h1>
+                        <p class="last-updated" role="contentinfo">tracking our journey home</p>
+                    </header>
+                    <!-- ====================================================
                      CHANGELOG CONTENT
                      ==================================================== -->
-                <section class="content-section" role="document">
-
-                    <div class="terms-content">
-                        <h2>harper v1.0</h2>
-                        <h3>initial release</h3>
-                        <p>the first version of harper launches with our core vision: helping people find their way home through media exploration.</p>
-
-                        <h3>feature overview:</h3>
-
-                        <table class="terms-table"
-                                                        role="table"
-                                                         aria-label="Version 0.1.0 feature overview">
-                             <caption class="sr-only">
-                                 Table of feature categories and their descriptions for version 0.1.0
-                            </caption>
-                            <thead>
+                    <section class="content-section" role="document">
+                        <div class="terms-content">
+                            <h2>harper v1.0</h2>
+                            <h3>initial release</h3>
+                            <p>
+                                the first version of harper launches with our core vision: helping people find their way home through media exploration.
+                            </p>
+                            <h3>feature overview:</h3>
+                            <table class="terms-table"
+                                   role="table"
+                                   aria-label="Version 0.1.0 feature overview">
+                                <caption class="sr-only">
+                                    Table of feature categories and their descriptions for version 0.1.0
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">category</th>
+                                        <th scope="col">features</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>core functionality</strong>
+                                        </td>
+                                        <td>ai-powered media exploration using google gemini 2.0 flash, human verification system with gmail auto-bypass</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>interface design</strong>
+                                        </td>
+                                        <td>clean minimal interface, responsive design, five theme options (908b70, 4e4c40, a9844f, d5c9bc, 141614)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>user experience</strong>
+                                        </td>
+                                        <td>macos-style auto-hiding footer, keyboard shortcuts (/ to focus search, escape to close modals)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>transparency tools</strong>
+                                        </td>
+                                        <td>about, product (four pillars), token (ai economics), protocol (connection info), gmail (integration benefits)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>privacy & legal</strong>
+                                        </td>
+                                        <td>comprehensive terms of use, detailed privacy policy, no conversation storage, session-based interactions</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3>technical foundation:</h3>
+                            <table class="terms-table"
+                                   role="table"
+                                   aria-label="Technical foundation components">
+                                <caption class="sr-only">
+                                    Table of technical components and technologies used in harper
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">component</th>
+                                        <th scope="col">technology</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>backend</strong>
+                                        </td>
+                                        <td>flask backend with python</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>ai integration</strong>
+                                        </td>
+                                        <td>google gemini 2.0 flash api integration</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>verification</strong>
+                                        </td>
+                                        <td>session-based human verification</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>frontend</strong>
+                                        </td>
+                                        <td>responsive css with custom properties</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>deployment</strong>
+                                        </td>
+                                        <td>vercel deployment ready</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h2>our development philosophy</h2>
+                            <p>every update to harper is guided by our four pillars:</p>
+                            <table class="terms-table">
                                 <tr>
-                                                                    <th scope="col">category</th>
-                                                                    <th scope="col">features</th>
-                                                                </tr>
-                            </thead>
-                            <tbody>
+                                    <th scope="col">pillar</th>
+                                    <th scope="col">description</th>
+                                </tr>
                                 <tr>
-                                                                    <td><strong>core functionality</strong></td>
-                                                                    <td>ai-powered media exploration using google gemini 2.0 flash, human verification system with gmail auto-bypass</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>interface design</strong></td>
-                                                                    <td>clean minimal interface, responsive design, five theme options (908b70, 4e4c40, a9844f, d5c9bc, 141614)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>user experience</strong></td>
-                                                                    <td>macos-style auto-hiding footer, keyboard shortcuts (/ to focus search, escape to close modals)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>transparency tools</strong></td>
-                                                                    <td>about, product (four pillars), token (ai economics), protocol (connection info), gmail (integration benefits)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>privacy & legal</strong></td>
-                                                                    <td>comprehensive terms of use, detailed privacy policy, no conversation storage, session-based interactions</td>
-                                                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>technical foundation:</h3>
-
-                        <table class="terms-table"
-                                                        role="table"
-                                                        aria-label="Technical foundation components">
-                            <caption class="sr-only">
-                                Table of technical components and technologies used in harper
-                            </caption>
-                            <thead>
+                                    <td>
+                                        <strong>authentic discovery</strong>
+                                    </td>
+                                    <td>no manipulation, just honest responses</td>
+                                </tr>
                                 <tr>
-                                                                    <th scope="col">component</th>
-                                                                    <th scope="col">technology</th>
-                                                                </tr>
-                            </thead>
-                            <tbody>
+                                    <td>
+                                        <strong>human longing</strong>
+                                    </td>
+                                    <td>honoring the deeper needs behind every search</td>
+                                </tr>
                                 <tr>
-                                                                    <td><strong>backend</strong></td>
-                                                                    <td>flask backend with python</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>ai integration</strong></td>
-                                                                    <td>google gemini 2.0 flash api integration</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>verification</strong></td>
-                                                                    <td>session-based human verification</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>frontend</strong></td>
-                                                                    <td>responsive css with custom properties</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><strong>deployment</strong></td>
-                                                                    <td>vercel deployment ready</td>
-                                                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h2>our development philosophy</h2>
-                                                <p>every update to harper is guided by our four pillars:</p>
-                                                <table class="terms-table">
-                                                    <tr>
-                                                        <th scope="col">pillar</th>
-                                                        <th scope="col">description</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>authentic discovery</strong></td>
-                                                        <td>no manipulation, just honest responses</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>human longing</strong></td>
-                                                        <td>honoring the deeper needs behind every search</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>time is precious</strong></td>
-                                                        <td>respecting your attention and time</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>coming home</strong></td>
-                                                        <td>helping you find your way back to yourself</td>
-                                                    </tr>
-                                                </table>
-
-                        <h2>what's next</h2>
-                                                <p>future updates will continue to focus on:</p>
-                                                <table class="terms-table">
-                                                    <tr>
-                                                        <th scope="col">focus area</th>
-                                                        <th scope="col">description</th>
-                                                    </tr>
-                                                    <tr>
-                                                                                    <td>improving response quality and relevance</td>
-                                                                                    <td>focusing on making the ai responses more accurate, relevant, and helpful.</td>
-                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                        <td>enhancing the user interface and experience</td>
-                                                                                                                                                                                                        <td>improving the design and usability of the interface to make it more intuitive and enjoyable to use.</td>
-                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                        <td>adding new transparency and customization features</td>
-                                                                                                                                                                                                        <td>providing users with more information about how the ai works and allowing them to customize their experience.</td>
-                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                        <td>maintaining our commitment to privacy and honesty</td>
-                                                                                                                                                                                                        <td>ensuring that user data is protected and that the ai is used in a responsible and ethical manner.</td>
-                                                                                                                                                                                                    </tr>
-                                                </table>
-
-                        <h2>feedback and suggestions</h2>
-                        <p>harper grows through honest feedback from real users. if you have suggestions, concerns, or ideas for improvement, please share them through the application interface.</p>
-
-                        <h2>staying updated</h2>
-                        <p>we'll update this page with each new version of harper. significant changes will also be reflected in our terms of use and privacy policy as needed.</p>
-
-                        <h2>gratitude</h2>
-                        <p>thank you for being part of harper's journey. every person who uses this application helps us understand how technology can better serve human flourishing and authentic discovery.</p>
-
-                        <!-- ============================================
+                                    <td>
+                                        <strong>time is precious</strong>
+                                    </td>
+                                    <td>respecting your attention and time</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>coming home</strong>
+                                    </td>
+                                    <td>helping you find your way back to yourself</td>
+                                </tr>
+                            </table>
+                            <h2>what's next</h2>
+                            <p>future updates will continue to focus on:</p>
+                            <table class="terms-table">
+                                <tr>
+                                    <th scope="col">focus area</th>
+                                    <th scope="col">description</th>
+                                </tr>
+                                <tr>
+                                    <td>improving response quality and relevance</td>
+                                    <td>focusing on making the ai responses more accurate, relevant, and helpful.</td>
+                                </tr>
+                                <tr>
+                                    <td>enhancing the user interface and experience</td>
+                                    <td>improving the design and usability of the interface to make it more intuitive and enjoyable to use.</td>
+                                </tr>
+                                <tr>
+                                    <td>adding new transparency and customization features</td>
+                                    <td>providing users with more information about how the ai works and allowing them to customize their experience.</td>
+                                </tr>
+                                <tr>
+                                    <td>maintaining our commitment to privacy and honesty</td>
+                                    <td>ensuring that user data is protected and that the ai is used in a responsible and ethical manner.</td>
+                                </tr>
+                            </table>
+                            <h2>feedback and suggestions</h2>
+                            <p>
+                                harper grows through honest feedback from real users. if you have suggestions, concerns, or ideas for improvement, please share them through the application interface.
+                            </p>
+                            <h2>staying updated</h2>
+                            <p>
+                                we'll update this page with each new version of harper. significant changes will also be reflected in our terms of use and privacy policy as needed.
+                            </p>
+                            <h2>gratitude</h2>
+                            <p>
+                                thank you for being part of harper's journey. every person who uses this application helps us understand how technology can better serve human flourishing and authentic discovery.
+                            </p>
+                            <!-- ============================================
                              NAVIGATION BACK TO MAIN APP
                              ============================================ -->
-                        <nav class="back-link" role="navigation" aria-label="Return to main application">
-                            <a href="/" aria-label="Return to harper main interface">← back to path</a>
-                        </nav>
-                    </div>
-                </section>
-            </article>
-        </main>
-    </div>
-
-    <!-- ================================================================
+                            <nav class="back-link"
+                                 role="navigation"
+                                 aria-label="Return to main application">
+                                <a href="/" aria-label="Return to harper main interface">← back to path</a>
+                            </nav>
+                        </div>
+                    </section>
+                </article>
+            </main>
+        </div>
+        <!-- ================================================================
          STYLING AND JAVASCRIPT
-         ================================================================ -->
-
-    <!-- Table Styling for Updates Page -->
-    <style>
+================================================================ -->
+        <!-- Table Styling for Updates Page -->
+        <style>
         .sr-only {
             position: absolute;
             width: 1px;
@@ -258,9 +280,8 @@
             color: var(--text-primary);
             font-weight: var(--font-weight-semibold);
         }
-    </style>
-
-    <script>
+        </style>
+        <script>
         // ================================================================
         // UPDATES PAGE JAVASCRIPT - Theme synchronization and accessibility
         // ================================================================
@@ -296,6 +317,6 @@
                 console.warn('Failed to apply stored theme:', error);
             }
         }
-    </script>
-</body>
+        </script>
+    </body>
 </html>
