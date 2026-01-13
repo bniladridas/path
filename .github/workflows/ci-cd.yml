@@ -42,6 +42,7 @@ jobs:
           source venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
+          pip install pytest pytest-cov ruff black isort bandit safety codecov
         else
           python -m pip install --upgrade pip
           if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
@@ -52,6 +53,7 @@ jobs:
             pip install pytest pytest-cov ruff black isort bandit safety codecov
           else
             pip install -r requirements-dev.txt
+            pip install pytest pytest-cov ruff black isort bandit safety codecov
           fi
         fi
         echo -e "\033[32m[PASS]\033[0m Dependencies installed successfully"
