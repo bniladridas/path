@@ -108,8 +108,11 @@ npx playwright install
 
 ### Run
 
+Run commands from the project root directory:
+
 ```bash
-GEMINI_API_KEY=your-key python path/app.py
+# Set your API key and run the app
+GEMINI_API_KEY=your-key python run.py
 ```
 
 ---
@@ -164,3 +167,15 @@ This change is:
 * ✅ Required for long‑term maintenance
 
 No product decisions were made as part of this work—**only dependency hygiene**.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
