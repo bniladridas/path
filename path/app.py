@@ -2,14 +2,15 @@
 
 """
 "Path" serves both as the app's name and its guiding metaphor.
-The project helps users "find their path" through media exploration—like a guide on a personal journey.
+The project helps users "find their path" through media exploration
+like a guide on a personal journey.
 
 In the codebase, `path/` is the main Python package containing the application logic (e.g., app.py).
 The name follows the standard convention where the package name matches the project title.
 Note: it's not a filesystem path reference, but a conceptual one—symbolizing user discovery.
 
 A Flask web application that helps people find their way home through
-media exploration using Google's Gemini 2.0 Flash AI model.
+media exploration using Google's Gemini 2.5-flash AI model.
 
 Core Philosophy:
 - Authentic discovery: No manipulation, just honest responses
@@ -30,6 +31,8 @@ import secrets
 import subprocess  # nosec B404
 import sys
 from pathlib import Path
+
+import requests
 
 # Third-party imports
 from flask import jsonify
@@ -64,12 +67,10 @@ except ImportError:
     # If shared module is not available, continue without fallback
     pass
 
-# Import requests after fallback setup
-import requests  # noqa: E402
 
-# Try to import Google Generative AI
+# Try to import Google GenAI
 try:
-    import google.generativeai as genai
+    from google import genai
 
     GENAI_AVAILABLE = True
 except ImportError:
@@ -125,18 +126,18 @@ app = OpenAPI(
 
 # Set a secret key for session management
 # This key is used to encrypt session data and maintain user verification state
-# secrets.token_hex(16) generates a cryptographically secure random key
-app.secret_key = secrets.token_hex(16)
+# Use environment variable if available, otherwise generate a random key for development
+app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(16)
 
 # Get Gemini API key from environment variable
 # The API key authenticates our requests to Google's Gemini AI service
 # This must be set in the .env file or environment variables
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-logging.info(f"GEMINI_API_KEY set: {bool(GEMINI_API_KEY)}")
+logging.info("GEMINI_API_KEY set: %s", bool(GEMINI_API_KEY))
 
 # Initialize Gemini if available
 if GENAI_AVAILABLE and GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)  # type: ignore[union-attr]
+    client = genai.Client(api_key=GEMINI_API_KEY)  # type: ignore[attr-defined]
 
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
@@ -145,14 +146,20 @@ GEMINI_MODEL = "2.5-flash"
 
 # API Models for OpenAPI documentation
 class SearchRequest(BaseModel):
+    """Request model for search queries."""
+
     query: str
 
 
 class APIResponse(BaseModel):
+    """Response model for successful search results."""
+
     result: str
 
 
 class ErrorResponse(BaseModel):
+    """Response model for error conditions."""
+
     result: str
     error: str
     error_type: str
@@ -337,7 +344,7 @@ def search():
     SEARCH PROCESSING - Handle media exploration queries with AI
 
     This is the core endpoint that processes user queries through Google's Gemini
-    2.0 Flash model. It implements path's unique approach to AI interaction with
+    2.5-flash model. It implements path's unique approach to AI interaction with
     privacy-first design and human-centered responses.
 
     Processing Pipeline:
@@ -409,67 +416,75 @@ def search():
 
     try:
         safe_query_for_log = query[:50].replace("\n", "").replace("\r", "")
-        logging.info(f"Processing search query: {safe_query_for_log}...")
-        # Prepare the API request for Gemini
-        # Set up the headers with content type
-        headers = {"Content-Type": "application/json"}
+        logging.info("Processing search query: %s...", safe_query_for_log)
 
-        # Prepare the request data for Gemini API format
         # Combine system prompt and user query into a single prompt
         full_prompt = f"{system_prompt}\n\nUser query: {query}"
 
-        data = {
-            "contents": [{"parts": [{"text": full_prompt}]}],
-            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1024},
-        }
+        # Use the new Google GenAI SDK
+        logging.info("Sending request to Gemini API using SDK")
 
-        # Make the API request to the Gemini API
-        # This sends the prepared data to the API endpoint and gets the response
-        api_url = (
-            "https://generativelanguage.googleapis.com/v1beta/models/"
-            f"gemini-{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
-        )
-        logging.info("Sending request to Gemini API")
-        response = requests.post(api_url, headers=headers, json=data, timeout=10)
+        try:
+            # Generate content using the new SDK
+            response = client.models.generate_content(
+                model=f"gemini-{GEMINI_MODEL}",
+                contents=[{"parts": [{"text": full_prompt}]}],
+                config={
+                    "temperature": 0.7,
+                    "max_output_tokens": 1024,
+                },
+            )
 
-        # Parse the JSON response from the API
-        response_json = response.json()
+            # Extract the result from the response
+            result = response.text
 
-        # Check if the API request was successful
-        # If not, return a calm, relaxed message instead of the technical error
-        if response.status_code != 200:
-            # Check if it's a rate limit error
-            error_message = response_json.get("error", {})
-            error_type = error_message.get("type") if isinstance(error_message, dict) else None
-
-            if error_type == "model_rate_limit" or "rate limit" in str(error_message).lower():
-                # Return a curious, learning-oriented message for rate limit errors
-                return jsonify(
-                    {
-                        "result": get_rate_limit_error_message(),
-                        "error": "rate limit",
-                        "error_type": "rate_limit",
-                    }
-                )
-            # For other errors, maintain the curious, learning personality
+        except (ConnectionError, TimeoutError, ValueError):
+            logging.exception("Gemini API connection error")
+            # Return a friendly error response instead of continuing without a result
             return jsonify(
                 {
                     "result": get_api_error_message(),
-                    "error": str(error_message),
+                    "error": "connection_error",
                     "error_type": "api_error",
                 }
             )
+        except Exception as api_error:
+            logging.exception("Gemini API unexpected error")
 
-        # Extract the result from the Gemini response
-        # The result is in the candidates array, parts array, text field
-        result = response_json["candidates"][0]["content"]["parts"][0]["text"]
+            # Check for rate limit errors more robustly
+            # Try to get status code from exception attributes
+            status_code = getattr(api_error, "code", None) or getattr(api_error, "status_code", None)
+            error_msg = str(api_error).lower()
+
+            # Determine error type and response
+            if status_code == 429 or "rate limit" in error_msg or "429" in error_msg:
+                error_result = get_rate_limit_error_message()
+                error_type = "rate_limit"
+                error_code = "rate limit"
+            else:
+                # For other errors, maintain the curious, learning personality
+                error_result = get_api_error_message()
+                error_type = "api_error"
+                # Do not expose raw exception details to the client
+                error_code = "internal_error"
+
+            return jsonify(
+                {
+                    "result": error_result,
+                    "error": error_code,
+                    "error_type": error_type,
+                }
+            )
 
         # Post-process the result to remove any thinking tags or internal monologue
         # This ensures that the response doesn't include any of the model's internal
         # reasoning process
         # We use a single regular expression to match and remove different formats of thinking tags
         result = re.sub(
-            r"(<think>.*?</think>|\[thinking\].*?\[/thinking\]|\(thinking\).*?\(/thinking\))", "", result, flags=re.DOTALL
+            r"(<think>.*?</think>|\[thinking\].*?\[/thinking\]|\(thinking\).*?\(/thinking\))",
+            "",
+            result,
+            flags=re.DOTALL,
         )
 
         # Convert result to lowercase
@@ -484,11 +499,11 @@ def search():
         requests.exceptions.JSONDecodeError,
         KeyError,
         IndexError,
-    ) as e:
+    ):
         # If any error occurs during the process, log the actual error server-side only
         # This ensures internal info is not exposed to the user
         # Frontend receives only generic error information
-        logging.error("Error in /search route: %s", str(e), exc_info=True)
+        logging.exception("Error in /search route")
         return jsonify(
             {
                 "result": get_internal_error_message(),
@@ -529,6 +544,105 @@ def updates():
         The rendered updates.html template.
     """
     return render_template("updates.html")
+
+
+@app.route("/menu/about")
+def menu_about():
+    """
+    Route handler for the About menu content.
+
+    Returns:
+        The rendered about.html template.
+    """
+    return render_template("about.html")
+
+
+@app.route("/menu/help")
+def menu_help():
+    """
+    Route handler for the Help menu content.
+
+    Returns:
+        The rendered help.html template.
+    """
+    return render_template("help.html")
+
+
+@app.route("/menu/product")
+def menu_product():
+    """
+    Route handler for the Product menu content.
+
+    Returns:
+        The rendered product.html template.
+    """
+    return render_template("product.html")
+
+
+@app.route("/menu/token")
+def menu_token():
+    """
+    Route handler for the Token menu content.
+
+    Returns:
+        The rendered token.html template.
+    """
+    return render_template("token.html")
+
+
+@app.route("/menu/protocol")
+def menu_protocol():
+    """
+    Route handler for the Protocol menu content.
+
+    Returns:
+        The rendered protocol.html template.
+    """
+    return render_template("protocol.html")
+
+
+@app.route("/menu/gmail")
+def menu_gmail():
+    """
+    Route handler for the Gmail menu content.
+
+    Returns:
+        The rendered gmail.html template.
+    """
+    return render_template("gmail.html")
+
+
+@app.route("/menu/neural-nets")
+def menu_neural_nets():
+    """
+    Route handler for the Neural Nets menu content.
+
+    Returns:
+        The rendered neural-nets.html template.
+    """
+    return render_template("neural-nets.html")
+
+
+@app.route("/menu/blog")
+def menu_blog():
+    """
+    Route handler for the Blog menu content.
+
+    Returns:
+        The rendered blog.html template.
+    """
+    return render_template("blog.html")
+
+
+@app.route("/menu/coders")
+def menu_coders():
+    """
+    Route handler for the Coders menu content.
+
+    Returns:
+        The rendered coders.html template.
+    """
+    return render_template("coders.html")
 
 
 # For local development

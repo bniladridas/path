@@ -892,3 +892,7 @@ footer {
 .info-table tr:first-child th {
     background: rgba(255,255,255,0.1);
 }
+
+.info-table td:first-child {
+    font-weight: 600;
+}

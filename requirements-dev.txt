@@ -8,7 +8,7 @@ bandit>=1.7.0
 safety>=3.6.0
 codecov>=2.1.0
 vulture>=2.7.0
-unimport>=1.2.0
+unimport==1.0.1
 
 # Include production requirements
 -r requirements.txt
