@@ -4,7 +4,7 @@ python-dotenv==1.1.1
 requests==2.32.5
 gunicorn==23.0.0
 google-genai>=1.57.0
-vercel==0.3.2
+vercel==0.3.7
 flask-openapi3==3.0.2
 pydantic==2.5.3
 Werkzeug>=3.0.0,<3.1.0
