@@ -35,6 +35,7 @@ from pathlib import Path
 import requests
 
 # Third-party imports
+from flask import abort
 from flask import jsonify
 from flask import redirect
 from flask import render_template
@@ -44,6 +45,7 @@ from flask import url_for
 from flask_openapi3.models.info import Info
 from flask_openapi3.models.tag import Tag
 from flask_openapi3.openapi import OpenAPI
+from jinja2 import TemplateNotFound
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
@@ -546,103 +548,32 @@ def updates():
     return render_template("updates.html")
 
 
-@app.route("/menu/about")
-def menu_about():
+@app.route("/menu/<string:page_name>")
+def menu_page(page_name: str):
     """
-    Route handler for the About menu content.
-
-    Returns:
-        The rendered about.html template.
+    Route handler for dynamic menu content.
     """
-    return render_template("about.html")
+    # A whitelist of allowed pages to prevent potential directory traversal vulnerabilities.
+    allowed_pages = {"about", "help", "product", "token", "protocol", "gmail", "neural-nets", "blog", "coders"}
+    if page_name not in allowed_pages:
+        abort(404)
+
+    try:
+        return render_template(f"{page_name}.html")
+    except TemplateNotFound:
+        abort(404)
 
 
-@app.route("/menu/help")
-def menu_help():
+# Add security headers
+@app.after_request
+def add_security_headers(response):
     """
-    Route handler for the Help menu content.
-
-    Returns:
-        The rendered help.html template.
+    Add Content Security Policy and other security headers to all responses.
     """
-    return render_template("help.html")
-
-
-@app.route("/menu/product")
-def menu_product():
-    """
-    Route handler for the Product menu content.
-
-    Returns:
-        The rendered product.html template.
-    """
-    return render_template("product.html")
-
-
-@app.route("/menu/token")
-def menu_token():
-    """
-    Route handler for the Token menu content.
-
-    Returns:
-        The rendered token.html template.
-    """
-    return render_template("token.html")
-
-
-@app.route("/menu/protocol")
-def menu_protocol():
-    """
-    Route handler for the Protocol menu content.
-
-    Returns:
-        The rendered protocol.html template.
-    """
-    return render_template("protocol.html")
-
-
-@app.route("/menu/gmail")
-def menu_gmail():
-    """
-    Route handler for the Gmail menu content.
-
-    Returns:
-        The rendered gmail.html template.
-    """
-    return render_template("gmail.html")
-
-
-@app.route("/menu/neural-nets")
-def menu_neural_nets():
-    """
-    Route handler for the Neural Nets menu content.
-
-    Returns:
-        The rendered neural-nets.html template.
-    """
-    return render_template("neural-nets.html")
-
-
-@app.route("/menu/blog")
-def menu_blog():
-    """
-    Route handler for the Blog menu content.
-
-    Returns:
-        The rendered blog.html template.
-    """
-    return render_template("blog.html")
-
-
-@app.route("/menu/coders")
-def menu_coders():
-    """
-    Route handler for the Coders menu content.
-
-    Returns:
-        The rendered coders.html template.
-    """
-    return render_template("coders.html")
+    response.headers[
+        "Content-Security-Policy"
+    ] = "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; font-src 'self' https://fonts.googleapis.com;"
+    return response
 
 
 # For local development

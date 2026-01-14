@@ -5,6 +5,7 @@ Fixed for Python 3.14 compatibility with jinja2 patching.
 """
 
 # Patch jinja2 for Flask 3.0.3 compatibility
+import os
 import jinja2
 from markupsafe import Markup
 from markupsafe import escape
