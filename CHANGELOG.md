@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/bniladridas/path/compare/v1.13.1...v1.13.2) (2026-02-19)
+
+
+### Bug Fixes
+
+* add issues permission for semantic-release ([e5d8b72](https://github.com/bniladridas/path/commit/e5d8b72388f9a0c8980a56781afb48cb746a9379))
+
 ## [1.13.1](https://github.com/bniladridas/path/compare/v1.13.0...v1.13.1) (2026-02-19)
 
 
