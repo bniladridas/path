@@ -160,7 +160,11 @@ docker-compose.override.yml
 .pytest_cache/
 .coverage
 htmlcov/
-no-navigation-links.png
+*.test-error.png
+*-error.png
+*-navigation.png
+before-submit.png
+after-submit.png
 playwright-report/
 test-results/
 eval
