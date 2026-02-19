@@ -9,6 +9,7 @@ permissions:
   contents: write
   packages: write
   pull-requests: write
+  issues: write
 
 env:
   GHCR_REGISTRY: ghcr.io
