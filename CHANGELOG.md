@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/bniladridas/path/compare/v1.13.0...v1.13.1) (2026-02-19)
+
+
+### Bug Fixes
+
+* ternary expressions in check-unused ([38d54ec](https://github.com/bniladridas/path/commit/38d54ecce2f4f6f07b0b0ad73682996ba2d403ea))
+
 # [1.13.0](https://github.com/bniladridas/path/compare/v1.12.0...v1.13.0) (2026-01-13)
 
 
