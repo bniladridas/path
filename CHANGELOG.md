@@ -1,3 +1,10 @@
+## [1.13.3](https://github.com/bniladridas/path/compare/v1.13.2...v1.13.3) (2026-02-19)
+
+
+### Bug Fixes
+
+* update uv lockfile ([230aef0](https://github.com/bniladridas/path/commit/230aef0b3cbf00116c49385e32d68b8b2aadb023))
+
 ## [1.13.2](https://github.com/bniladridas/path/compare/v1.13.1...v1.13.2) (2026-02-19)
 
 
