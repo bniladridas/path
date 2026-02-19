@@ -570,9 +570,9 @@ def add_security_headers(response):
     """
     Add Content Security Policy and other security headers to all responses.
     """
-    response.headers[
-        "Content-Security-Policy"
-    ] = "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; font-src 'self' https://fonts.googleapis.com;"
+    response.headers["Content-Security-Policy"] = (
+        "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; font-src 'self' https://fonts.googleapis.com;"
+    )
     return response
 
 
