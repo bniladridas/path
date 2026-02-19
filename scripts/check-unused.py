@@ -179,12 +179,12 @@ class CodeAnalyzer(ast.NodeVisitor):
 
     def visit_Import(self, node):
         for alias in node.names:
-            name = alias.asname if alias.asname else alias.name
+            name = alias.asname or alias.name
             self.imports.append(name)
 
     def visit_ImportFrom(self, node):
         for alias in node.names:
-            name = alias.asname if alias.asname else alias.name
+            name = alias.asname or alias.name
             self.imports.append(name)
 
     def visit_FunctionDef(self, node):
