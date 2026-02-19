@@ -6,14 +6,13 @@ Shared verification logic for the PATH application.
 # The image shows a human avatar, so we accept various human-related terms
 # This list is intentionally broad to accommodate different ways of describing the image
 VERIFICATION_KEYWORDS = [
-    "human",
-    "person",
-    "avatar",
-    "face",
-    "profile",
-    "picture",
-    "man",
-    "woman",
+    "box",
+    "square",
+    "rectangle",
+    "shape",
+    "cube",
+    "container",
+    "harper",
 ]
 
 
