@@ -1,181 +1,112 @@
-# Harper
+# Harper [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
-## Purpose: Package Migration
+An AI-powered media exploration web application using Flask and Google Gemini.
 
-This repository primarily documents and validates a **package migration** for Harper. The goal of this change is to modernize dependencies, reduce maintenance risk, and keep the application aligned with supported SDKs—**without changing user‑visible behavior**.
+## Sharing
+- [Share on Twitter](http://twitter.com/home?status=http://github.com/bniladridas/path)
+- [Share on Facebook](http://www.facebook.com/sharer/sharer.php?u=http://github.com/bniladridas/path)
+- [Share on Google Plus](http://plus.google.com/share?url=http://github.com/bniladridas/path)
+- [Share on LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=http://github.com/bniladridas/path)
 
-> **TL;DR**: Harper was migrated from the deprecated `google.generativeai` package to the modern `google.genai` SDK. All imports, API calls, and dependencies were updated while preserving functionality, routes, and behavior.
+## Table of Contents
 
----
+### AI Services
+- [AI Search](#ai-search)
 
-## Why This Migration
+## AI Services
 
-* **Deprecation risk**: `google.generativeai` is deprecated and no longer recommended.
-* **Forward compatibility**: `google.genai` is the supported SDK going forward.
-* **Maintenance & security**: Supported SDKs receive fixes, improvements, and security updates.
-* **No feature churn**: The migration intentionally avoids product or UX changes.
+<h2 id="ai-search">AI Search / Generative AI</h2>
 
----
+### Google Gemini
+General: [Overview](https://ai.google.dev/docs) | [API Docs](https://ai.google.dev/api) | [Pricing](https://ai.google.dev/pricing)
 
-## Scope of Changes
+Python: [PyPI](https://pypi.org/project/google-genai/) | [SDK Docs](https://google.github.io/python-genai/)
 
-### What Changed
+JavaScript: [NPM](https://www.npmjs.com/package/google-genai) | [Node](https://github.com/google/generative-ai-js)
 
-* Replaced all `google.generativeai` imports with `google.genai`
-* Updated client initialization and request patterns to match the new SDK
-* Adjusted dependency versions in `requirements.txt`
-* Verified all AI-backed routes continue to work as before
+- Generate responses based on natural language queries
+- Contextual understanding of user intent
+- Real-time API integration for search functionality
 
-### What Did *Not* Change
+Supported models: Gemini 2.0 Flash, Gemini 1.5 Pro, Gemini 1.5 Flash
 
-* Application behavior and responses
-* Flask routes and URL structure
-* Templates, CSS, and frontend behavior
-* Test coverage and CI expectations
-* Deployment model (Vercel / Docker compatible)
-
----
-
-## Migration Summary
-
-| Area           | Before                | After              |
-| -------------- | --------------------- | ------------------ |
-| Gemini SDK     | `google.generativeai` | `google.genai`     |
-| Support status | Deprecated            | Actively supported |
-| API surface    | Legacy                | Current / stable   |
-| Behavior       | —                     | Unchanged          |
-
-The migration was performed as a **mechanical, low‑risk refactor**, focusing on correctness and parity.
-
----
-
-## Validation & Verification
-
-To ensure migration safety:
-
-* All existing unit tests pass (`pytest`)
-* End‑to‑end Playwright tests pass
-* Manual verification of AI search, verification flow, and static routes
-* No runtime warnings or SDK deprecation notices
-
-This confirms functional equivalence before and after the migration.
-
----
-
-## Documentation Index
-
-Minimal documentation relevant to the migration and maintenance:
-
-* [API.md](API.md) — API endpoints and usage examples
-* [docs/development/README.md](docs/development/README.md) — Development workflow
-* [docs/development/hooks/README.md](docs/development/hooks/README.md) — Git hooks overview
-* [docs/development/hooks/ruff.md](docs/development/hooks/ruff.md) — Ruff configuration
-* [docs/development/hooks/pre-commit.md](docs/development/hooks/pre-commit.md) — Pre‑commit hooks
-
----
-
-## Codebase Context (Post‑Migration)
-
-Harper remains a minimal Flask web application for AI‑powered media exploration.
-
-### Core Structure
-
-* `path/app.py`: Flask app and routes, now using `google.genai`
-* `templates/`: Jinja templates for all static and dynamic pages
-* `static/css/style.css`: Theme system and responsive styles
-* `requirements.txt`: Updated, minimal dependencies
-* `tests/`: Unit tests validating route behavior
-
-The migration does **not** introduce architectural changes.
-
----
-
-## Setup (Unchanged)
+## Setup
 
 ### Prerequisites
-
-* Python 3.8+
-* Node.js 16+
-* npm
+- Python 3.8+
+- Node.js 16+
+- npm
 
 ```bash
 git clone https://github.com/bniladridas/path.git
 cd path
 pip install -r requirements.txt
 npm install
-npx playwright install
 ```
 
 ### Run
-
-Run commands from the project root directory:
-
 ```bash
 # Set your API key and run the app
 GEMINI_API_KEY=your-key python run.py
 ```
 
----
-
-## Testing
-
+### Testing
 ```bash
 pytest
 npm test
 ```
 
-API key sanity check:
-
+### API Key Verification
 ```bash
 curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY"
 ```
 
----
+## Tech Stack
 
-## Related Refactors (Non‑Blocking)
+### Backend
+- Flask 3.1.2 - Web framework
+- Google Genai SDK - AI integration
+- Gunicorn - WSGI server
+- Python Dotenv - Environment variables
 
-While outside the core package migration, the repository also includes a completed **Jinja template refactor**:
+### Frontend
+- HTML/CSS/JavaScript - User interface
+- Playwright - E2E testing
 
-* 800+ lines of hardcoded HTML removed from JavaScript
-* Content moved to proper Jinja templates
-* AJAX loading via Flask routes
-* Improved security, maintainability, and separation of concerns
+### Deployment
+- Vercel - Cloud platform
+- Docker - Containerization
 
-This refactor is **orthogonal** to the SDK migration and can be reviewed independently.
-
----
-
-## Commit Discipline
-
-This migration follows **conventional commits** to keep history reviewable and safe for backports.
-
-Example:
+## Project Structure
 
 ```
-refactor: migrate gemini sdk to google.genai
+path/
+├── path/
+│   ├── app.py           # Flask application and routes
+│   └── __init__.py      # Package initialization
+├── templates/            # Jinja2 templates
+├── static/              # Static assets (CSS, images)
+├── shared/              # Shared utilities
+├── tests/               # Unit tests
+├── e2e/                 # End-to-end tests
+├── run.py               # Application entry point
+├── requirements.txt     # Python dependencies
+└── package.json         # Node.js dependencies
 ```
 
----
+## Features
 
-## Migration Guarantee
-
-This change is:
-
-* ✅ Backward‑compatible
-* ✅ Behavior‑preserving
-* ✅ Safe to roll back
-* ✅ Required for long‑term maintenance
-
-No product decisions were made as part of this work—**only dependency hygiene**.
-
----
+- AI-powered search using Google Gemini
+- Email verification flow
+- Static page routing
+- Responsive design
+- Theme support
 
 ## License
+[![Creative Commons License](http://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
 ---
-
-## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
