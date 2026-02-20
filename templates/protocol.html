@@ -1,55 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>harper - Protocol</title>
-</head>
-<body>
-    <div class="hero-title-style">your connection protocol details:
-
-<table class="info-table">
-<tr>
-<th>property</th>
-<th>value</th>
-</tr>
-<tr>
-<td style="font-weight: 600;">protocol</td>
-<td id="protocol-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">hostname</td>
-<td id="hostname-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">port</td>
-<td id="port-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">language</td>
-<td id="language-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">platform</td>
-<td id="platform-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">cookies enabled</td>
-<td id="cookies-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">online status</td>
-<td id="online-value"></td>
-</tr>
-<tr>
-<td style="font-weight: 600;">user agent</td>
-<td id="useragent-value" style="word-break: break-all;"></td>
-</tr>
-</table>
-
-this information helps us understand how you're connecting to harper and ensures the best possible experience for your specific setup.</div>
-
-<script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>harper - Protocol</title>
+    </head>
+    <body>
+        <div class="hero-title-style">
+            your connection protocol details:
+            <table class="info-table">
+                <tr>
+                    <th>property</th>
+                    <th>value</th>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">protocol</td>
+                    <td id="protocol-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">hostname</td>
+                    <td id="hostname-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">port</td>
+                    <td id="port-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">language</td>
+                    <td id="language-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">platform</td>
+                    <td id="platform-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">cookies enabled</td>
+                    <td id="cookies-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">online status</td>
+                    <td id="online-value"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">user agent</td>
+                    <td id="useragent-value" style="word-break: break-all;"></td>
+                </tr>
+            </table>
+            this information helps us understand how you're connecting to harper and ensures the best possible experience for your specific setup.
+        </div>
+        <script>
 // Populate protocol information dynamically
 document.addEventListener('DOMContentLoaded', function() {
     const protocol = window.location.protocol;
@@ -70,6 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('online-value').textContent = onlineStatus;
     document.getElementById('useragent-value').textContent = userAgent;
 });
-</script>
-</body>
+        </script>
+    </body>
 </html>
