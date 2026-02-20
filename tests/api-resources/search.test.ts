@@ -8,7 +8,7 @@ const client = new Harper({
 });
 
 describe('resource search', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('recommend', async () => {
     const responsePromise = client.search.recommend();
     const rawResponse = await responsePromise.asResponse();
