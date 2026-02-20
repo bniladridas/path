@@ -3,10 +3,9 @@
 An AI-powered media exploration web application using Flask and Google Gemini.
 
 ## Sharing
-- [Share on Twitter](http://twitter.com/home?status=http://github.com/bniladridas/path)
-- [Share on Facebook](http://www.facebook.com/sharer/sharer.php?u=http://github.com/bniladridas/path)
-- [Share on Google Plus](http://plus.google.com/share?url=http://github.com/bniladridas/path)
-- [Share on LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=http://github.com/bniladridas/path)
+- [Twitter](https://twitter.com/intent/tweet?url=http://github.com/bniladridas/path)
+- [Facebook](http://www.facebook.com/sharer/sharer.php?u=http://github.com/bniladridas/path)
+- [LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=http://github.com/bniladridas/path)
 
 ## Table of Contents
 
