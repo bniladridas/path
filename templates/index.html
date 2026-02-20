@@ -475,6 +475,39 @@
             document.getElementById('response-container').innerHTML = '';
         }
 
+        // Helper function to show menu content
+        async function showMenuContent(endpoint) {
+            try {
+                const heroSection = document.querySelector('.hero-section');
+                const searchSection = document.querySelector('.search-section');
+                const responseSection = document.getElementById('response-section');
+                const suggestionsSection = document.querySelector('.suggestions-section');
+                const responseContainer = document.getElementById('response-container');
+
+                // Transform interface to search mode
+                heroSection.classList.add('search-mode');
+                searchSection.classList.add('search-mode');
+
+                // Hide suggestions and show response section
+                suggestionsSection.style.display = 'none';
+                responseSection.style.display = 'block';
+
+                // Fetch content from endpoint
+                const response = await fetch(endpoint);
+                const html = await response.text();
+
+                // Extract the content from the body tag
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const content = doc.body.innerHTML;
+
+                responseContainer.innerHTML = content;
+            } catch (error) {
+                console.error('Error loading menu content:', error);
+                responseContainer.innerHTML = '<div class="hero-title-style">sorry, there was an error loading this content. please try again.</div>';
+            }
+        }
+
         // Modal handling functions
         function showModal(message, isRateLimit = false) {
             const modal = document.getElementById('error-modal');
@@ -692,476 +725,49 @@
 
         // Show About information
         function showAbout() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show About content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">harper is a simple interface for exploring media topics using artificial intelligence. powered by google's gemini 2.0 flash model, this application provides thoughtful responses about movies, music, books, and other media topics with a clean, minimal design.</div>
-            `;
+            showMenuContent('/menu/about');
         }
 
         // Show Help information
         function showHelp() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Help content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">ask questions about movies, music, books, or games. click the title to reset. use the three-dot menu for options. press / to focus the search box.</div>
-            `;
+            showMenuContent('/menu/help');
         }
 
         // Show Product information
         function showProduct() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Product content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">harper exists because we believe in four fundamental truths about human connection with media:
-
-<table class="info-table">
-<tr>
-<th>pillar</th>
-<th>truth</th>
-</tr>
-<tr>
-<td style="font-weight: 600;">authentic discovery</td>
-<td>we don't manipulate your choices. no algorithms pushing content for profit. just honest responses to help you find what genuinely resonates with your soul.</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">human longing</td>
-<td>behind every search is a deeper need: to feel less alone, to understand ourselves, to find stories that mirror our struggles and dreams. we honor this sacred search.</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">time is precious</td>
-<td>life is short and your attention is sacred. we help you cut through the noise to find media that truly matters to you, because every moment spent with art should enrich your existence.</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">coming home</td>
-<td>all exploration is ultimately about finding your way back to yourself. through movies, music, books, and games, we help you discover pieces of who you are and who you're becoming.</td>
-</tr>
-</table>
-
-harper doesn't just recommend content. it helps you find your way home to yourself.</div>
-            `;
+            showMenuContent('/menu/product');
         }
 
         // Show Token information
         function showToken() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Token content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">honest truth about what powers harper:
-
-we use google's gemini 2.0 flash - their fast model with 1 million token input context and 8K output.
-
-<table class="info-table">
-<tr>
-<th>pricing</th>
-<th>rate (per 1m tokens)</th>
-</tr>
-<tr>
-<td>input tokens</td>
-<td>$0.10</td>
-</tr>
-<tr>
-<td>output tokens</td>
-<td>$0.40</td>
-</tr>
-</table>
-
-reality check: your typical question uses 100-500 input tokens ($0.00001-0.00005) and 200-1000 output tokens ($0.00008-0.0004). total under $0.0005 per query.
-
-why we chose this: thoughtful responses without bloated premium model costs. we prioritize your access over profit margins.
-
-honest economics: if 1000 people used path heavily for a month, ai costs would be $50-100. we're building something sustainable, not a venture-funded monster.
-
-privacy: google doesn't use your conversations to improve their products on paid tier. your embarrassing rom-com searches stay private.
-
-this transparency matters because you deserve to know what's behind the curtain.</div>
-            `;
+            showMenuContent('/menu/token');
         }
 
         // Show Protocol information
         function showProtocol() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Detect protocol information
-            const protocol = window.location.protocol;
-            const hostname = window.location.hostname;
-            const port = window.location.port || (protocol === 'https:' ? '443' : '80');
-            const userAgent = navigator.userAgent;
-            const language = navigator.language;
-            const platform = navigator.platform;
-            const cookieEnabled = navigator.cookieEnabled;
-            const onlineStatus = navigator.onLine;
-
-            // Show Protocol content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">your connection protocol details:
-
-<table class="info-table">
-<tr>
-<th>property</th>
-<th>value</th>
-</tr>
-<tr>
-<td style="font-weight: 600;">protocol</td>
-<td>${protocol}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">hostname</td>
-<td>${hostname}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">port</td>
-<td>${port}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">language</td>
-<td>${language}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">platform</td>
-<td>${platform}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">cookies enabled</td>
-<td>${cookieEnabled}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">online status</td>
-<td>${onlineStatus}</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">user agent</td>
-<td style="word-break: break-all;">${userAgent}</td>
-</tr>
-</table>
-
-this information helps us understand how you're connecting to harper and ensures the best possible experience for your specific setup.</div>
-            `;
+            showMenuContent('/menu/protocol');
         }
 
         // Show Gmail integration
         function showGmail() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Gmail content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">gmail integration for harper users:
-
-<table style="width: 100%; margin: 20px 0; border-collapse: collapse; font-size: 14px;">
-<tr style="background: rgba(255,255,255,0.1);">
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">feature</th>
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">benefit</th>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">auto verification</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">all gmail addresses automatically bypass human verification. we trust google's authentication.</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">priority access</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">gmail users get faster response times and enhanced features during peak usage.</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">privacy protection</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">your gmail address is never stored or shared. we only verify the domain for access.</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">seamless experience</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">no additional sign-ups or accounts needed. just use your existing gmail identity.</td>
-</tr>
-</table>
-
-why gmail? because google's security infrastructure is already protecting your identity. we don't need to reinvent authentication when gmail users already have world-class protection.
-
-to enable: simply access harper from an email link or enter your gmail address when prompted. the system automatically recognizes and accepts all @gmail.com addresses.</div>
-            `;
+            showMenuContent('/menu/gmail');
         }
 
         // Show Neural Nets information
         function showNeuralNets() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Neural Nets content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">understanding the neural networks that power harper:
-
-<table class="info-table">
-<tr>
-<th>component</th>
-<th>details</th>
-</tr>
-<tr>
-<td style="font-weight: 600;">model architecture</td>
-<td>google gemini 2.0 flash - transformer-based multimodal neural network</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">context window</td>
-<td>1 million input tokens, 8K output - massive context understanding</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">training approach</td>
-<td>reinforcement learning from human feedback (rlhf)</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">capabilities</td>
-<td>text generation, reasoning, analysis, creative writing</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">optimization</td>
-<td>flash variant optimized for speed and efficiency</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">safety measures</td>
-<td>constitutional ai, content filtering, bias mitigation</td>
-</tr>
-</table>
-
-harper uses these neural networks not to replace human creativity, but to help you discover media that genuinely resonates with your soul. the ai processes your queries through billions of parameters trained on diverse media knowledge, then generates responses focused on authentic discovery rather than algorithmic manipulation.
-
-every response you receive has traveled through layers of neural attention mechanisms, each one designed to understand context, meaning, and your underlying intent to find something meaningful.</div>
-            `;
+            showMenuContent('/menu/neural-nets');
         }
 
 
 
         // Show Blog information
         function showBlog() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Blog content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">why harper exists: a story of coming home
-
-<div style="text-align: center; margin: 20px 0; font-size: 12px; color: var(--text-tertiary);">
-by @bniladridas • may 2025
-</div>
-
-after years of building ai products that felt hollow, we realized something profound was missing. every recommendation algorithm, every "personalized" feed, every "smart" suggestion was designed to keep you scrolling, clicking, consuming - but never truly satisfied.
-
-<table class="info-table">
-<tr>
-<th>the problem</th>
-<th>what we discovered</th>
-</tr>
-<tr>
-<td style="font-weight: 600;">algorithmic manipulation</td>
-<td>platforms optimize for engagement, not genuine satisfaction</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">endless scrolling</td>
-<td>people spend hours searching but never find what truly resonates</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">surface-level recommendations</td>
-<td>ai suggests based on data patterns, not human longing</td>
-</tr>
-<tr>
-<td style="font-weight: 600;">digital homelessness</td>
-<td>people feel lost in infinite content, unable to find their way home</td>
-</tr>
-</table>
-
-harper emerged from a simple question: what if ai could help you find media that actually matters to your soul?
-
-we stripped away everything designed to manipulate. no engagement metrics. no algorithmic feeds. no data harvesting. just honest conversations about media that might help you discover pieces of yourself.
-
-the name "harper" isn't about the journey - it's about finding your way back home to who you really are through the stories, songs, and experiences that speak to your deepest self.
-
-every feature in harper exists to honor human dignity. the clean interface removes distractions. the transparency tools show you exactly how everything works. the privacy protection ensures your conversations remain yours alone.
-
-this isn't just another ai tool. it's a quiet rebellion against the attention economy - a space where technology serves human flourishing instead of corporate metrics.
-
-come home before it's too late. not to a place, but to yourself.
-
-<div style="text-align: center; margin: 30px 0 10px 0; font-size: 12px; color: var(--text-tertiary);">
-follow the journey: <a href="https://github.com/harpertoken" target="_blank" style="color: var(--text-secondary); text-decoration: underline;">github.com/harpertoken</a>
-</div></div>
-            `;
+            showMenuContent('/menu/blog');
         }
 
         // Show Coders information
         function showCoders() {
-            const heroSection = document.querySelector('.hero-section');
-            const searchSection = document.querySelector('.search-section');
-            const responseSection = document.getElementById('response-section');
-            const suggestionsSection = document.querySelector('.suggestions-section');
-            const responseContainer = document.getElementById('response-container');
-
-            // Transform interface to search mode
-            heroSection.classList.add('search-mode');
-            searchSection.classList.add('search-mode');
-
-            // Hide suggestions and show response section
-            suggestionsSection.style.display = 'none';
-            responseSection.style.display = 'block';
-
-            // Show Coders content
-            responseContainer.innerHTML = `
-                <div class="hero-title-style">for developers: exploring path's source code
-
-<div style="text-align: center; margin: 20px 0; font-size: 12px; color: var(--text-tertiary);">
-inspect the magic behind the interface
-</div>
-
-want to see how harper works under the hood? here's how to explore the source code:
-
-<table style="width: 100%; margin: 20px 0; border-collapse: collapse; font-size: 14px;">
-<tr style="background: rgba(255,255,255,0.1);">
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">method</th>
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">how to access</th>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">keyboard shortcut</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">press <strong>F12</strong> or <strong>Ctrl+Shift+I</strong> (Windows/Linux) or <strong>Cmd+Option+I</strong> (Mac)</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">right-click menu</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">right-click anywhere on the page and select "inspect" or "inspect element"</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">browser menu</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">go to browser menu → more tools → developer tools</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">sources tab</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">once devtools open, click the "sources" tab at the top to explore files</td>
-</tr>
-</table>
-
-<table style="width: 100%; margin: 20px 0; border-collapse: collapse; font-size: 14px;">
-<tr style="background: rgba(255,255,255,0.1);">
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">what you'll find</th>
-<th style="padding: 12px; text-align: left; border: 1px solid rgba(255,255,255,0.2);">description</th>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">html structure</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">clean, semantic markup with minimal dom elements</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">css variables</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">theme system using custom properties for colors and spacing</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">vanilla javascript</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">no frameworks - pure js for interactions and api calls</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">flask backend</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">python flask server handling ai integration and routing</td>
-</tr>
-<tr>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2); font-weight: 600;">transparency tools</td>
-<td style="padding: 12px; border: 1px solid rgba(255,255,255,0.2);">all the functions powering about, product, token, protocol tools</td>
-</tr>
-</table>
-
-harper is built with radical transparency. every line of code reflects our commitment to honest technology that serves human flourishing rather than corporate metrics.
-
-explore, learn, and see how simple, thoughtful code can create meaningful experiences.
-
-<div style="text-align: center; margin: 30px 0 10px 0; font-size: 12px; color: var(--text-tertiary);">
-happy coding! press F12 and dive into the sources tab :)
-</div></div>
-            `;
+            showMenuContent('/menu/coders');
         }
 
         // Change theme based on color
