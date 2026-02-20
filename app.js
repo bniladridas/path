@@ -51,14 +51,13 @@ You approach each query with the excitement of discovering something new or shar
     Limit responses to 2-3 sentences maximum.`;
 
 const VERIFICATION_KEYWORDS = [
-    "human",
-    "person",
-    "avatar",
-    "face",
-    "profile",
-    "picture",
-    "man",
-    "woman",
+    "box",
+    "square",
+    "rectangle",
+    "shape",
+    "cube",
+    "container",
+    "harper",
 ];
 
 function isVerificationAnswerValid(answer) {
