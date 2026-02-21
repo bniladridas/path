@@ -46,7 +46,6 @@ from flask import url_for
 from flask_openapi3.models.info import Info
 from flask_openapi3.models.tag import Tag
 from flask_openapi3.openapi import OpenAPI
-from google.genai import types
 from jinja2 import TemplateNotFound
 from pydantic import BaseModel
 
@@ -585,6 +584,8 @@ def generate_image():
 
     try:
         logging.info("Generating image for prompt: %s", prompt[:50])
+
+        from google.genai import types
 
         contents = [
             types.Content(
