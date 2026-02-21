@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/bniladridas/path/compare/v1.15.0...v1.15.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* sanitize user input before logging ([0616a4c](https://github.com/bniladridas/path/commit/0616a4c4b36db3d88821b85402b1b7a1e208639b))
+
 # [1.15.0](https://github.com/bniladridas/path/compare/v1.14.1...v1.15.0) (2026-02-21)
 
 
