@@ -1,3 +1,10 @@
+## [1.13.7](https://github.com/bniladridas/path/compare/v1.13.6...v1.13.7) (2026-02-21)
+
+
+### Bug Fixes
+
+* graceful rate limit handling ([7e3ac16](https://github.com/bniladridas/path/commit/7e3ac16a2a1dce84238d6025676cb49ca8d7eb02))
+
 ## [1.13.6](https://github.com/bniladridas/path/compare/v1.13.5...v1.13.6) (2026-02-21)
 
 
