@@ -1,46 +1,15 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-.pytest_cache/
-.coverage
-htmlcov/
-.mypy_cache/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual Environment
-.env
-.venv
-env/
-venv/
-ENV/
-
-# Build and Distribution
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-
-# IDE
+.prism.log
+node_modules
+yarn-error.log
+codegen.log
+Brewfile.lock.json
+dist
+dist-deno
+/*.tgz
 .idea/
-.vscode/
-*.swp
-*.swo
-*~
-.DS_Store
+.eslintcache
 
+<<<<<<< HEAD
 # Jupyter Notebook
 .ipynb_checkpoints/
 
@@ -177,3 +146,5 @@ path/static/
 # Rust
 rust/target/
 rust/Cargo.lock
+=======
+>>>>>>> e9e1add (chore: sync repo)
