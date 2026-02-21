@@ -66,13 +66,16 @@ fn render_welcome(frame: &mut Frame) {
         .constraints([Constraint::Min(1), Constraint::Length(3)])
         .split(frame.area());
 
-    let prompt = Paragraph::new("")
-        .block(Block::default().borders(Borders::NONE));
+    let prompt = Paragraph::new("").block(Block::default().borders(Borders::NONE));
     frame.render_widget(prompt, chunks[0]);
 
     let input = Paragraph::new("")
         .style(Style::default().fg(Color::DarkGray))
-        .block(Block::default().borders(Borders::ALL).title(" type to search "));
+        .block(
+            Block::default()
+                .borders(Borders::ALL)
+                .title(" type to search "),
+        );
     frame.render_widget(input, chunks[1]);
 }
 
@@ -123,64 +126,62 @@ async fn run_tui() -> Result<(), Box<dyn std::error::Error>> {
     let app_clone = app.clone();
     let quit_clone = quit.clone();
 
-    std::thread::spawn(move || {
-        loop {
-            if event::poll(std::time::Duration::from_millis(50)).unwrap() {
-                if let Event::Key(key) = event::read().unwrap() {
-                    if key.kind == KeyEventKind::Press {
-                        let mut app = app_clone.lock().unwrap();
-                        match key.code {
-                            KeyCode::Char(c) => {
-                                if !app.started {
-                                    app.started = true;
-                                }
-                                app.query.push(c);
+    std::thread::spawn(move || loop {
+        if event::poll(std::time::Duration::from_millis(50)).unwrap() {
+            if let Event::Key(key) = event::read().unwrap() {
+                if key.kind == KeyEventKind::Press {
+                    let mut app = app_clone.lock().unwrap();
+                    match key.code {
+                        KeyCode::Char(c) => {
+                            if !app.started {
+                                app.started = true;
                             }
-                            KeyCode::Backspace => {
-                                app.query.pop();
-                            }
-                            KeyCode::Enter => {
-                                let query = app.query.clone();
-                                if !query.is_empty() && !app.loading {
-                                    app.loading = true;
-                                    app.response.clear();
-                                    app.error = None;
-                                    drop(app);
-
-                                    let client = client.clone();
-                                    let api_key = api_key.clone();
-                                    let app = app_clone.clone();
-
-                                    std::thread::spawn(move || {
-                                        let rt = tokio::runtime::Runtime::new().unwrap();
-                                        rt.block_on(async {
-                                            let result = search_gemini(&client, &api_key, &query).await;
-                                            let mut app = app.lock().unwrap();
-                                            app.loading = false;
-                                            match result {
-                                                Ok(resp) => {
-                                                    app.response = resp;
-                                                }
-                                                Err(e) => {
-                                                    app.error = Some(e);
-                                                }
-                                            }
-                                        });
-                                    });
-                                }
-                            }
-                            KeyCode::Esc => {
-                                if app.query.is_empty() {
-                                    quit_clone.store(true, Ordering::SeqCst);
-                                } else {
-                                    app.query.clear();
-                                    app.started = false;
-                                    app.response.clear();
-                                    app.error = None;
-                                }
-                            }
-                            _ => {}
+                            app.query.push(c);
                         }
+                        KeyCode::Backspace => {
+                            app.query.pop();
+                        }
+                        KeyCode::Enter => {
+                            let query = app.query.clone();
+                            if !query.is_empty() && !app.loading {
+                                app.loading = true;
+                                app.response.clear();
+                                app.error = None;
+                                drop(app);
+
+                                let client = client.clone();
+                                let api_key = api_key.clone();
+                                let app = app_clone.clone();
+
+                                std::thread::spawn(move || {
+                                    let rt = tokio::runtime::Runtime::new().unwrap();
+                                    rt.block_on(async {
+                                        let result = search_gemini(&client, &api_key, &query).await;
+                                        let mut app = app.lock().unwrap();
+                                        app.loading = false;
+                                        match result {
+                                            Ok(resp) => {
+                                                app.response = resp;
+                                            }
+                                            Err(e) => {
+                                                app.error = Some(e);
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                        KeyCode::Esc => {
+                            if app.query.is_empty() {
+                                quit_clone.store(true, Ordering::SeqCst);
+                            } else {
+                                app.query.clear();
+                                app.started = false;
+                                app.response.clear();
+                                app.error = None;
+                            }
+                        }
+                        _ => {}
                     }
                 }
             }
@@ -243,7 +244,11 @@ async fn search_gemini(client: &Client, api_key: &str, query: &str) -> Result<St
 
     if let Some(candidates) = resp.get("candidates").and_then(|c| c.as_array()) {
         if let Some(candidate) = candidates.first() {
-            if let Some(content) = candidate.get("content").and_then(|c| c.get("parts")).and_then(|p| p.as_array()) {
+            if let Some(content) = candidate
+                .get("content")
+                .and_then(|c| c.get("parts"))
+                .and_then(|p| p.as_array())
+            {
                 for part in content {
                     if let Some(text) = part.get("text").and_then(|t| t.as_str()) {
                         return Ok(text.to_string());
@@ -312,10 +317,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 if let Ok(chunk) = serde_json::from_str::<serde_json::Value>(line) {
                     if let Some(candidates) = chunk.get("candidates").and_then(|c| c.as_array()) {
                         for candidate in candidates {
-                            if let Some(content) = candidate.get("content").and_then(|c| c.get("parts")).and_then(|p| p.as_array()) {
+                            if let Some(content) = candidate
+                                .get("content")
+                                .and_then(|c| c.get("parts"))
+                                .and_then(|p| p.as_array())
+                            {
                                 for part in content {
                                     if let Some(inline_data) = part.get("inlineData") {
-                                        if let Some(data) = inline_data.get("data").and_then(|d| d.as_str()) {
+                                        if let Some(data) =
+                                            inline_data.get("data").and_then(|d| d.as_str())
+                                        {
                                             let decoded = base64::Engine::decode(
                                                 &base64::engine::general_purpose::STANDARD,
                                                 data,
