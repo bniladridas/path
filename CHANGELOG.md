@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/bniladridas/path/compare/v1.14.0...v1.14.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* use macos-14 runner ([f094d39](https://github.com/bniladridas/path/commit/f094d393a76f83151d000a81046ab5ee44162b93))
+
 # [1.14.0](https://github.com/bniladridas/path/compare/v1.13.7...v1.14.0) (2026-02-21)
 
 
