@@ -77,13 +77,13 @@
     <div class="container" role="main">
 
         <!-- ============================================================
-             NAVIGATION MENU - Three-dot menu with tools and themes
+             NAVIGATION MENU - Three-dot menu with tools
              ============================================================ -->
         <nav class="menu-container" role="navigation" aria-label="Main navigation and tools">
             <button class="menu-button"
                     id="menu-button"
                     type="button"
-                    aria-label="Open main menu with tools and themes"
+                     aria-label="Open main menu"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-controls="menu-dropdown">
@@ -96,56 +96,16 @@
                  aria-labelledby="menu-button"
                  aria-hidden="true">
 
-                <!-- Tool Menu Items with Semantic Roles -->
+                <!-- Tool Menu Items -->
                 <div class="menu-item" id="about-menu" role="menuitem" tabindex="-1">
-                    about <span class="shortcut" aria-label="Keyboard shortcut: A">A</span>
-                </div>
-                <div class="menu-item" id="reset-menu" role="menuitem" tabindex="-1">
-                    reset <span class="shortcut" aria-label="Keyboard shortcut: R">R</span>
+                    about
                 </div>
                 <div class="menu-item" id="help-menu" role="menuitem" tabindex="-1">
-                    help <span class="shortcut" aria-label="Keyboard shortcut: H">H</span>
+                    help
                 </div>
-                <div class="menu-item" id="product-menu" role="menuitem" tabindex="-1">
-                    product <span class="shortcut" aria-label="Keyboard shortcut: P">P</span>
-                </div>
-                <div class="menu-item" id="token-menu" role="menuitem" tabindex="-1">
-                    token <span class="shortcut" aria-label="Keyboard shortcut: T">T</span>
-                </div>
-                <div class="menu-item" id="protocol-menu" role="menuitem" tabindex="-1">
-                    protocol <span class="shortcut" aria-label="Keyboard shortcut: O">O</span>
-                </div>
-                <div class="menu-item" id="gmail-menu" role="menuitem" tabindex="-1">
-                    gmail <span class="shortcut" aria-label="Keyboard shortcut: G">G</span>
-                </div>
-                <div class="menu-item" id="neural-nets-menu" role="menuitem" tabindex="-1">
-                    neural <span class="shortcut" aria-label="Keyboard shortcut: N">N</span>
-                </div>
-                <div class="menu-item" id="blog-menu" role="menuitem" tabindex="-1">
-                    blog <span class="shortcut" aria-label="Keyboard shortcut: B">B</span>
-                </div>
-                <div class="menu-item" id="coders-menu" role="menuitem" tabindex="-1">
-                    coders <span class="shortcut" aria-label="Keyboard shortcut: C">C</span>
-                </div>
-
-                <!-- Menu Separator -->
-                <div class="menu-separator" role="separator" aria-hidden="true"></div>
-
-                <!-- Theme Menu Items -->
-                <div class="menu-item" id="theme-908b70" role="menuitem" tabindex="-1">
-                    908b70 <span class="shortcut" aria-label="Keyboard shortcut: 1">1</span>
-                </div>
-                <div class="menu-item" id="theme-4e4c40" role="menuitem" tabindex="-1">
-                    4e4c40 <span class="shortcut" aria-label="Keyboard shortcut: 2">2</span>
-                </div>
-                <div class="menu-item" id="theme-a9844f" role="menuitem" tabindex="-1">
-                    a9844f <span class="shortcut" aria-label="Keyboard shortcut: 3">3</span>
-                </div>
-                <div class="menu-item" id="theme-d5c9bc" role="menuitem" tabindex="-1">
-                    d5c9bc <span class="shortcut" aria-label="Keyboard shortcut: 4">4</span>
-                </div>
-                <div class="menu-item" id="theme-141614" role="menuitem" tabindex="-1">
-                    141614 <span class="shortcut" aria-label="Keyboard shortcut: 5">5</span>
+                <!-- IMAGE GENERATION - Opens /image page for AI image generation -->
+                <div class="menu-item" id="image-menu" role="menuitem" tabindex="-1">
+                    image
                 </div>
             </div>
         </nav>
@@ -253,9 +213,7 @@
             <span class="legal-separator">•</span>
             <span class="legal-text">
                 <a href="/terms" target="_blank" data-testid="nav-terms">terms</a> •
-                <a href="/privacy" target="_blank" data-testid="nav-privacy">privacy</a> •
-                <a href="https://github.com/bniladridas/path" target="_blank" data-testid="nav-source">source</a> •
-                <a href="https://github.com/harpertoken" target="_blank" data-testid="nav-community">community</a>
+                <a href="/privacy" target="_blank" data-testid="nav-privacy">privacy</a>
             </span>
         </div>
     </footer>
@@ -367,26 +325,13 @@
             const menuButton = document.getElementById('menu-button');
             const menuDropdown = document.getElementById('menu-dropdown');
             const aboutMenu = document.getElementById('about-menu');
-            const resetMenu = document.getElementById('reset-menu');
             const helpMenu = document.getElementById('help-menu');
-            const productMenu = document.getElementById('product-menu');
-            const tokenMenu = document.getElementById('token-menu');
-            const protocolMenu = document.getElementById('protocol-menu');
-            const gmailMenu = document.getElementById('gmail-menu');
-            const neuralNetsMenu = document.getElementById('neural-nets-menu');
-            const blogMenu = document.getElementById('blog-menu');
-            const codersMenu = document.getElementById('coders-menu');
-            const theme908b70 = document.getElementById('theme-908b70');
-            const theme4e4c40 = document.getElementById('theme-4e4c40');
-            const themeA9844f = document.getElementById('theme-a9844f');
-            const themeD5c9bc = document.getElementById('theme-d5c9bc');
-            const theme141614 = document.getElementById('theme-141614');
 
-             // Toggle menu dropdown
-             menuButton.addEventListener('click', (e) => {
-                 e.stopPropagation();
-                 menuDropdown.classList.toggle('show');
-             });
+            // Toggle menu dropdown
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuDropdown.classList.toggle('show');
+            });
 
             // Close menu when clicking outside
             document.addEventListener('click', () => {
@@ -399,78 +344,14 @@
                 menuDropdown.classList.remove('show');
             });
 
-            resetMenu.addEventListener('click', () => {
-                resetInterface();
-                menuDropdown.classList.remove('show');
-            });
-
             helpMenu.addEventListener('click', () => {
                 showHelp();
                 menuDropdown.classList.remove('show');
             });
 
-            productMenu.addEventListener('click', () => {
-                showProduct();
-                menuDropdown.classList.remove('show');
+            document.getElementById('image-menu').addEventListener('click', () => {
+                window.location.href = '/image';
             });
-
-            tokenMenu.addEventListener('click', () => {
-                showToken();
-                menuDropdown.classList.remove('show');
-            });
-
-            protocolMenu.addEventListener('click', () => {
-                showProtocol();
-                menuDropdown.classList.remove('show');
-            });
-
-            gmailMenu.addEventListener('click', () => {
-                showGmail();
-                menuDropdown.classList.remove('show');
-            });
-
-            neuralNetsMenu.addEventListener('click', () => {
-                showNeuralNets();
-                menuDropdown.classList.remove('show');
-            });
-
-            blogMenu.addEventListener('click', () => {
-                showBlog();
-                menuDropdown.classList.remove('show');
-            });
-
-            codersMenu.addEventListener('click', () => {
-                showCoders();
-                menuDropdown.classList.remove('show');
-            });
-
-            theme908b70.addEventListener('click', () => {
-                changeTheme('#908b70');
-                menuDropdown.classList.remove('show');
-            });
-
-            theme4e4c40.addEventListener('click', () => {
-                changeTheme('#4e4c40');
-                menuDropdown.classList.remove('show');
-            });
-
-            themeA9844f.addEventListener('click', () => {
-                changeTheme('#a9844f');
-                menuDropdown.classList.remove('show');
-            });
-
-            themeD5c9bc.addEventListener('click', () => {
-                changeTheme('#d5c9bc');
-                menuDropdown.classList.remove('show');
-            });
-
-            theme141614.addEventListener('click', () => {
-                changeTheme('#141614');
-                menuDropdown.classList.remove('show');
-            });
-
-
-
 
         });
 
@@ -573,73 +454,7 @@
                 document.getElementById('search-input').focus();
             }
 
-            // Tool shortcuts (only when not typing in input fields)
-            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-                const key = e.key.toLowerCase();
-
-                switch(key) {
-                    case 'a':
-                        e.preventDefault();
-                        showAbout();
-                        break;
-                    case 'r':
-                        e.preventDefault();
-                        resetInterface();
-                        break;
-                    case 'h':
-                        e.preventDefault();
-                        showHelp();
-                        break;
-                    case 'p':
-                        e.preventDefault();
-                        showProduct();
-                        break;
-                    case 't':
-                        e.preventDefault();
-                        showToken();
-                        break;
-                    case 'o':
-                        e.preventDefault();
-                        showProtocol();
-                        break;
-                    case 'g':
-                        e.preventDefault();
-                        showGmail();
-                        break;
-                    case 'n':
-                        e.preventDefault();
-                        showNeuralNets();
-                        break;
-                    case 'b':
-                        e.preventDefault();
-                        showBlog();
-                        break;
-                    case 'c':
-                        e.preventDefault();
-                        showCoders();
-                        break;
-                    case '1':
-                        e.preventDefault();
-                        changeTheme('#908b70');
-                        break;
-                    case '2':
-                        e.preventDefault();
-                        changeTheme('#4e4c40');
-                        break;
-                    case '3':
-                        e.preventDefault();
-                        changeTheme('#a9844f');
-                        break;
-                    case '4':
-                        e.preventDefault();
-                        changeTheme('#d5c9bc');
-                        break;
-                    case '5':
-                        e.preventDefault();
-                        changeTheme('#141614');
-                        break;
-                }
-            }
+            // Tool shortcuts removed
         });
 
         // Function to display results with enhanced formatting
@@ -752,166 +567,6 @@
         function showHelp() {
             showMenuContent('/menu/help');
         }
-
-        // Show Product information
-        function showProduct() {
-            showMenuContent('/menu/product');
-        }
-
-        // Show Token information
-        function showToken() {
-            showMenuContent('/menu/token');
-        }
-
-        // Show Protocol information
-        function showProtocol() {
-            showMenuContent('/menu/protocol');
-        }
-
-        // Show Gmail integration
-        function showGmail() {
-            showMenuContent('/menu/gmail');
-        }
-
-        // Show Neural Nets information
-        function showNeuralNets() {
-            showMenuContent('/menu/neural-nets');
-        }
-
-
-
-        // Show Blog information
-        function showBlog() {
-            showMenuContent('/menu/blog');
-        }
-
-        // Show Coders information
-        function showCoders() {
-            showMenuContent('/menu/coders');
-        }
-
-        // Change theme based on color
-        function changeTheme(color) {
-            const root = document.documentElement;
-
-            // Check if this theme is already applied
-            if (root.style.getPropertyValue('--bg-primary') === color) {
-                // Reset to original theme
-                root.style.removeProperty('--bg-primary');
-                root.style.removeProperty('--bg-primary-rgb');
-                root.style.removeProperty('--bg-secondary');
-                root.style.removeProperty('--text-primary');
-                root.style.removeProperty('--text-secondary');
-                root.style.removeProperty('--text-tertiary');
-                root.style.removeProperty('--accent-color');
-                root.style.removeProperty('--border-color');
-                root.style.removeProperty('--border-light');
-                // Clear stored theme
-                localStorage.removeItem('harperTheme');
-            } else {
-                // Apply the selected theme
-                applyThemeColors(color, root);
-            }
-        }
-
-        // Store theme in localStorage for legal pages
-        function storeTheme(themeProperties) {
-            localStorage.setItem('harperTheme', JSON.stringify(themeProperties));
-        }
-
-        // Apply theme colors based on the selected color
-        function applyThemeColors(primaryColor, root) {
-            let themeProperties = {};
-
-            switch(primaryColor) {
-                case '#908b70':
-                    themeProperties = {
-                        '--bg-primary': '#908b70',
-                        '--bg-primary-rgb': '144, 139, 112',
-                        '--bg-secondary': '#a39688',
-                        '--text-primary': '#ffffff',
-                        '--text-secondary': '#f0f0f0',
-                        '--text-tertiary': '#e0e0e0',
-                        '--accent-color': '#ffffff',
-                        '--border-color': '#b5a896',
-                        '--border-light': '#c4b8a7'
-                    };
-                    Object.keys(themeProperties).forEach(property => {
-                        root.style.setProperty(property, themeProperties[property]);
-                    });
-                    storeTheme(themeProperties);
-                    break;
-                case '#4e4c40':
-                    themeProperties = {
-                        '--bg-primary': '#4e4c40',
-                        '--bg-primary-rgb': '78, 76, 64',
-                        '--bg-secondary': '#5a5750',
-                        '--text-primary': '#ffffff',
-                        '--text-secondary': '#e0e0e0',
-                        '--text-tertiary': '#d0d0d0',
-                        '--accent-color': '#ffffff',
-                        '--border-color': '#6a6560',
-                        '--border-light': '#757068'
-                    };
-                    Object.keys(themeProperties).forEach(property => {
-                        root.style.setProperty(property, themeProperties[property]);
-                    });
-                    storeTheme(themeProperties);
-                    break;
-                case '#a9844f':
-                    themeProperties = {
-                        '--bg-primary': '#a9844f',
-                        '--bg-primary-rgb': '169, 132, 79',
-                        '--bg-secondary': '#b8925d',
-                        '--text-primary': '#ffffff',
-                        '--text-secondary': '#f5f5f5',
-                        '--text-tertiary': '#e8e8e8',
-                        '--accent-color': '#ffffff',
-                        '--border-color': '#c7a06b',
-                        '--border-light': '#d4ad78'
-                    };
-                    Object.keys(themeProperties).forEach(property => {
-                        root.style.setProperty(property, themeProperties[property]);
-                    });
-                    storeTheme(themeProperties);
-                    break;
-                case '#d5c9bc':
-                    themeProperties = {
-                        '--bg-primary': '#d5c9bc',
-                        '--bg-primary-rgb': '213, 201, 188',
-                        '--bg-secondary': '#e0d5c9',
-                        '--text-primary': '#2a2a2a',
-                        '--text-secondary': '#4a4a4a',
-                        '--text-tertiary': '#6a6a6a',
-                        '--accent-color': '#2a2a2a',
-                        '--border-color': '#c0b5a8',
-                        '--border-light': '#b5aa9d'
-                    };
-                    Object.keys(themeProperties).forEach(property => {
-                        root.style.setProperty(property, themeProperties[property]);
-                    });
-                    storeTheme(themeProperties);
-                    break;
-                case '#141614':
-                    themeProperties = {
-                        '--bg-primary': '#141614',
-                        '--bg-primary-rgb': '20, 22, 20',
-                        '--bg-secondary': '#1e201e',
-                        '--text-primary': '#ffffff',
-                        '--text-secondary': '#e0e0e0',
-                        '--text-tertiary': '#d0d0d0',
-                        '--accent-color': '#ffffff',
-                        '--border-color': '#2a2c2a',
-                        '--border-light': '#353735'
-                    };
-                    Object.keys(themeProperties).forEach(property => {
-                        root.style.setProperty(property, themeProperties[property]);
-                    });
-                    storeTheme(themeProperties);
-                    break;
-            }
-        }
-
 
     </script>
 </body>

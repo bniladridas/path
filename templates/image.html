@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ================================================================
+         IMAGE GENERATION PAGE
+         AI-powered image generation using Gemini 2.5 Flash Image
+         ================================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>image — harper</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .hero-title { font-size: 28px; margin-bottom: 24px; }
+        .image-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: var(--text-base);
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .image-input:focus { border-color: var(--accent-color); }
+        .image-input::placeholder { color: var(--text-tertiary); }
+    </style>
+</head>
+<body>
+    <div class="container" role="main">
+        <nav class="menu-container" role="navigation" aria-label="Main navigation and tools">
+            <button class="menu-button" id="menu-button" type="button" aria-label="Open main menu" aria-expanded="false" aria-haspopup="true" aria-controls="menu-dropdown">
+                <span class="menu-dots" aria-hidden="true">⋯</span>
+            </button>
+            <div class="menu-dropdown" id="menu-dropdown" role="menu" aria-labelledby="menu-button" aria-hidden="true">
+                <div class="menu-item" id="about-menu" role="menuitem" tabindex="-1">about</div>
+                <div class="menu-item" id="help-menu" role="menuitem" tabindex="-1">help</div>
+                <div class="menu-item" id="home-menu" role="menuitem" tabindex="-1">home</div>
+            </div>
+        </nav>
+        <main class="hero-section">
+            <header>
+                <h1 class="hero-title" id="hero-title" role="banner">
+                    image
+                </h1>
+            </header>
+            <section class="search-section">
+                <div class="search-container">
+                    <input type="text" id="prompt" class="image-input" placeholder="describe an image..." autofocus>
+                </div>
+                <div id="result" class="response-container" style="margin-top: 32px;"></div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Menu functionality
+        const menuButton = document.getElementById('menu-button');
+        const menuDropdown = document.getElementById('menu-dropdown');
+
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDropdown.classList.toggle('show');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuDropdown.contains(e.target)) {
+                menuDropdown.classList.remove('show');
+            }
+        });
+
+        // Menu item handlers
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menuDropdown.classList.remove('show');
+            });
+        });
+
+        // Menu item navigation - show inline like index
+        document.getElementById('about-menu').addEventListener('click', () => { showMenuContent('/menu/about'); });
+        document.getElementById('help-menu').addEventListener('click', () => { showMenuContent('/menu/help'); });
+        document.getElementById('home-menu').addEventListener('click', () => { window.location.href = '/'; });
+
+        // Show menu content via AJAX
+        async function showMenuContent(endpoint) {
+            menuDropdown.classList.remove('show');
+            result.innerHTML = '<p style="color: var(--text-muted);">Loading...</p>';
+            try {
+                const response = await fetch(endpoint);
+                const text = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const content = doc.querySelector('.modal-body') || doc.querySelector('main') || doc.body;
+                result.innerHTML = content.innerHTML;
+            } catch (err) {
+                result.innerHTML = '<p style="color: var(--text-muted);">Failed to load</p>';
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault();
+                document.getElementById('prompt').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('prompt').blur();
+                menuDropdown.classList.remove('show');
+            }
+        });
+
+        // Close menu when clicking outside
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => menuDropdown.classList.remove('show'));
+        });
+    </script>
+</body>
+</html>

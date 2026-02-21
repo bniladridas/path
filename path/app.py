@@ -24,6 +24,7 @@ Repository: https://github.com/bniladridas/path
 # Trigger CI 3
 
 # Standard library imports
+import base64
 import logging
 import os
 import re
@@ -45,6 +46,7 @@ from flask import url_for
 from flask_openapi3.models.info import Info
 from flask_openapi3.models.tag import Tag
 from flask_openapi3.openapi import OpenAPI
+from google.genai import types
 from jinja2 import TemplateNotFound
 from pydantic import BaseModel
 
@@ -144,6 +146,13 @@ if GENAI_AVAILABLE and GEMINI_API_KEY:
 # Define the Gemini model to use
 # This constant makes it easy to update the model in the future
 GEMINI_MODEL = "2.5-flash"
+
+# ============================================================
+# IMAGE GENERATION - Gemini 2.5 Flash Image model
+# ============================================================
+# gemini-2.5-flash-image: AI model for generating images from text prompts
+# Used by the /generate-image endpoint
+GEMINI_IMAGE_MODEL = "gemini-2.5-flash-image"
 
 
 # API Models for OpenAPI documentation
@@ -548,13 +557,98 @@ def updates():
     return render_template("updates.html")
 
 
+@app.route("/generate-image", methods=["POST"])
+def generate_image():
+    """
+    IMAGE GENERATION ENDPOINT - Generate images using Gemini AI
+
+    Accepts a prompt and generates an image using Google's Gemini 2.5 Flash Image model.
+
+    Request:
+        JSON body: {"prompt": "your image description"}
+
+    Response:
+        JSON: {"image": "base64_encoded_image", "mime_type": "image/png"}
+    """
+    # Validation checks
+    if not session.get("verified"):
+        return jsonify({"error": "verification required"}), 401
+
+    data = request.get_json()
+    prompt = data.get("prompt", "") if data else ""
+
+    if not prompt:
+        return jsonify({"error": "prompt required"}), 400
+
+    if not GENAI_AVAILABLE or not GEMINI_API_KEY:
+        return jsonify({"error": "AI service unavailable"}), 503
+
+    try:
+        logging.info("Generating image for prompt: %s", prompt[:50])
+
+        contents = [
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part.from_text(text=prompt),
+                ],
+            )
+        ]
+
+        generate_content_config = types.GenerateContentConfig(
+            response_modalities=[
+                "IMAGE",
+                "TEXT",
+            ],
+        )
+
+        image_data = None
+        mime_type = "image/png"
+
+        for chunk in client.models.generate_content_stream(
+            model=GEMINI_IMAGE_MODEL,
+            contents=contents,
+            config=generate_content_config,
+        ):
+            if chunk.parts is None:
+                continue
+            if chunk.parts[0].inline_data and chunk.parts[0].inline_data.data:
+                image_data = chunk.parts[0].inline_data.data
+                mime_type = chunk.parts[0].inline_data.mime_type or "image/png"
+
+        if image_data:
+            image_b64 = base64.b64encode(image_data).decode("utf-8")
+            return jsonify({"image": image_b64, "mime_type": mime_type})
+
+        return jsonify({"error": "no image generated"}), 500
+
+    except Exception as e:
+        logging.exception("Error generating image")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/image")
+def image_page():
+    """
+    IMAGE GENERATION PAGE - Clean interface for AI image generation
+
+    Returns:
+        Flask Response: Rendered image generation page
+    """
+    # Check verification
+    if not session.get("verified"):
+        return redirect(url_for("verify_human"))
+
+    return render_template("image.html")
+
+
 @app.route("/menu/<string:page_name>")
 def menu_page(page_name: str):
     """
     Route handler for dynamic menu content.
     """
     # A whitelist of allowed pages to prevent potential directory traversal vulnerabilities.
-    allowed_pages = {"about", "help", "product", "token", "protocol", "gmail", "neural-nets", "blog", "coders"}
+    allowed_pages = {"about", "help"}
     if page_name not in allowed_pages:
         abort(404)
 
