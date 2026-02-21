@@ -1,3 +1,11 @@
+## [1.13.5](https://github.com/bniladridas/path/compare/v1.13.4...v1.13.5) (2026-02-21)
+
+
+### Bug Fixes
+
+* allow conditional import ([c670a92](https://github.com/bniladridas/path/commit/c670a92abcf164d813d66dbdcf46a1825d38cfee))
+* move import inside function ([25bb22a](https://github.com/bniladridas/path/commit/25bb22a233cc2e247dbdd7ce11a13a718ccf6d73))
+
 ## [1.13.4](https://github.com/bniladridas/path/compare/v1.13.3...v1.13.4) (2026-02-21)
 
 
