@@ -1,3 +1,10 @@
+## [1.13.4](https://github.com/bniladridas/path/compare/v1.13.3...v1.13.4) (2026-02-21)
+
+
+### Bug Fixes
+
+* add human verification keywords ([0ad7f9a](https://github.com/bniladridas/path/commit/0ad7f9a2e0270b636b7a43c94c88b66ecb1a76ab))
+
 ## [1.13.3](https://github.com/bniladridas/path/compare/v1.13.2...v1.13.3) (2026-02-19)
 
 
