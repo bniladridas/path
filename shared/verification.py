@@ -13,6 +13,9 @@ VERIFICATION_KEYWORDS = [
     "cube",
     "container",
     "harper",
+    "human",
+    "person",
+    "avatar",
 ]
 
 
