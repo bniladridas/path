@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: stable-aarch64-apple-darwin
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
