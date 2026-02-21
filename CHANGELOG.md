@@ -1,31 +1,3 @@
-## [1.13.3](https://github.com/bniladridas/path/compare/v1.13.2...v1.13.3) (2026-02-19)
-
-
-### Bug Fixes
-
-* update uv lockfile ([230aef0](https://github.com/bniladridas/path/commit/230aef0b3cbf00116c49385e32d68b8b2aadb023))
-
-## [1.13.2](https://github.com/bniladridas/path/compare/v1.13.1...v1.13.2) (2026-02-19)
-
-
-### Bug Fixes
-
-* add issues permission for semantic-release ([e5d8b72](https://github.com/bniladridas/path/commit/e5d8b72388f9a0c8980a56781afb48cb746a9379))
-
-## [1.13.1](https://github.com/bniladridas/path/compare/v1.13.0...v1.13.1) (2026-02-19)
-
-
-### Bug Fixes
-
-* ternary expressions in check-unused ([38d54ec](https://github.com/bniladridas/path/commit/38d54ecce2f4f6f07b0b0ad73682996ba2d403ea))
-
-# [1.13.0](https://github.com/bniladridas/path/compare/v1.12.0...v1.13.0) (2026-01-13)
-
-
-### Features
-
-* add Python 3.9 support with legacy google-generativeai ([#105](https://github.com/bniladridas/path/issues/105)) ([a6cf1ca](https://github.com/bniladridas/path/commit/a6cf1cac44165f942b877f339b83d2579a235b5c))
-
 # [1.12.0](https://github.com/bniladridas/path/compare/v1.11.6...v1.12.0) (2025-12-12)
 
 
