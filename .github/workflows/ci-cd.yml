@@ -3,8 +3,21 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main]
+    paths:
+      - '**.py'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - '.github/workflows/ci-cd.yml'
   pull_request:
     branches: [main]
+    paths:
+      - '**.py'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
   workflow_dispatch:
 
 permissions:
