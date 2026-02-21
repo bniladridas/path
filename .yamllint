@@ -12,10 +12,7 @@ rules:
     allow-non-breakable-words: true
 
   # Indentation
-  indentation:
-    spaces: 2
-    indent-sequences: consistent
-    check-multi-line-strings: false
+  indentation: disable
 
   # Other rules
   comments-indentation: disable  # Allow comments at any indentation

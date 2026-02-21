@@ -1,0 +1,64 @@
+# Labeler configuration
+# https://github.com/actions/labeler
+
+app:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'path/**'
+          - 'app_local.py'
+          - 'run.py'
+
+shared:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'shared/**'
+
+templates:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'templates/**'
+
+static:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'static/**'
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'tests/**'
+          - 'e2e/**'
+
+scripts:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'scripts/**'
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'docs/**'
+          - '*.md'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/workflows/**'
+
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'pyproject.toml'
+          - 'requirements*.txt'
+          - '*.json'
+          - 'playwright.config.js'
+          - 'vercel.json'
+          - 'vercel_build.sh'
+          - 'docker-compose.yml'
+          - 'Dockerfile'
+
+dev-deps:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'

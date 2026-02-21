@@ -3,8 +3,25 @@ name: Vercel Deployment Validation
 on:
   push:
     branches: [main, develop]
+    paths:
+      - '**.py'
+      - 'templates/**'
+      - 'static/**'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - 'vercel.json'
+      - 'vercel_build.sh'
+      - '.github/workflows/vercel-validation.yml'
   pull_request:
     branches: [main]
+    paths:
+      - '**.py'
+      - 'templates/**'
+      - 'static/**'
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - 'vercel.json'
+      - 'vercel_build.sh'
   workflow_dispatch:
 
 jobs:
