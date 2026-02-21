@@ -165,6 +165,7 @@ htmlcov/
 *-navigation.png
 before-submit.png
 after-submit.png
+verification-failed.png
 playwright-report/
 test-results/
 eval
