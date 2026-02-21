@@ -13,13 +13,10 @@ const SELECTORS = {
 
 const URLS = {
   ABOUT: '/about',
-  PRODUCT: '/product',
-  BLOG: '/blog',
   HELP: '/help',
   TERMS: '/terms',
   PRIVACY: '/privacy',
-  THEME_REPO: 'https://github.com/bniladridas/path',
-  COMMUNITY_REPO: 'https://github.com/harpertoken'
+  THEME_REPO: 'https://github.com/bniladridas/path'
 };
 
 const TEST_DATA = {
@@ -77,9 +74,7 @@ test.describe('Navigation', () => {
       // Add main navigation items if not already included
       const mainNavItems = [
         { selector: '[data-testid="nav-terms"]', url: URLS.TERMS, isExternal: false },
-        { selector: '[data-testid="nav-privacy"]', url: URLS.PRIVACY, isExternal: false },
-        { selector: '[data-testid="nav-theme"]', url: URLS.THEME_REPO, isExternal: true },
-        { selector: '[data-testid="nav-community"]', url: URLS.COMMUNITY_REPO, isExternal: true }
+        { selector: '[data-testid="nav-privacy"]', url: URLS.PRIVACY, isExternal: false }
       ];
 
       // Merge and deduplicate navigation items
