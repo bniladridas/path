@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/bniladridas/path/compare/v1.13.7...v1.14.0) (2026-02-21)
+
+
+### Features
+
+* add rust native binary cli ([c55a621](https://github.com/bniladridas/path/commit/c55a6219ed4fa274c945a08367a14e146a60aa90))
+
 ## [1.13.7](https://github.com/bniladridas/path/compare/v1.13.6...v1.13.7) (2026-02-21)
 
 
