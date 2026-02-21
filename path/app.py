@@ -583,7 +583,8 @@ def generate_image():
         return jsonify({"error": "AI service unavailable"}), 503
 
     try:
-        logging.info("Generating image for prompt: %s", prompt[:50])
+        safe_prompt = prompt[:50].replace("\r", "").replace("\n", "")
+        logging.info("Generating image for prompt: %s", safe_prompt)
 
         from google.genai import types
 
