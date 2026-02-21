@@ -136,7 +136,13 @@
                     const data = await response.json();
 
                     if (data.error) {
-                        result.innerHTML = `<p style="color: var(--text-muted);">Error: ${data.error}</p>`;
+                        if (data.error === 'rate_limit') {
+                            result.innerHTML = '<p style="color: var(--text-muted);">too many requests, please try again shortly</p>';
+                        } else if (data.message) {
+                            result.innerHTML = `<p style="color: var(--text-muted);">${data.message}</p>`;
+                        } else {
+                            result.innerHTML = '<p style="color: var(--text-muted);">something went wrong, please try again</p>';
+                        }
                         return;
                     }
 

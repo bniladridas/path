@@ -621,11 +621,13 @@ def generate_image():
             image_b64 = base64.b64encode(image_data).decode("utf-8")
             return jsonify({"image": image_b64, "mime_type": mime_type})
 
-        return jsonify({"error": "no image generated"}), 500
-
     except Exception as e:
         logging.exception("Error generating image")
-        return jsonify({"error": str(e)}), 500
+        error_msg = str(e).lower()
+        if "429" in error_msg or "rate limit" in error_msg or "quota" in error_msg or "resource_exhausted" in error_msg:
+            return jsonify({"error": "rate_limit", "message": "too many requests, please try again shortly"}), 429
+
+    return jsonify({"error": "generation failed, please try again"}), 500
 
 
 @app.route("/image")
