@@ -173,3 +173,7 @@ eval
 # Generated deployment files (created by scripts/prepare-deployment.py)
 path/templates/
 path/static/
+
+# Rust
+rust/target/
+rust/Cargo.lock

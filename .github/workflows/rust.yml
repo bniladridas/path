@@ -1,0 +1,39 @@
+name: rust
+
+on:
+  push:
+    branches: [main, desktop]
+    paths:
+      - 'rust/**'
+      - 'Cargo.toml'
+  pull_request:
+    branches: [main, desktop]
+    paths:
+      - 'rust/**'
+      - 'Cargo.toml'
+
+jobs:
+  build:
+    runs-on: stable-aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ./rust -> target
+
+      - name: Check formatting
+        working-directory: rust
+        run: cargo fmt --check
+
+      - name: Clippy
+        working-directory: rust
+        run: cargo clippy -- -D warnings
+
+      - name: Build
+        working-directory: rust
+        run: cargo build --release
