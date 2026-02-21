@@ -83,6 +83,8 @@ known-first-party = ["path"]
 "scripts/check-unused.py" = ["N802"]
 # Ignore print statements and other issues in deployment scripts
 "scripts/prepare-deployment.py" = ["T201", "PERF401"]
+# Allow conditional import in app.py for optional features
+"path/app.py" = ["PLC0415"]
 
 # Global ignore rules
 "*" = [
