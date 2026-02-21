@@ -1,3 +1,10 @@
+## [1.13.6](https://github.com/bniladridas/path/compare/v1.13.5...v1.13.6) (2026-02-21)
+
+
+### Bug Fixes
+
+* add image generation submit handler ([2fb834f](https://github.com/bniladridas/path/commit/2fb834fbd7191eb51a2c9f5169baf81dfe5b1aa2))
+
 ## [1.13.5](https://github.com/bniladridas/path/compare/v1.13.4...v1.13.5) (2026-02-21)
 
 
