@@ -115,6 +115,42 @@
             }
         });
 
+        // Handle prompt input - submit on Enter
+        const promptInput = document.getElementById('prompt');
+        promptInput.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const prompt = promptInput.value.trim();
+                if (!prompt) return;
+
+                const result = document.getElementById('result');
+                result.innerHTML = '<p style="color: var(--text-muted);">Generating image...</p>';
+
+                try {
+                    const response = await fetch('/generate-image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        result.innerHTML = `<p style="color: var(--text-muted);">Error: ${data.error}</p>`;
+                        return;
+                    }
+
+                    if (data.image) {
+                        result.innerHTML = `<img src="data:${data.mime_type};base64,${data.image}" alt="Generated image" style="max-width: 100%; border-radius: 8px;">`;
+                    } else {
+                        result.innerHTML = '<p style="color: var(--text-muted);">No image generated</p>';
+                    }
+                } catch (err) {
+                    result.innerHTML = '<p style="color: var(--text-muted);">Failed to generate image</p>';
+                }
+            }
+        });
+
         // Close menu when clicking outside
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', () => menuDropdown.classList.remove('show'));
