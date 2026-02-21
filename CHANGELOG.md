@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/bniladridas/path/compare/v1.14.1...v1.15.0) (2026-02-21)
+
+
+### Features
+
+* add tui with welcome screen ([16f1ebf](https://github.com/bniladridas/path/commit/16f1ebfec2b089da882adcafaf9b4c6bb9753b5e))
+
 ## [1.14.1](https://github.com/bniladridas/path/compare/v1.14.0...v1.14.1) (2026-02-21)
 
 
