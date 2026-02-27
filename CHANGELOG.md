@@ -1,3 +1,11 @@
+## [1.16.1](https://github.com/bniladridas/path/compare/v1.16.0...v1.16.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* restore table borders and bg ([87952ad](https://github.com/bniladridas/path/commit/87952adc8b48c90a6e53d697e90fa5c6358a0139))
+* use css vars and add thead/tbody ([3e99c79](https://github.com/bniladridas/path/commit/3e99c79fbcd6174d7cfd37ca3638626ba1fc2b1d))
+
 # [1.16.0](https://github.com/bniladridas/path/compare/v1.15.1...v1.16.0) (2026-02-27)
 
 
