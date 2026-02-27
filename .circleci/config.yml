@@ -17,6 +17,9 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          name: Install Python dependencies
+          command: pip install -r requirements.txt
+      - run:
           name: Install Playwright browsers
           command: npx playwright install --with-deps
       - run:
@@ -29,6 +32,8 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+          environment:
+            GEMINI_API_KEY: dummy-key-for-testing
 
 workflows:
   test-workflow:
