@@ -1,3 +1,10 @@
+## [1.16.3](https://github.com/bniladridas/path/compare/v1.16.2...v1.16.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* align requirements.txt with pyproject.toml ([b084311](https://github.com/bniladridas/path/commit/b08431190871e60dbc1ec266ee242df9c292a28f))
+
 ## [1.16.2](https://github.com/bniladridas/path/compare/v1.16.1...v1.16.2) (2026-02-27)
 
 
