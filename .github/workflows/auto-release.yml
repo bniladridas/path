@@ -84,6 +84,14 @@ jobs:
             echo "released=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Update package.json version
+        if: steps.release.outputs.released == 'true'
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+          npm version $VERSION --no-git-tag-version --allow-same-version
+          git add package.json package-lock.json
+          git commit -m "chore: sync package version to v${VERSION}" || true
+
       - name: Set up Docker Buildx
         if: steps.release.outputs.released == 'true'
         uses: docker/setup-buildx-action@v3
