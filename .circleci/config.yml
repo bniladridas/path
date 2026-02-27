@@ -9,28 +9,41 @@ jobs:
       - image: cimg/node:20.11.0-browsers
     steps:
       - checkout
-      - run:
-          name: Install Python and dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install -y python3 python3-pip
-            pip3 install -r requirements.txt
       - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Install Playwright browsers
-          command: npx playwright install
-      - run:
-          name: Start application server
-          command: python3 run.py
-          background: true
-      - run:
-          name: Wait for server
-          command: sleep 5
+          pkg-manager: yarn
       - run:
           name: Run tests
-          command: npm test
+          command: yarn test
+
+  lint:
+    docker:
+      - image: cimg/node:20.11.0-browsers
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run lint
+          command: yarn lint
+
+  build:
+    docker:
+      - image: cimg/node:20.11.0-browsers
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Build
+          command: yarn build
 
 workflows:
   test-workflow:
     jobs:
-      - test
+      - lint
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
