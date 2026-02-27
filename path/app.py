@@ -573,20 +573,21 @@ def generate_image():
     if not session.get("verified"):
         return jsonify({"error": "verification required"}), 401
 
-    data = request.get_json()
-    prompt = data.get("prompt", "") if data else ""
+    data = request.get_json() or {}
+    prompt = data.get("prompt", "")
+    user_api_key = data.get("api_key", "").strip() if data.get("api_key") else ""
 
-    if not prompt:
-        return jsonify({"error": "prompt required"}), 400
-
-    if not GENAI_AVAILABLE or not GEMINI_API_KEY:
-        return jsonify({"error": "AI service unavailable"}), 503
+    api_key = user_api_key or GEMINI_API_KEY
+    if not api_key or not GENAI_AVAILABLE:
+        return jsonify({"error": "API key required"}), 400
 
     try:
         safe_prompt = prompt[:50].replace("\r", "").replace("\n", "")
         logging.info("Generating image for prompt: %s", safe_prompt)
 
         from google.genai import types
+
+        client = genai.Client(api_key=api_key)
 
         contents = [
             types.Content(
