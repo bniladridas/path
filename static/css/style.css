@@ -900,27 +900,32 @@ footer {
     margin: var(--space-6) 0;
     border-collapse: collapse;
     font-size: var(--text-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 .terms-table th {
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-3);
     text-align: left;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
+    background: var(--bg-tertiary);
     border-bottom: 1px solid var(--border-color);
 }
 
 .terms-table td {
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-3);
     color: var(--text-secondary);
     vertical-align: top;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.terms-table tr:last-child td {
+    border-bottom: none;
 }
 
 .terms-table td strong {
     color: var(--text-primary);
-    font-weight: 500;
-}
-
-.terms-table tr:first-child td {
-    padding-top: var(--space-4);
+    font-weight: var(--font-weight-semibold);
 }
