@@ -57,6 +57,16 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure', // Take screenshots only on failure
     video: 'retain-on-failure', // Record video only on failure
   },
+
+  // Web server configuration - starts the app before tests
+  webServer: {
+    command: 'python app_local.py',
+    url: 'http://localhost:8000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000, // 120 seconds to start
+    stdout: 'ignore',
+    stderr: 'pipe',
+  },
   projects: [
     {
       name: 'chromium',
