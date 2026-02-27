@@ -1,0 +1,49 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:20.11.0-browsers
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run tests
+          command: yarn test
+
+  lint:
+    docker:
+      - image: cimg/node:20.11.0-browsers
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run lint
+          command: yarn lint
+
+  build:
+    docker:
+      - image: cimg/node:20.11.0-browsers
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Build
+          command: yarn build
+
+workflows:
+  test-workflow:
+    jobs:
+      - lint
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
