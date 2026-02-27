@@ -66,7 +66,7 @@ cp .env.example .env
 python run.py
 ```
 
-Open your browser and navigate to `http://localhost:5000`
+Open your browser and navigate to `http://localhost:8000`
 
 ### CLI
 
@@ -84,7 +84,7 @@ cp .env.example .env
 ### Usage
 
 ```bash
-# Web app - open http://localhost:5000
+# Web app - open http://localhost:8000
 
 # CLI
 harper tui           # Interactive TUI
