@@ -1,3 +1,10 @@
+## [1.16.2](https://github.com/bniladridas/path/compare/v1.16.1...v1.16.2) (2026-02-27)
+
+
+### Bug Fixes
+
+* update readme links and formatting ([f5f2615](https://github.com/bniladridas/path/commit/f5f2615f09b16a67e235ebe12d32a7584eed0625))
+
 ## [1.16.1](https://github.com/bniladridas/path/compare/v1.16.0...v1.16.1) (2026-02-27)
 
 
