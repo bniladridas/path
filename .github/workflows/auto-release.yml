@@ -88,8 +88,8 @@ jobs:
         if: steps.release.outputs.released == 'true'
         run: |
           VERSION="${{ steps.release.outputs.version }}"
-          npm pkg set version=$VERSION
-          git add package.json
+          npm version $VERSION --no-git-tag-version --allow-same-version
+          git add package.json package-lock.json
           git commit -m "chore: sync package version to v${VERSION}" || true
 
       - name: Set up Docker Buildx
