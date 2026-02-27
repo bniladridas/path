@@ -3,9 +3,9 @@
 An AI-powered media exploration web application using Flask and Google Gemini.
 
 ## Sharing
-- [Twitter](https://twitter.com/intent/tweet?url=http://github.com/bniladridas/path)
-- [Facebook](http://www.facebook.com/sharer/sharer.php?u=http://github.com/bniladridas/path)
-- [LinkedIn](http://www.linkedin.com/shareArticle?mini=true&url=http://github.com/bniladridas/path)
+- [Twitter](https://twitter.com/intent/tweet?url=https://github.com/bniladridas/path)
+- [Facebook](https://www.facebook.com/sharer/sharer.php?u=https://github.com/bniladridas/path)
+- [LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/bniladridas/path)
 
 ## Table of Contents
 
@@ -19,15 +19,15 @@ An AI-powered media exploration web application using Flask and Google Gemini.
 ### Google Gemini
 General: [Overview](https://ai.google.dev/docs) | [API Docs](https://ai.google.dev/api) | [Pricing](https://ai.google.dev/pricing)
 
-Python: [PyPI](https://pypi.org/project/google-genai/) | [SDK Docs](https://google.github.io/python-genai/)
+Python: [PyPI](https://pypi.org/project/google-genai/) | [SDK Docs](https://googleapis.github.io/python-genai/)
 
-JavaScript: [NPM](https://www.npmjs.com/package/google-genai) | [Node](https://github.com/google/generative-ai-js)
+JavaScript: [NPM](https://www.npmjs.com/package/@google/genai) | [Node](https://github.com/googleapis/js-genai)
 
 - Generate responses based on natural language queries
 - Contextual understanding of user intent
 - Real-time API integration for search functionality
 
-Supported models: Gemini 2.0 Flash, Gemini 1.5 Pro, Gemini 1.5 Flash
+Supported models: Gemini 2.5 Flash, Gemini 2.5 Flash Image
 
 ## Setup
 
@@ -79,18 +79,18 @@ curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY"
 ## Project Structure
 
 ```
-path/
-├── path/
-│   ├── app.py           # Flask application and routes
-│   └── __init__.py      # Package initialization
+[path]/
+├── [path]/
+│   ├── app.py            # Flask application and routes
+│   └── __init__.py       # Package initialization
 ├── templates/            # Jinja2 templates
-├── static/              # Static assets (CSS, images)
-├── shared/              # Shared utilities
-├── tests/               # Unit tests
-├── e2e/                 # End-to-end tests
-├── run.py               # Application entry point
-├── requirements.txt     # Python dependencies
-└── package.json         # Node.js dependencies
+├── static/               # Static assets (CSS, images)
+├── shared/               # Shared utilities
+├── tests/                # Unit tests
+├── e2e/                  # End-to-end tests
+├── run.py                # Application entry point
+├── requirements.txt      # Python dependencies
+└── package.json          # Node.js dependencies
 ```
 
 ## Features
