@@ -1,108 +1,148 @@
-# Harper [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+<p align="left">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue" alt="Python 3.8+">
+    <img src="https://img.shields.io/badge/Rust-1.75%2B-orange" alt="Rust 1.75+">
+    <a href="/LICENSE">
+        <img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="License: CC BY 4.0"/>
+    </a>
+</p>
 
-An AI-powered media exploration web application using Flask and Google Gemini.
+<p align="left">
+    <a href="https://discord.gg/J8DetsWcqU">
+        <img src="https://img.shields.io/badge/Join-Discord-blue?logo=discord" alt="Discord Server"/>
+    </a>
+</p>
 
-## Sharing
-- [Twitter](https://twitter.com/intent/tweet?url=https://github.com/bniladridas/path)
-- [Facebook](https://www.facebook.com/sharer/sharer.php?u=https://github.com/bniladridas/path)
-- [LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/bniladridas/path)
+> [!NOTE]
+> 
+> Need help? Join the [Discord Server](https://discord.gg/J8DetsWcqU) and get help with setup and usage.
 
-## Table of Contents
+An AI-powered media exploration application using Flask and Google Gemini.
 
-### AI Services
-- [AI Search](#ai-search)
+## Why did I make this?
 
-## AI Services
+I wanted to create a media exploration tool that combines the power of Google's Gemini AI with an intuitive interface. Existing solutions were either too complex or lacked the features I needed.
 
-<h2 id="ai-search">AI Search / Generative AI</h2>
+The main goal was to provide two ways to interact with Gemini AI:
+1. A web application for browser-based exploration
+2. A CLI for terminal-based workflows
+
+Harper brings both together in a single, easy-to-use package.
+
+## Features
+
+- AI-powered search using Google Gemini models
+- Image generation with Gemini 2.5 Flash Image
+- Interactive TUI for terminal-based workflows
+- Email verification flow
+- Responsive design with theme support
+- OpenAI compatible API endpoints
+- Dual interfaces: Web (Flask) and CLI (Rust)
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.8+
+- Node.js 16+
+- npm
+- Rust 1.75+ (for CLI)
+
+### Web Application
+
+```bash
+# Clone the repository
+git clone https://github.com/bniladridas/path.git
+cd path
+
+# Install dependencies
+pip install -r requirements.txt
+npm install
+
+# Set up environment
+cp .env.example .env
+# Edit .env with your GEMINI_API_KEY
+
+# Run the app
+python run.py
+```
+
+Open your browser and navigate to `http://localhost:5000`
+
+### CLI
+
+```bash
+# Build the Rust CLI
+cd rust
+cargo build --release
+cp target/release/harper ~/.local/bin/harper
+
+# Set up environment
+cp .env.example .env
+# Edit .env with your GEMINI_API_KEY
+```
+
+### Usage
+
+```bash
+# Web app - open http://localhost:5000
+
+# CLI
+harper tui           # Interactive TUI
+harper search "query" # Command line search
+harper image --prompt "a sunset" # Generate image
+```
+
+### Demo
+
+https://github.com/user-attachments/assets/6e577b8c-4902-4c47-a161-e44ed56fc1e2
+
+### TUI Controls
+
+| Key | Action |
+|:---|:---|
+| Type | Start searching |
+| Enter | Submit query |
+| Esc | Clear or quit |
+
+## API Reference
 
 ### Google Gemini
+
 General: [Overview](https://ai.google.dev/docs) | [API Docs](https://ai.google.dev/api) | [Pricing](https://ai.google.dev/pricing)
 
 Python: [PyPI](https://pypi.org/project/google-genai/) | [SDK Docs](https://googleapis.github.io/python-genai/)
 
 JavaScript: [NPM](https://www.npmjs.com/package/@google/genai) | [Node](https://github.com/googleapis/js-genai)
 
-- Generate responses based on natural language queries
-- Contextual understanding of user intent
-- Real-time API integration for search functionality
+### Supported Models
 
-Supported models: Gemini 2.5 Flash, Gemini 2.5 Flash Image
+- Gemini 2.5 Flash
+- Gemini 2.5 Flash Image
 
-## Setup
+## Tech Stack
 
-### Prerequisites
-- Python 3.8+
-- Node.js 16+
-- npm
+### Web Application
+- Flask 3.1.2 - Web framework
+- Google GenAI SDK - AI integration
+- Gunicorn - WSGI server
+- Playwright - E2E testing
+- Vercel - Deployment
 
-```bash
-git clone https://github.com/bniladridas/path.git
-cd path
-pip install -r requirements.txt
-npm install
-```
+### CLI
+- Rust - Programming language
+- Crossterm - Terminal UI
+- Ratatui - TUI library
+- Reqwest - HTTP client
 
-### Run
-```bash
-# Set your API key and run the app
-GEMINI_API_KEY=your-key python run.py
-```
+## API Key Setup
 
-### Testing
-```bash
-pytest
-npm test
-```
+Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey):
 
-### API Key Verification
 ```bash
 curl "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY"
 ```
 
-## Tech Stack
-
-### Backend
-- Flask 3.1.2 - Web framework
-- Google Genai SDK - AI integration
-- Gunicorn - WSGI server
-- Python Dotenv - Environment variables
-
-### Frontend
-- HTML/CSS/JavaScript - User interface
-- Playwright - E2E testing
-
-### Deployment
-- Vercel - Cloud platform
-- Docker - Containerization
-
-## Project Structure
-
-```
-[path]/
-├── [path]/
-│   ├── app.py            # Flask application and routes
-│   └── __init__.py       # Package initialization
-├── templates/            # Jinja2 templates
-├── static/               # Static assets (CSS, images)
-├── shared/               # Shared utilities
-├── tests/                # Unit tests
-├── e2e/                  # End-to-end tests
-├── run.py                # Application entry point
-├── requirements.txt      # Python dependencies
-└── package.json          # Node.js dependencies
-```
-
-## Features
-
-- AI-powered search using Google Gemini
-- Email verification flow
-- Static page routing
-- Responsive design
-- Theme support
-
 ## License
-[![Creative Commons License](http://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/)
 
 This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
