@@ -6,7 +6,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: cimg/node:20-browsers
+      - image: cimg/node:20.11.0-browsers
     steps:
       - checkout
       - node/install-packages:
