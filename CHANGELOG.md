@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/bniladridas/path/compare/v1.15.1...v1.16.0) (2026-02-27)
+
+
+### Bug Fixes
+
+* trailing whitespace ([d4b4548](https://github.com/bniladridas/path/commit/d4b4548e4e3a0a95725e7f74866509aacb9b6f20))
+
+
+### Features
+
+* allow users to add their own gemini api key ([6b8e086](https://github.com/bniladridas/path/commit/6b8e086e2deb974c103e84e2f00f1b853374a824))
+
 ## [1.15.1](https://github.com/bniladridas/path/compare/v1.15.0...v1.15.1) (2026-02-21)
 
 
