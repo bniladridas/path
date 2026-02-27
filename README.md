@@ -13,7 +13,7 @@
 </p>
 
 > [!NOTE]
-> 
+>
 > Need help? Join the [Discord Server](https://discord.gg/J8DetsWcqU) and get help with setup and usage.
 
 An AI-powered media exploration application using Flask and Google Gemini.
