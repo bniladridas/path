@@ -32,8 +32,6 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-          environment:
-            GEMINI_API_KEY: dummy-key-for-testing
 
 workflows:
   test-workflow:
