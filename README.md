@@ -34,7 +34,7 @@ Harper brings both together in a single, easy-to-use package.
 - AI-powered search using Google Gemini models
 - Image generation with Gemini 2.5 Flash Image
 - Interactive TUI for terminal-based workflows
-- Email verification flow
+- Human verification flow (CAPTCHA-like)
 - Responsive design with theme support
 - OpenAI compatible API endpoints
 - Dual interfaces: Web (Flask) and CLI (Rust)
