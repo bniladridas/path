@@ -148,4 +148,17 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
 
 ---
 
+## CI/CD
+
+[![CircleCI](https://img.shields.io/badge/CircleCI-343434?style=for-the-badge&logo=circleci)](https://app.circleci.com/pipelines/github/bniladridas/path)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/bniladridas/path/actions)
+
+## Join Us
+
+[![Join Slack](https://img.shields.io/badge/Join-Slack-4A154B?style=for-the-badge&logo=slack)](https://join.slack.com/t/pathharper/shared_invite/zt-3rc4w7thw-OipeezEgP9CJfbZkIVojRw)
+
+> [!NOTE]
+>
+> If the Slack invite link expires, please fork the repository and submit a PR to update the invite link. Community contributions help keep the invite link working for everyone!
+
 Contributions are welcome! Please feel free to submit a Pull Request.
