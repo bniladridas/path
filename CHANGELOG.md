@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/bniladridas/path/compare/v1.16.5...v1.17.0) (2026-02-28)
+
+
+### Features
+
+* load api key from ~/.harper.env ([bf1d4e8](https://github.com/bniladridas/path/commit/bf1d4e8488bcdfee37114785ee477baef31355c7))
+
 ## [1.16.5](https://github.com/bniladridas/path/compare/v1.16.4...v1.16.5) (2026-02-28)
 
 
