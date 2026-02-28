@@ -33,14 +33,9 @@ The main goal was to provide two ways to interact with Gemini AI:
 
 Harper brings both together in a single, easy-to-use package.
 
-## Features
+## Overview
 
-- AI-powered search using Google Gemini models
-- Image generation with Gemini 2.5 Flash Image
-- Interactive TUI for terminal-based workflows
-- Human verification flow (CAPTCHA-like)
-- OpenAI compatible API endpoints
-- Dual interfaces: Web (Flask) and CLI (Rust)
+Harper is an AI-powered media exploration app that combines Google's Gemini AI with an intuitive interface. It offers two ways to interact: a web application for browser-based exploration and a CLI for terminal-based workflows. Features include AI-powered search, image generation, interactive TUI, human verification, OpenAI compatible API endpoints, and dual interfaces (Web + CLI).
 
 ## Getting Started
 
