@@ -91,6 +91,7 @@ jobs:
           npm version $VERSION --no-git-tag-version --allow-same-version
           git add package.json package-lock.json
           git commit -m "chore: sync package version to v${VERSION}" || true
+          git push
 
       - name: Set up Docker Buildx
         if: steps.release.outputs.released == 'true'
