@@ -275,6 +275,10 @@ fn extract_gemini_text(resp: &serde_json::Value) -> Result<String, String> {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().ok();
+    if let Ok(home) = std::env::var("HOME") {
+        let home_env = format!("{}/.harper.env", home);
+        dotenv::from_path(&home_env).ok();
+    }
 
     let cli = Cli::parse();
 
