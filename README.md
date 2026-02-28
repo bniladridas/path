@@ -23,6 +23,7 @@ An AI-powered media exploration application using Flask and Google Gemini.
 I wanted to create a media exploration tool that combines the power of Google's Gemini AI with an intuitive interface. Existing solutions were either too complex or lacked the features I needed.
 
 The main goal was to provide two ways to interact with Gemini AI:
+
 1. A web application for browser-based exploration
 2. A CLI for terminal-based workflows
 
@@ -98,11 +99,11 @@ https://github.com/user-attachments/assets/6e577b8c-4902-4c47-a161-e44ed56fc1e2
 
 ### TUI Controls
 
-| Key | Action |
-|:---|:---|
-| Type | Start searching |
-| Enter | Submit query |
-| Esc | Clear or quit |
+| Key   | Action          |
+| :---- | :-------------- |
+| Type  | Start searching |
+| Enter | Submit query    |
+| Esc   | Clear or quit   |
 
 ## API Reference
 
@@ -122,6 +123,7 @@ JavaScript: [NPM](https://www.npmjs.com/package/@google/genai) | [Node](https://
 ## Tech Stack
 
 ### Web Application
+
 - Flask 3.1.2 - Web framework
 - Google GenAI SDK - AI integration
 - Gunicorn - WSGI server
@@ -129,6 +131,7 @@ JavaScript: [NPM](https://www.npmjs.com/package/@google/genai) | [Node](https://
 - Vercel - Deployment
 
 ### CLI
+
 - Rust - Programming language
 - Crossterm - Terminal UI
 - Ratatui - TUI library
@@ -152,6 +155,7 @@ This work is licensed under a [Creative Commons Attribution 4.0 International Li
 
 [![CircleCI](https://img.shields.io/badge/CircleCI-343434?style=for-the-badge&logo=circleci)](https://app.circleci.com/pipelines/github/bniladridas/path)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/bniladridas/path/actions)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com/bniladridas/path)
 
 ## Join Us
 
