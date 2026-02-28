@@ -210,12 +210,7 @@ async fn run_tui() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 async fn search_gemini(client: &Client, api_key: &str, query: &str) -> Result<String, String> {
-    let prompt = format!(
-        "You are Harper, an AI that helps people discover media like movies, music, books, and games. \
-        Respond in a conversational, helpful way. Keep responses concise but informative.\n\n\
-        User query: {}",
-        query
-    );
+    let prompt = build_prompt(query);
 
     let request_body = serde_json::json!({
         "contents": [{
@@ -242,23 +237,39 @@ async fn search_gemini(client: &Client, api_key: &str, query: &str) -> Result<St
 
     let resp: serde_json::Value = response.json().await.map_err(|e| e.to_string())?;
 
-    if let Some(candidates) = resp.get("candidates").and_then(|c| c.as_array()) {
-        if let Some(candidate) = candidates.first() {
-            if let Some(content) = candidate
-                .get("content")
-                .and_then(|c| c.get("parts"))
-                .and_then(|p| p.as_array())
-            {
-                for part in content {
-                    if let Some(text) = part.get("text").and_then(|t| t.as_str()) {
-                        return Ok(text.to_string());
-                    }
-                }
+    extract_gemini_text(&resp)
+}
+
+fn build_prompt(query: &str) -> String {
+    format!(
+        "You are Harper, an AI that helps people discover media like movies, music, books, and games. \
+        Respond in a conversational, helpful way. Keep responses concise but informative.\n\n\
+        User query: {}",
+        query
+    )
+}
+
+fn extract_gemini_text(resp: &serde_json::Value) -> Result<String, String> {
+    let candidates = resp
+        .get("candidates")
+        .and_then(|c| c.as_array())
+        .ok_or("no candidates")?;
+
+    for candidate in candidates {
+        let parts = candidate
+            .get("content")
+            .and_then(|c| c.get("parts"))
+            .and_then(|p| p.as_array())
+            .ok_or("no parts")?;
+
+        for part in parts {
+            if let Some(text) = part.get("text").and_then(|t| t.as_str()) {
+                return Ok(text.to_string());
             }
         }
     }
 
-    Ok("No response".to_string())
+    Err("no text found".to_string())
 }
 
 #[tokio::main]
@@ -353,4 +364,89 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{build_prompt, extract_gemini_text};
+
+    #[test]
+    fn test_extract_gemini_text_success() {
+        let response = r#"{
+            "candidates": [{
+                "content": {
+                    "parts": [{"text": "Test response text"}]
+                }
+            }]
+        }"#;
+
+        let json: serde_json::Value =
+            serde_json::from_str(response).expect("valid JSON should parse");
+        let result = extract_gemini_text(&json).expect("valid response should extract text");
+        assert_eq!(result, "Test response text");
+    }
+
+    #[test]
+    fn test_extract_gemini_text_multiple_parts() {
+        let response = r#"{
+            "candidates": [{
+                "content": {
+                    "parts": [
+                        {"text": "First part"},
+                        {"text": "Second part"}
+                    ]
+                }
+            }]
+        }"#;
+
+        let json: serde_json::Value =
+            serde_json::from_str(response).expect("valid JSON should parse");
+        let result = extract_gemini_text(&json).expect("valid response should extract text");
+        assert_eq!(result, "First part");
+    }
+
+    #[test]
+    fn test_extract_gemini_text_multiple_candidates() {
+        let response = r#"{
+            "candidates": [
+                {"content": {"parts": []}},
+                {"content": {"parts": [{"text": "Second candidate"}]}}
+            ]
+        }"#;
+
+        let json: serde_json::Value =
+            serde_json::from_str(response).expect("valid JSON should parse");
+        let result = extract_gemini_text(&json).expect("valid response should extract text");
+        assert_eq!(result, "Second candidate");
+    }
+
+    #[test]
+    fn test_extract_gemini_text_empty_response() {
+        let response = r#"{}"#;
+
+        let json: serde_json::Value =
+            serde_json::from_str(response).expect("valid JSON should parse");
+        let result = extract_gemini_text(&json);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_extract_gemini_text_empty_candidates() {
+        let response = r#"{"candidates": []}"#;
+
+        let json: serde_json::Value =
+            serde_json::from_str(response).expect("valid JSON should parse");
+        let result = extract_gemini_text(&json);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_build_prompt_format() {
+        let query = "What are some sci-fi books?";
+        let prompt = build_prompt(query);
+
+        assert!(prompt.contains("Harper"));
+        assert!(prompt.contains("sci-fi books?"));
+        assert!(prompt.contains("User query:"));
+    }
 }
