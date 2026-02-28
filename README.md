@@ -4,9 +4,6 @@
     <a href="/LICENSE">
         <img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="License: CC BY 4.0"/>
     </a>
-    <a href="https://github.com/bniladridas/path/issues">
-        <img src="https://img.shields.io/badge/Issues-Find%20Help-gray?logo=github" alt="GitHub Issues"/>
-    </a>
 </p>
 
 <p align="left">
@@ -14,6 +11,10 @@
         <img src="https://img.shields.io/badge/Join-Discord-blue?logo=discord" alt="Discord Server"/>
     </a>
 </p>
+
+<a href="https://github.com/bniladridas/path/issues">
+    <img src="https://img.shields.io/badge/Issues-Find%20Help-gray?logo=github" alt="GitHub Issues"/>
+</a>
 
 > [!NOTE]
 >
