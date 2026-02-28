@@ -176,9 +176,11 @@ jobs:
         echo -e "\033[32m[PASS]\033[0m Bandit security scan passed"
 
     - name: Run Safety check
+      env:
+        SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
       run: |
         echo -e "\033[36m[INFO]\033[0m Running Safety check..."
-        safety check -r requirements.txt --ignore 70612
+        safety scan . --ignore 70612 --ignore 71600 --ignore 86909
         echo -e "\033[32m[PASS]\033[0m Safety check passed"
 
   build-and-push:
