@@ -65,7 +65,7 @@ module.exports = defineConfig({
       url: 'http://localhost:8000',
       reuseExistingServer: true,
       timeout: 120 * 1000, // 120 seconds to start
-      stdout: 'ignore',
+      stdout: 'pipe',
       stderr: 'pipe',
     },
   }),
