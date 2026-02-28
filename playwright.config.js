@@ -62,7 +62,7 @@ module.exports = defineConfig({
   webServer: {
     command: 'python app_local.py',
     url: 'http://localhost:8000',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     timeout: 120 * 1000, // 120 seconds to start
     stdout: 'ignore',
     stderr: 'pipe',
