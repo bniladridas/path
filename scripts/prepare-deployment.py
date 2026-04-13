@@ -118,7 +118,16 @@ class DeploymentPrep:
         if not self.ensure_path_structure():
             return False
 
-        # app.py is already in path/, no need to copy
+        # Copy app.py from packages
+        shutil.copy(self.root / "packages" / "core" / "search" / "__init__.py", self.path_dir / "app.py")
+
+        # Create index.py
+        index_content = """from app import app
+
+if __name__ == "__main__":
+    app.run()
+"""
+        (self.path_dir / "index.py").write_text(index_content)
 
         if not self.copy_templates():
             return False
