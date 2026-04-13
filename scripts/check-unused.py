@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: T201, PTH123, PTH109, PERF401, TRY300, FA100
+# ruff: noqa: T201, PTH123, PTH109, PERF401, TRY300
 """
 Unused Code Detection Script for Path Application
 
@@ -15,8 +15,6 @@ import ast
 import os
 import sys
 from pathlib import Path
-from typing import Dict
-from typing import List
 
 
 class UnusedCodeDetector:
@@ -25,7 +23,7 @@ class UnusedCodeDetector:
         self.python_files = list(self.project_root.rglob("*.py"))
         self.exclude_dirs = {".git", "__pycache__", ".pytest_cache", "venv", "node_modules"}
 
-    def get_python_files(self) -> List[Path]:
+    def get_python_files(self) -> list[Path]:
         """Get all Python files excluding certain directories."""
         files = []
         for file in self.python_files:
@@ -33,7 +31,7 @@ class UnusedCodeDetector:
                 files.append(file)
         return files
 
-    def analyze_file(self, file_path: Path) -> Dict:
+    def analyze_file(self, file_path: Path) -> dict:
         """Analyze a single Python file for unused code."""
         try:
             with open(file_path, encoding="utf-8") as f:
@@ -55,7 +53,7 @@ class UnusedCodeDetector:
             print(f"Error analyzing {file_path}: {e}")
             return {}
 
-    def find_unused_imports(self, analysis: Dict) -> List[str]:
+    def find_unused_imports(self, analysis: dict) -> list[str]:
         """Find unused imports in a file."""
         unused = []
         for imp in analysis.get("imports", []):
@@ -63,7 +61,7 @@ class UnusedCodeDetector:
                 unused.append(imp)
         return unused
 
-    def find_unused_functions(self, analysis: Dict) -> List[str]:
+    def find_unused_functions(self, analysis: dict) -> list[str]:
         """Find unused functions in a file."""
         unused = []
         flask_routes = {
@@ -91,7 +89,7 @@ class UnusedCodeDetector:
                 unused.append(func)
         return unused
 
-    def find_unused_classes(self, analysis: Dict) -> List[str]:
+    def find_unused_classes(self, analysis: dict) -> list[str]:
         """Find unused classes in a file."""
         unused = []
         for cls in analysis.get("classes", []):
@@ -99,7 +97,7 @@ class UnusedCodeDetector:
                 unused.append(cls)
         return unused
 
-    def check_redundant_files(self) -> List[Path]:
+    def check_redundant_files(self) -> list[Path]:
         """Find potentially redundant files."""
         redundant = []
 

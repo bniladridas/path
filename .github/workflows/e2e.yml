@@ -45,11 +45,7 @@ jobs:
         run: |
           echo -e "\033[36m[INFO]\033[0m Installing Python dependencies..."
           python -m pip install --upgrade pip
-          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
-            pip install -r requirements-py38.txt
-          else
-            pip install -r requirements.txt
-          fi
+          pip install -r requirements.txt
           # Install test dependencies explicitly
           pip install pytest==7.1.2
           echo -e "\033[32m[PASS]\033[0m Python dependencies installed"
