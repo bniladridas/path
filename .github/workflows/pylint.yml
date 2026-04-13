@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.14"]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
@@ -33,11 +33,7 @@ jobs:
           echo -e "\033[36m[INFO]\033[0m Installing dependencies..."
           python -m pip install --upgrade pip
           pip install pylint yamllint
-          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
-            pip install -r requirements-py38.txt
-          else
-            pip install -r requirements.txt
-          fi
+          pip install -r requirements.txt
           echo -e "\033[32m[PASS]\033[0m Dependencies installed successfully"
       - name: Lint YAML files
         run: |

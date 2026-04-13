@@ -14,7 +14,7 @@ from markupsafe import escape
 jinja2.escape = escape
 jinja2.Markup = Markup
 
-from path.app import app  # noqa: E402
+from apps.web import app  # noqa: E402
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1", host="127.0.0.1", port=8000)  # nosec B104

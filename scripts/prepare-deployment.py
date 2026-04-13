@@ -25,9 +25,8 @@ from pathlib import Path
 class DeploymentPrep:
     def __init__(self):
         self.root = Path.cwd()
-        self.path_dir = self.root / "path"
-        self.templates_dir = self.root / "templates"
-        self.static_dir = self.root / "static"
+        self.packages_dir = self.root / "packages"
+        self.ui_dir = self.packages_dir / "ui"
 
     def print_status(self, message):
         print(f"[INFO] {message}")
@@ -140,8 +139,8 @@ class DeploymentPrep:
             self.print_error("Static directory missing for Docker deployment!")
             return False
 
-        if not Path("app_local.py").exists():
-            self.print_error("app_local.py missing for Docker deployment!")
+        if not Path("run.py").exists():
+            self.print_error("run.py missing for Docker deployment!")
             return False
 
         self.print_status("Docker deployment preparation complete!")
@@ -151,8 +150,8 @@ class DeploymentPrep:
         """Prepare for local development."""
         self.print_status("Preparing for local development...")
 
-        # Local development uses root files
-        required_files = ["app_local.py", "requirements.txt"]
+        # Local development uses run.py
+        required_files = ["run.py", "requirements.txt"]
         missing_files = []
 
         for file in required_files:
