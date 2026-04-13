@@ -27,6 +27,9 @@ class DeploymentPrep:
         self.root = Path.cwd()
         self.packages_dir = self.root / "packages"
         self.ui_dir = self.packages_dir / "ui"
+        self.path_dir = self.root / "path"
+        self.templates_dir = self.ui_dir / "templates"
+        self.static_dir = self.ui_dir / "static"
 
     def print_status(self, message):
         print(f"[INFO] {message}")
