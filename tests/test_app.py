@@ -7,7 +7,7 @@ import sys
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
-from path.app import app as flask_app
+from packages.core.search import app as flask_app
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -17,7 +17,7 @@ sys.path.insert(0, project_root)
 def test_app_creation():
     """Test that the Flask app can be created."""
     assert flask_app is not None
-    assert flask_app.name == "path.app"
+    assert flask_app.name == "packages.core.search"
 
 
 def test_index_route():
@@ -128,7 +128,7 @@ def test_search_allows_verified_user():
     with flask_app.test_client() as client:
         with client.session_transaction() as sess:
             sess["verified"] = True
-        with patch("path.app.genai") as mock_genai:
+        with patch("packages.core.search.genai") as mock_genai:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_response.text = '{"candidates": [{"content": {"parts": [{"text": "Test response"}]}}]}'
@@ -145,7 +145,7 @@ def test_search_missing_query():
     with flask_app.test_client() as client:
         with client.session_transaction() as sess:
             sess["verified"] = True
-        with patch("path.app.genai") as mock_genai:
+        with patch("packages.core.search.genai") as mock_genai:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_response.text = '{"candidates": [{"content": {"parts": [{"text": "Empty query response"}]}}]}'

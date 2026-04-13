@@ -1,6 +1,7 @@
 [project]
-name = "path"
+name = "harper"
 version = "1.0.0"
+requires-python = ">=3.10"
 dependencies = [
     "flask==3.1.2",
     "python-dotenv==1.1.1",
@@ -14,12 +15,12 @@ dependencies = [
 
 [tool.black]
 line-length = 127
-target-version = ["py38", "py39", "py310", "py311", "py312"]
-include = '\\.pyi?$'
+target-version = ["py310", "py311", "py312", "py313", "py314"]
+include = '\.pyi?$'
 
 [tool.ruff]
 line-length = 127
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.lint]
 # Enable all available rules
@@ -73,7 +74,7 @@ docstring-quotes = "double"
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = ["path"]
+known-first-party = ["packages"]
 
 # Ignore specific rules
 [tool.ruff.lint.per-file-ignores]
@@ -84,7 +85,7 @@ known-first-party = ["path"]
 # Ignore print statements and other issues in deployment scripts
 "scripts/prepare-deployment.py" = ["T201", "PERF401"]
 # Allow conditional import in app.py for optional features
-"path/app.py" = ["PLC0415"]
+"packages/core/search/__init__.py" = ["PLC0415"]
 
 # Global ignore rules
 "*" = [
@@ -108,7 +109,7 @@ filterwarnings = [
 ]
 
 [tool.setuptools]
-packages = ["path", "shared"]
+packages = ["packages.core", "packages.shared", "packages.ui"]
 
 [tool.ruff.format]
 quote-style = "double"

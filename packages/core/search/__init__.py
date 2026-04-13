@@ -1,16 +1,8 @@
-# NOTE: To reduce duplication, consider consolidating into one app with env-based config.
+# Harper - AI-Powered Media Search
 
 """
-"Path" serves both as the app's name and its guiding metaphor.
-The project helps users "find their path" through media exploration
-like a guide on a personal journey.
-
-In the codebase, `path/` is the main Python package containing the application logic (e.g., app.py).
-The name follows the standard convention where the package name matches the project title.
-Note: it's not a filesystem path reference, but a conceptual one—symbolizing user discovery.
-
 A Flask web application that helps people find their way home through
-media exploration using Google's Gemini 2.5-flash AI model.
+media exploration using Google's Gemini AI model.
 
 Core Philosophy:
 - Authentic discovery: No manipulation, just honest responses
@@ -21,7 +13,6 @@ Core Philosophy:
 Author: Niladri Das (@bniladridas)
 Repository: https://github.com/bniladridas/path
 """
-# Trigger CI 3
 
 # Standard library imports
 import base64
@@ -50,19 +41,23 @@ from jinja2 import TemplateNotFound
 from pydantic import BaseModel
 
 # Add the project root to Python path to ensure shared modules can be imported
-PROJECT_ROOT = str(Path(__file__).parent.parent)
+# search/__init__.py -> core -> packages -> harper
+PROJECT_ROOT = str(Path(__file__).parent.parent.parent.parent)
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+# UI is in packages/ui
+UI_ROOT = Path(__file__).parent.parent.parent / "ui"
+
 # Local application imports (after path setup)
 try:
-    from shared.errors import get_ai_unavailable_message
-    from shared.errors import get_api_error_message
-    from shared.errors import get_internal_error_message
-    from shared.errors import get_rate_limit_error_message
-    from shared.prompts import SYSTEM_PROMPT
-    from shared.requests_fallback import setup_requests_fallback
-    from shared.verification import is_verification_answer_valid
+    from packages.core.prompts import SYSTEM_PROMPT
+    from packages.shared.errors import get_ai_unavailable_message
+    from packages.shared.errors import get_api_error_message
+    from packages.shared.errors import get_internal_error_message
+    from packages.shared.errors import get_rate_limit_error_message
+    from packages.shared.requests_fallback import setup_requests_fallback
+    from packages.shared.verification import is_verification_answer_valid
 
     # Set up requests fallback
     setup_requests_fallback()
@@ -107,11 +102,7 @@ def get_version():
             ["git", "describe", "--tags", "--abbrev=0"], capture_output=True, text=True, cwd=PROJECT_ROOT, check=False
         )  # nosec B603 B607
         if result.returncode == 0:
-            version = result.stdout.strip()
-            # Remove 'v' prefix if present
-            if version.startswith("v"):
-                version = version[1:]
-            return version
+            return result.stdout.strip().removeprefix("v")
     except (subprocess.SubprocessError, FileNotFoundError):
         pass
     return "1.0.0"
@@ -123,8 +114,8 @@ info = Info(title="PATH API", version=get_version(), description="AI-powered med
 app = OpenAPI(
     __name__,
     info=info,
-    template_folder=os.path.join(PROJECT_ROOT, "templates"),
-    static_folder=os.path.join(PROJECT_ROOT, "static"),
+    template_folder=str(UI_ROOT / "templates"),
+    static_folder=str(UI_ROOT / "static"),
 )
 
 # Set a secret key for session management
@@ -146,9 +137,55 @@ if GENAI_AVAILABLE and GEMINI_API_KEY:
 # This constant makes it easy to update the model in the future
 GEMINI_MODEL = "2.5-flash"
 
+# Web search is enabled by default using DuckDuckGo (free)
+
+
 # ============================================================
-# IMAGE GENERATION - Gemini 2.5 Flash Image model
+# SEARCH UTILS - Web search using DuckDuckGo
 # ============================================================
+def web_search(query: str, count: int = 10) -> list[dict]:
+    """
+    Perform web search using DuckDuckGo (free, no API key).
+    Returns list of search results with title, url, and description.
+    """
+    from urllib.parse import quote
+
+    url = f"https://html.duckduckgo.com/html/?q={quote(query)}&b={count}"
+
+    try:
+        response = requests.get(
+            url, timeout=15.0, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        )
+        response.raise_for_status()
+        html = response.text
+
+        import re
+        from urllib.parse import unquote
+
+        # Extract result entries with titles and URLs
+        matches = re.findall(r'<a[^>]*result__a[^>]*href="([^"]+)"[^>]*>([^<]+)</a>', html)
+        snippet_matches = re.findall(r"result__snippet[^>]*>([^<]+)</a>", html)
+
+        results = []
+        for i, (url, title) in enumerate(matches[:count]):
+            # Extract actual URL from DuckDuckGo redirect
+            actual_url = url.split("uddg=")[1].split("&")[0] if "uddg=" in url else url
+            clean_url = unquote(actual_url)
+
+            results.append(
+                {
+                    "title": title.replace("&amp;", "&"),
+                    "url": clean_url,
+                    "description": snippet_matches[i].replace("&amp;", "&") if i < len(snippet_matches) else "",
+                }
+            )
+    except Exception:
+        logging.exception("DuckDuckGo search error")
+        return []
+
+    return results
+
+
 # gemini-2.5-flash-image: AI model for generating images from text prompts
 # Used by the /generate-image endpoint
 GEMINI_IMAGE_MODEL = "gemini-2.5-flash-image"
@@ -428,8 +465,27 @@ def search():
         safe_query_for_log = query[:50].replace("\n", "").replace("\r", "")
         logging.info("Processing search query: %s...", safe_query_for_log)
 
+        # Perform web search using DuckDuckGo (free)
+        web_results = []
+        if query:
+            logging.info("Performing web search with DuckDuckGo")
+            web_results = web_search(query, count=8)
+            if web_results:
+                results_text = "\n\n".join(
+                    [
+                        f"{i + 1}. {r['title']}\n   {r['url']}\n   {r['description'][:200]}"
+                        for i, r in enumerate(web_results[:5])
+                    ]
+                )
+                logging.info(f"Got {len(web_results)} web results: {web_results[:2]}")
+            else:
+                logging.info("No web results found")
+
         # Combine system prompt and user query into a single prompt
-        full_prompt = f"{system_prompt}\n\nUser query: {query}"
+        if web_results:
+            full_prompt = f"{system_prompt}\n\nUser query: {query}\n\nHere are some relevant web results to consider:\n{results_text}\n\nPlease provide a helpful response based on this information."
+        else:
+            full_prompt = f"{system_prompt}\n\nUser query: {query}"
 
         # Use the new Google GenAI SDK
         logging.info("Sending request to Gemini API using SDK")
@@ -500,10 +556,9 @@ def search():
         # Convert result to lowercase
         result = result.lower()
 
-        # Return the processed result as JSON
-        # This will be sent back to the frontend and displayed to the user
+        # Return the processed result as JSON with web sources
         logging.info("Search completed successfully")
-        return jsonify({"result": result})
+        return jsonify({"result": result, "sources": web_results})
     except (
         requests.exceptions.RequestException,
         requests.exceptions.JSONDecodeError,
