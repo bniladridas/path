@@ -61,7 +61,7 @@ module.exports = defineConfig({
   // Web server configuration - starts the app before tests (only when BASE_URL is not set)
   ...(process.env.BASE_URL ? {} : {
     webServer: {
-      command: 'python app_local.py',
+      command: 'python run.py',
       url: 'http://localhost:8000',
       reuseExistingServer: true,
       timeout: 120 * 1000, // 120 seconds to start
