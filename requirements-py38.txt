@@ -1,7 +1,7 @@
 # Python 3.8 compatible requirements (no AI features - not supported)
 flask==2.3.3
 python-dotenv==1.0.1
-requests==2.31.0
+requests==2.33.1
 gunicorn==23.0.0
 vercel==0.2.1
 flask-openapi3==4.0.0
